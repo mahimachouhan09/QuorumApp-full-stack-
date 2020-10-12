@@ -16,12 +16,19 @@ class Profile(models.Model):
         ('F', 'Female'),
         ('O', 'Others'),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name=models.CharField(max_length=30,null=True)
+    last_name=models.CharField(max_length=30,null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name = 'profile')
     contact_number = models.CharField(max_length=12)
     profile_pic = models.ImageField(upload_to='profile_pics', null=True, blank=True)
-    topics = models.ManyToManyField(Topic)
+    topics = models.ManyToManyField(Topic, blank=True)
     gender = models.CharField(max_length=2, choices=GENDER_CHOICES)
     dob = models.DateField()
+
+    def create_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+            post_save.connect(create_profile, sender=User)
 
     def get_first_name(self):
         return self.user.first_name
