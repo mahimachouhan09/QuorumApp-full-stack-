@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Activity, Profile, Topic, Question, Answer, Follow
+from .models import Activity, Comment, Profile, Topic, Question, Answer, Follow
 from django.contrib.auth.models import User
 from rest_auth.registration.serializers import RegisterSerializer
 from generic_relations.relations import GenericRelatedField
@@ -24,8 +24,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('profile', 'first_name', 'last_name','username', 'password')
-        # read_only_fields = ('password')
-        # write_only_fields =('username',)
 
     def create(self, validated_data):
         user = User.objects.create(
@@ -48,33 +46,47 @@ class UserSerializer(serializers.ModelSerializer):
         return user
     
     def update(self,instance, validated_data):
-        # profile_data = validated_data.pop('profile')
+        profile_data = validated_data.pop('profile')
+        profile_obj = instance.profile
+        profile_obj.gender = profile_data.get("gender", profile_obj.gender)
+        profile_obj.dob = profile_data.get("dob", profile_obj.dob)
+        profile_obj.profile_pic = profile_data.get("profile_pic", profile_obj.profile_pic)
+        profile_obj.save()
         instance = super(UserSerializer, self).update(instance, validated_data)
         return instance
 
-
-class QuestionSerializer(serializers.ModelSerializer):
-    # post_belongs_to_authenticated_user = serializers.BooleanField(source = 'get_post_belongs_to_authenticated_user', read_only = True)
-    # user = serializers.DictField(child = serializers.CharField(), source = 'get_user', read_only = True)
-    likes_count = serializers.IntegerField(source='up_vote_count', read_only=True)
-    dislikes_count = serializers.IntegerField(source='down_vote_count', read_only=True)
-    # comments_count = serializers.IntegerField(source='get_comments_count', read_only=True)
-    # vote = ActivitySerializerRelatedField(many=True)
-
+class CommentSerializer(serializers.ModelSerializer):
+    
     class Meta:
-        model = Question
-        fields = ('user',
-            'question','pub_date','topic','description','likes_count','dislikes_count',)
-        read_only_fields = ('user','pub_date',)
-        write_only_fields = ('question','topic',)
+        model = Comment
+        fields = '__all__'
+
 
 class AnswerSerializer(serializers.ModelSerializer):
     likes_count = serializers.IntegerField(source='up_vote_count', read_only=True)
     dislikes_count = serializers.IntegerField(source='down_vote_count', read_only=True)
+    # comments_count = serializers.IntegerField(source='get_comments_count', read_only=True)
+    comments = CommentSerializer(many=True)
 
     class Meta:
         model = Answer
-        fields = ('question','user','content','answered_date','likes_count','dislikes_count',)
+        fields = ('question','user','content','answered_date','likes_count','dislikes_count','comments')
+        read_only_fields = ('user','answered_date',)
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    likes_count = serializers.IntegerField(source='up_vote_count', read_only=True)
+    dislikes_count = serializers.IntegerField(source='down_vote_count', read_only=True)
+    # vote = ActivitySerializerRelatedField(many=True)
+    answers = AnswerSerializer(many=True)
+
+    class Meta:
+        model = Question
+        fields = ('user',
+            'question','pub_date','topic','description','likes_count','dislikes_count','answers',)
+        read_only_fields = ('user','pub_date',)
+        write_only_fields = ('question','topic',)
+
 
 class ActivitySerializerRelatedField(serializers.RelatedField):
     # generic_data = GenericField(source='content_object', read_only=True)

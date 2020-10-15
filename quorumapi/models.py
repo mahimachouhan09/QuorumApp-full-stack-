@@ -89,7 +89,7 @@ class Question(models.Model):
         return "%s " % self.id
 
 class Answer(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     answered_date = models.DateField(auto_now_add=True)
@@ -137,7 +137,7 @@ class Follow(models.Model):
 
 class Comment(models.Model):
     comment = models.TextField()
-    name = models.CharField(max_length=200)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name="comments")
     answer = models.ForeignKey(Answer ,on_delete=models.CASCADE ,related_name="comments")
     created_on = models.DateTimeField(auto_now_add=True)
 

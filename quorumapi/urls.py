@@ -2,7 +2,7 @@ from django.conf.urls import re_path, url
 from django.urls import include, path
 from rest_auth.views import PasswordResetConfirmView, PasswordResetView
 from rest_framework import routers
-from .views import AnswerViewSet,UserList, UpdateApiView, TopicViewSet, QuestionViewSet
+from .views import AnswerViewSet,ActivityViewSet, CommentViewSet, UserList, UpdateApiView, TopicViewSet, QuestionViewSet
 from . import views
 
 router = routers.DefaultRouter()
@@ -10,6 +10,8 @@ router.register(r'update-profile', UpdateApiView, basename='update-profile')
 router.register(r'topics', TopicViewSet, basename='Topic')
 router.register(r'questions', QuestionViewSet, basename='Question')
 router.register(r'answers', AnswerViewSet, basename='Answer')
+router.register(r'comment', CommentViewSet, basename='comment')
+router.register(r'activity', ActivityViewSet, basename='activity')
 
 urlpatterns = [
     path('', include(router.urls)),

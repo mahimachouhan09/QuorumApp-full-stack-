@@ -7,8 +7,8 @@ from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
-from .models import Activity, Answer,Profile, Topic, Follow, Question
-from .serializers import ActivitySerializerRelatedField, AnswerSerializer, UserSerializer, TopicSerializer, FollowerSerializer, QuestionSerializer
+from .models import Activity, Answer,Comment,Profile, Topic, Follow, Question
+from .serializers import ActivitySerializerRelatedField, AnswerSerializer, CommentSerializer, UserSerializer, TopicSerializer, FollowerSerializer, QuestionSerializer
 from .permissions import IsInstanceOwner
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -67,6 +67,13 @@ class UpdateApiView(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.Updat
         'update': [IsInstanceOwner],
         'get_user_profile': [IsInstanceOwner]
     }
+
+    def get_permissions(self):
+        try:
+            return [permission() for permission in self.permission_classes_by_action[self.action]]
+        except KeyError:
+            return (permissions.IsAuthenticated(),)
+
 
     def get_user_profile(self, request, pk=None): 
         try:         
@@ -148,24 +155,22 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
-    
-    def create(self, request, *args, **kwargs):
-        # import pdb;pdb.set_trace()
-        user = None
-        try:
-            if request and hasattr(request, "user"):
-                user = request.user
-                if request.data.get('question'):
-                    query = Answer.objects.create(
-                        user=user,
-                        question=request.data.get('question'),
-                        content=request.data.get('content'),
-                        )
-                    return Response(self.get_serializer(query, many=False).data, status=status.HTTP_200_OK)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST,)
+    permission_classes_by_action = {
+        'partial_update': [IsInstanceOwner],
+        # 'destroy': [IsInstanceOwner],
+        'update': [IsInstanceOwner],
+        'get_user_profile': [IsInstanceOwner]
+    }
 
-    # def get_permissions(self,request):
+    def get_permissions(self):
+        try:
+            return [permission() for permission in self.permission_classes_by_action[self.action]]
+        except KeyError:
+            return (permissions.IsAuthenticated(),)
+
+    def perform_create(self ,serializer):
+        return serializer.save(user = self.request.user)
+        
 
 class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
@@ -181,3 +186,10 @@ class Followers(generics.ListCreateAPIView):
     def get_queryset(self):
         user = get_object_or_404(User, pk = self.kwargs["pk"])
         return Follow.objects.filter(user = user).exclude(follower = user)
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    
+        
