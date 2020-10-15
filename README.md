@@ -24,7 +24,7 @@
   
 ## URLs to target:
   - to register a user
-    - localhost:8000/api/auth/register
+    - localhost:8000/users
   - to login a user
     - localhost:8000/api/auth/login
   - to logout a user
