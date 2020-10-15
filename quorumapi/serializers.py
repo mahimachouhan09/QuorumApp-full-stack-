@@ -93,18 +93,19 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class ActivitySerializerRelatedField(serializers.ModelSerializer):
     # generic_data = GenericField(source='content_object', read_only=True)
-    act_obj = QuestionSerializer()
+    ques_obj = QuestionSerializer(source='question',required=False)
+    ans_obj = AnswerSerializer(source='answer',required=False)
+
     act_object = GenericRelatedField({
         Question: QuestionSerializer(),
         Answer: AnswerSerializer()
     })
     
-    #  =serializers.SerializerMethodField()
 
     class Meta:
         model = Activity
-        fields = ('user','object_id','content_type','activity_type','date','act_object','act_obj')
-        read_only_fields =('user',)
+        fields = ('user','object_id','content_type','activity_type','date','act_object','ques_obj','ans_obj')
+        read_only_fields =('user')
 
     
     def to_representation(self, value):
