@@ -54,6 +54,9 @@ class UserSerializer(serializers.ModelSerializer):
         profile_obj.save()
         instance = super(UserSerializer, self).update(instance, validated_data)
         return instance
+    
+    # def validated(self,data):
+
 
 class CommentSerializer(serializers.ModelSerializer):
     
@@ -88,13 +91,22 @@ class QuestionSerializer(serializers.ModelSerializer):
         write_only_fields = ('question','topic',)
 
 
-class ActivitySerializerRelatedField(serializers.RelatedField):
+class ActivitySerializerRelatedField(serializers.ModelSerializer):
     # generic_data = GenericField(source='content_object', read_only=True)
+    act_obj = QuestionSerializer()
     act_object = GenericRelatedField({
         Question: QuestionSerializer(),
         Answer: AnswerSerializer()
     })
+    
+    #  =serializers.SerializerMethodField()
 
+    class Meta:
+        model = Activity
+        fields = ('user','object_id','content_type','activity_type','date','act_object','act_obj')
+        read_only_fields =('user',)
+
+    
     def to_representation(self, value):
         if isinstance(value, Question):
             serializer = QuestionSerializer(value)
@@ -104,10 +116,6 @@ class ActivitySerializerRelatedField(serializers.RelatedField):
             raise Exception('Unexpected type of tagged object')
 
         return serializer.data
-
-    class Meta:
-        model = Activity
-        fields = ('user','question','object_id','content_type','activity_type','date','act_object',)
 
 class FollowerSerializer(serializers.ModelSerializer):
     user = serializers.DictField(child = serializers.CharField(), source = 'get_user_info', read_only = True)
