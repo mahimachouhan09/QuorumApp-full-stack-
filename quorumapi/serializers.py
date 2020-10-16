@@ -1,8 +1,14 @@
-from rest_framework import serializers
-from .models import Activity, Comment, Profile, Topic, Question, Answer, Follow
+import re
+from datetime import date
+
 from django.contrib.auth.models import User
-from rest_auth.registration.serializers import RegisterSerializer
+from django.db import transaction
 from generic_relations.relations import GenericRelatedField
+from rest_auth.registration.serializers import RegisterSerializer
+from rest_framework import exceptions, serializers
+
+from .models import Activity, Answer, Comment, Follow, Profile, Question, Topic
+
 
 class TopicSerializer(serializers.ModelSerializer):
 
@@ -11,20 +17,98 @@ class TopicSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProfileSerializer(serializers.ModelSerializer):
-    topics = TopicSerializer(many=True, read_only=True)
+class CommentSerializer(serializers.ModelSerializer):
     
     class Meta:
+        model = Comment
+        fields = '__all__'
+        read_only_fields =('user','answer',)
+
+
+class AnswerSerializer(serializers.ModelSerializer):
+    likes_count = serializers.IntegerField(source='up_vote_count', read_only=True)
+    dislikes_count = serializers.IntegerField(source='down_vote_count', read_only=True)
+    comments_count = serializers.SerializerMethodField(read_only=True)
+    comments = CommentSerializer(many=True,read_only=True)
+
+    class Meta:
+        model = Answer
+        fields = ('question','user','content','answered_date','likes_count','dislikes_count','comments_count','comments')
+        read_only_fields = ('user','answered_date',)
+
+    def get_comments_count(self,obj):
+        return obj.comments.count()
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    likes_count = serializers.IntegerField(source='up_vote_count', read_only=True)
+    dislikes_count = serializers.IntegerField(source='down_vote_count', read_only=True)
+    # vote = ActivitySerializerRelatedField(many=True)
+    answers = AnswerSerializer(many=True, read_only=True)
+    topic_id = serializers.PrimaryKeyRelatedField(queryset=Topic.objects.all(), write_only=True, many=True)
+    topic = TopicSerializer(many=True, read_only=True)
+
+
+    class Meta:
+        model = Question
+        fields = ('user', "topic_id",
+            'question','pub_date','topic','description','likes_count','dislikes_count','answers', "topic")
+        read_only_fields = ('user','pub_date',)
+
+    @transaction.atomic()
+    def create(self, validated_data):
+        topics  = validated_data.pop("topic_id")
+        validated_data['user'] = self.context['request'].user
+        quetions = self.Meta.model.objects.create(**validated_data)
+       
+        if topics:
+            quetions.topic.clear()
+
+        for topic in topics:
+            quetions.topic.add(topic)
+
+        quetions.save()
+
+        return quetions
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    topics_id = serializers.PrimaryKeyRelatedField(queryset=Topic.objects.all(), write_only=True, many=True)
+    topics =TopicSerializer(many=True, read_only=True)
+    dob = serializers.DateField()
+    contact_number = serializers.CharField()
+
+
+    class Meta:
         model = Profile
-        fields = ('gender', 'contact_number','profile_pic','topics','dob')
+        fields = ('gender', 'contact_number','profile_pic','topics','dob', "topics_id")
+
+    def validate_dob(self, dob):
+        today = date.today()
+        age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+        if (age < 8):
+            raise serializers.ValidationError("You are no eligible.")
+        return dob
+
+    def validate_contact_number(self,contact_number):
+        if not contact_number.isdigit():
+            raise serializers.ValidationError(
+            'Phone number can only contains digits')
+        if len(contact_number) != 10:
+            raise serializers.ValidationError(
+            'Length of phone number must be 10 digits')
+        return contact_number
+
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(required=True)
+    password = serializers.CharField(read_only=True)
 
     class Meta:
         model = User
         fields = ('profile', 'first_name', 'last_name','username', 'password')
-
+    
+    @transaction.atomic()
     def create(self, validated_data):
         user = User.objects.create(
             username=validated_data.get('username'),
@@ -35,66 +119,47 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         
         profile_data = validated_data.pop('profile')
-        profile = Profile.objects.create(
-            user = user,
-            gender = profile_data['gender'],
-            contact_number = profile_data['contact_number'],
-            profile_pic = profile_data['profile_pic'],
-            dob = profile_data['dob'],
-        )
+        profile_data['user'] = user
+
+        profile_serializer = ProfileSerializer(data=profile_data)
+        if profile_serializer.is_valid():
+            profile = profile_serializer.save()
+        else:
+            raise exceptions.ValidationError(profile_serializer.errors)
+
+        if "topics_id" in profile_data and profile_data['topics_id']:
+            profile.topics.clear()
+
+        for topic in profile_data['topics_id']:
+            profile.topics.add(topic)
+
         profile.save()
         return user
-    
+        
+    @transaction.atomic()
     def update(self,instance, validated_data):
         profile_data = validated_data.pop('profile')
         profile_obj = instance.profile
         profile_obj.gender = profile_data.get("gender", profile_obj.gender)
         profile_obj.dob = profile_data.get("dob", profile_obj.dob)
+        profile_obj.contact_number = profile_data.get("contact_number", profile_obj.contact_number)
         profile_obj.profile_pic = profile_data.get("profile_pic", profile_obj.profile_pic)
+
+        if "topics_id" in profile_data and profile_data['topics_id']:
+            profile_obj.topics.clear()
+        for topic in profile_data['topics_id']:
+            profile_obj.topics.add(topic)
+
         profile_obj.save()
         instance = super(UserSerializer, self).update(instance, validated_data)
         return instance
-    
-    # def validated(self,data):
 
-
-class CommentSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Comment
-        fields = '__all__'
-
-
-class AnswerSerializer(serializers.ModelSerializer):
-    likes_count = serializers.IntegerField(source='up_vote_count', read_only=True)
-    dislikes_count = serializers.IntegerField(source='down_vote_count', read_only=True)
-    # comments_count = serializers.IntegerField(source='get_comments_count', read_only=True)
-    comments = CommentSerializer(many=True)
-
-    class Meta:
-        model = Answer
-        fields = ('question','user','content','answered_date','likes_count','dislikes_count','comments')
-        read_only_fields = ('user','answered_date',)
-
-
-class QuestionSerializer(serializers.ModelSerializer):
-    likes_count = serializers.IntegerField(source='up_vote_count', read_only=True)
-    dislikes_count = serializers.IntegerField(source='down_vote_count', read_only=True)
-    # vote = ActivitySerializerRelatedField(many=True)
-    answers = AnswerSerializer(many=True)
-
-    class Meta:
-        model = Question
-        fields = ('user',
-            'question','pub_date','topic','description','likes_count','dislikes_count','answers',)
-        read_only_fields = ('user','pub_date',)
-        write_only_fields = ('question','topic',)
 
 
 class ActivitySerializerRelatedField(serializers.ModelSerializer):
     # generic_data = GenericField(source='content_object', read_only=True)
-    ques_obj = QuestionSerializer(source='question',required=False)
-    ans_obj = AnswerSerializer(source='answer',required=False)
+    # ques_obj = QuestionSerializer(source='question',required=False)
+    # ans_obj = AnswerSerializer(source='answer',required=False)
 
     act_object = GenericRelatedField({
         Question: QuestionSerializer(),
@@ -104,7 +169,7 @@ class ActivitySerializerRelatedField(serializers.ModelSerializer):
 
     class Meta:
         model = Activity
-        fields = ('user','object_id','content_type','activity_type','date','act_object','ques_obj','ans_obj')
+        fields = ('user','object_id','content_type','activity_type','date','act_object')
         read_only_fields =('user')
 
     
@@ -117,6 +182,7 @@ class ActivitySerializerRelatedField(serializers.ModelSerializer):
             raise Exception('Unexpected type of tagged object')
 
         return serializer.data
+
 
 class FollowerSerializer(serializers.ModelSerializer):
     user = serializers.DictField(child = serializers.CharField(), source = 'get_user_info', read_only = True)

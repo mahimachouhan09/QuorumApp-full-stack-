@@ -1,15 +1,17 @@
-from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.fields import (GenericForeignKey,
+                                                GenericRelation)
 from django.contrib.contenttypes.models import ContentType
+from django.db import models
 from django_currentuser.middleware import get_current_authenticated_user
+
 
 class Topic(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
-        return "%s "% self.name
+        return "%s " % self.name
+
 
 class Profile(models.Model):
     GENDER_CHOICES = (
@@ -17,12 +19,14 @@ class Profile(models.Model):
         ('F', 'Female'),
         ('O', 'Others'),
     )
-    first_name=models.CharField(max_length=30,null=True)
-    last_name=models.CharField(max_length=30,null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name = 'profile')
+    first_name = models.CharField(max_length=30, null=True)
+    last_name = models.CharField(max_length=30, null=True)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='profile')
     contact_number = models.CharField(max_length=12)
-    profile_pic = models.ImageField(upload_to='profile_pics', null=True, blank=True)
-    topics = models.ManyToManyField(Topic, blank=True, related_name = 'topics')
+    profile_pic = models.ImageField(
+        upload_to='profile_pics', null=True, blank=True)
+    topics = models.ManyToManyField(Topic, blank=True, related_name='topics')
     gender = models.CharField(max_length=2, choices=GENDER_CHOICES)
     dob = models.DateField()
 
@@ -33,19 +37,20 @@ class Profile(models.Model):
 
     def get_first_name(self):
         return self.user.first_name
-    
+
     def get_last_name(self):
         return self.user.last_name
-    
+
     def get_followers_count(self):
-        return Follow.objects.filter(user = self.user).exclude(follower = self.user).count()
+        return Follow.objects.filter(
+            user = self.user).exclude(follower = self.user).count()
 
     def get_following_count(self):
         return Follow.objects.filter(follower = self.user).count()
 
-
     def __str__(self):
         return "%s " % self.user.username
+
 
 class Activity(models.Model):
     UP_VOTE = 'U'
@@ -64,11 +69,12 @@ class Activity(models.Model):
     def __str__(self):
         return "%s "% self.activity_type
 
+
 class Question(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.CharField(max_length=200)
     pub_date = models.DateField(auto_now_add=True)
-    topic =models.ManyToManyField(Topic)
+    topic =models.ManyToManyField(Topic )
     description = models.CharField(max_length = 100, null= True ,blank =True)
     vote = GenericRelation(Activity)
 
@@ -100,7 +106,7 @@ class Answer(models.Model):
 
     def up_vote_count(self):
         return self.vote.filter(activity_type='U').count()
-
+        
     def __str__(self):
         return "%s" % self.content
 

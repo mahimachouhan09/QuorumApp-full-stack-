@@ -35,6 +35,10 @@
     - localhost:8000/^password/reset/$
   - to update the user profile
     - localhost:8000/profile-update/
+  - to view following
+    - localhost:8000/following/id/
+  - to view followers
+    - localhost:8000/followers/id/
 
 ## Useful commands:
   - `python manage.py createsuperuser`

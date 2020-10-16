@@ -1,18 +1,25 @@
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.models import User
-from rest_framework import generics ,mixins, permissions, status,viewsets
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework.filters import SearchFilter
-from rest_framework.decorators import action, api_view
-from rest_framework.response import Response
-from .models import Activity, Answer,Comment,Profile, Topic, Follow, Question
-from .serializers import ActivitySerializerRelatedField, AnswerSerializer, CommentSerializer, UserSerializer, TopicSerializer, FollowerSerializer, QuestionSerializer
-from .permissions import IsInstanceOwner
-from .paginators import UserPagination
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import (filters, generics, mixins, permissions, status,
+                            viewsets)
+from rest_framework.decorators import action, api_view
+from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.permissions import (AllowAny, IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
+from rest_framework.response import Response
 
+from .models import Activity, Answer, Comment, Follow, Profile, Question, Topic
+from .paginators import UserPagination
+from .permissions import IsInstanceOwner
+from .serializers import (ActivitySerializerRelatedField, AnswerSerializer,
+                          CommentSerializer, FollowerSerializer,
+                          QuestionSerializer, TopicSerializer, UserSerializer)
+
+# from rest_framework.parsers import MultiPartParser
 
 class UserList(generics.ListCreateAPIView):
     permission_classes = []
@@ -31,11 +38,12 @@ class UserList(generics.ListCreateAPIView):
 class UpdateApiView(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.UpdateModelMixin, mixins.DestroyModelMixin,viewsets.GenericViewSet):
     queryset =User.objects.all()
     serializer_class = UserSerializer   
-    permission_classes = [IsAuthenticated,] 
-    # lookup_fields = ['username',]     
+    # permission_classes = [IsAuthenticated,] 
+    # lookup_fields = ['username',]
+    # parser_classes = (MultiPartParser, )
     filter_backends = (SearchFilter,) 
     pagination_class = UserPagination    
-    search_fields = ['email', 'username',] 
+    search_fields = ['user__username',] 
     permission_classes_by_action = {
         'partial_update': [IsInstanceOwner],
         'destroy': [IsInstanceOwner],
@@ -61,7 +69,8 @@ class UpdateApiView(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.Updat
 class TopicViewSet(viewsets.ModelViewSet):
     queryset =Topic.objects.all()
     serializer_class = TopicSerializer
-    # filter_backends = [filters.OrderingFilter]    
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['topics__topics',]
 
 @login_required
 def follow(request, pk):
@@ -87,6 +96,9 @@ def follow(request, pk):
 class Following(generics.ListCreateAPIView):
     serializer_class = FollowerSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['user__username',]
+    ordering_fields = ['user__username',]
 
     def get_queryset(self):
         user = get_object_or_404(User, pk = self.kwargs["pk"])
@@ -97,6 +109,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     pagination_class = UserPagination
+    search_fields = ['topic__name', 'user__username']
+   
     permission_classes_by_action = {
         'partial_update': [IsInstanceOwner],
         'destroy': [IsInstanceOwner],
@@ -109,19 +123,19 @@ class QuestionViewSet(viewsets.ModelViewSet):
         except KeyError:
             return (permissions.IsAuthenticated(),)
 
-    def create(self, request, *args, **kwargs):
-        user = None
-        try:
-            if request and hasattr(request, "user"):
-                user = request.user
-                if request.data.get('question'):
-                    query = Question.objects.create(
-                        user=user,
-                        question=request.data.get('question'),
-                        )
-                    return Response(self.get_serializer(query, many=False).data, status=status.HTTP_200_OK)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST,)
+    # def create(self, request, *args, **kwargs):
+    #     user = None
+    #     try:
+    #         if request and hasattr(request, "user"):
+    #             user = request.user
+    #             if request.data.get('question'):
+    #                 query = Question.objects.create(
+    #                     user=user,
+    #                     question=request.data.get('question'),
+    #                     )
+    #                 return Response(self.get_serializer(query, many=False).data, status=status.HTTP_200_OK)
+    #     except:
+    #         return Response(status=status.HTTP_400_BAD_REQUEST,)
 
     # def get_queryset(self):
     #     user = get_object_or_404(User, pk = self.kwargs["pk"])
@@ -131,11 +145,13 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['question__question',]
+    ordering_fields = ['question__question',]
     permission_classes_by_action = {
         'partial_update': [IsInstanceOwner],
-        # 'destroy': [IsInstanceOwner],
+        'destroy': [IsInstanceOwner],
         'update': [IsInstanceOwner],
-        'get_user_profile': [IsInstanceOwner]
     }
 
     def get_permissions(self):
@@ -171,3 +187,11 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     pagination_class = UserPagination
+    permission_classes_by_action = {
+        'partial_update': [IsInstanceOwner],
+        'destroy': [IsInstanceOwner],
+        'update': [IsInstanceOwner],
+    }
+
+    def perform_create(self ,serializer):
+        return serializer.save(user = self.request.user)

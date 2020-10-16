@@ -2,8 +2,10 @@ from django.conf.urls import re_path, url
 from django.urls import include, path
 from rest_auth.views import PasswordResetConfirmView, PasswordResetView
 from rest_framework import routers
-from .views import AnswerViewSet,ActivityViewSet, CommentViewSet, UserList, UpdateApiView, TopicViewSet, QuestionViewSet
+
 from . import views
+from .views import (ActivityViewSet, AnswerViewSet, CommentViewSet,
+                    QuestionViewSet, TopicViewSet, UpdateApiView, UserList)
 
 router = routers.DefaultRouter()
 router.register(r'update-profile', UpdateApiView, basename='update-profile')
@@ -20,5 +22,6 @@ urlpatterns = [
     path('follow/<int:pk>/', views.follow, name='follow'),
     path('following/<int:pk>/', views.Following.as_view(), name='following'),
     path('followers/<int:pk>/', views.Followers.as_view(), name='followers'),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include(
+        'rest_framework.urls', namespace='rest_framework'))
 ]
