@@ -1,6 +1,5 @@
-from django.conf.urls import re_path, url
+from django.conf.urls import url
 from django.urls import include, path
-from rest_auth.views import PasswordResetConfirmView, PasswordResetView
 from rest_framework import routers
 
 from . import views

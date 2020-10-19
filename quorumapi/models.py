@@ -43,10 +43,10 @@ class Profile(models.Model):
 
     def get_followers_count(self):
         return Follow.objects.filter(
-            user = self.user).exclude(follower = self.user).count()
+            user=self.user).exclude(follower=self.user).count()
 
     def get_following_count(self):
-        return Follow.objects.filter(follower = self.user).count()
+        return Follow.objects.filter(follower=self.user).count()
 
     def __str__(self):
         return "%s " % self.user.username
@@ -60,22 +60,22 @@ class Activity(models.Model):
         (DOWN_VOTE, 'Down Vote'),
     )
     activity_type = models.CharField(max_length=6, choices=ACTIVITY_TYPES)
-    user = models.ForeignKey(Profile, null=True , on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True, null=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
-        return "%s "% self.activity_type
+        return "%s " % self.activity_type
 
 
 class Question(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.CharField(max_length=200)
     pub_date = models.DateField(auto_now_add=True)
-    topic =models.ManyToManyField(Topic )
-    description = models.CharField(max_length = 100, null= True ,blank =True)
+    topic = models.ManyToManyField(Topic)
+    description = models.CharField(max_length=100, null=True, blank=True)
     vote = GenericRelation(Activity)
 
     def get_post_belongs_to_authenticated_user(self):
@@ -94,8 +94,10 @@ class Question(models.Model):
     def __str__(self):
         return "%s " % self.id
 
+
 class Answer(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
+    question = models.ForeignKey(
+        Question, on_delete=models.CASCADE, related_name='answers')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     answered_date = models.DateField(auto_now_add=True)
@@ -106,17 +108,16 @@ class Answer(models.Model):
 
     def up_vote_count(self):
         return self.vote.filter(activity_type='U').count()
-        
+
     def __str__(self):
         return "%s" % self.content
 
-class Follow(models.Model):
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
-    follower = models.ForeignKey(User, on_delete=models.CASCADE , related_name='follower')
-    
-    # class Meta:
-    #     unique_together = ('follower', 'user')
+class Follow(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user')
+    follower = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='follower')
 
     def get_user_info(self):
         user_dict = vars(self.user)
@@ -131,20 +132,23 @@ class Follow(models.Model):
 
     def get_followers(self, user):
         return Follow.objects.filter(user=user).exclude(follower=user)
-    
+
     def get_following_count(self, user):
-        return Follower.objects.filter(follower=user).count()
+        return Follow.objects.filter(follower=user).count()
 
     def get_followers_count(self, user):
-        return Follower.objects.filter(user=user).count()
+        return Follow.objects.filter(user=user).count()
 
     def __str__(self):
         return str(self.id)
 
+
 class Comment(models.Model):
     comment = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name="comments")
-    answer = models.ForeignKey(Answer ,on_delete=models.CASCADE ,related_name="comments")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="comments")
+    answer = models.ForeignKey(
+        Answer, on_delete=models.CASCADE, related_name="comments")
     created_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:

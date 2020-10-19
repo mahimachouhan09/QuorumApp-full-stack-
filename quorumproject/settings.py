@@ -121,7 +121,8 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
     ),
 
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': (
+        'rest_framework.pagination.PageNumberPagination',),
 }
 
 # Internationalization
@@ -140,7 +141,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-# AUTH_USER_MODEL = 'quorumapi.Profile'
 
 STATIC_URL = '/static/'
 SITE_ID = 2
