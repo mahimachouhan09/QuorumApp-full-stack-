@@ -18,7 +18,7 @@ from .serializers import (ActivitySerializerRelatedField, AnswerSerializer,
 
 class UserList(generics.ListCreateAPIView):
     serializer_class = UserSerializer
-    # pagination_class = UserPagination
+    pagination_class = UserPagination
     queryset = User.objects.all()
 
     def post(self, request, format=None):
@@ -68,6 +68,7 @@ class UpdateApiView(mixins.ListModelMixin,
 class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
+    pagination_class = UserPagination
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['topics__topics', ]
 
@@ -132,6 +133,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
+    pagination_class = UserPagination
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['question__question', ]
     ordering_fields = ['question__question', ]
@@ -151,12 +153,15 @@ class AnswerViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
+    
+
 
 
 class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializerRelatedField
-
+    pagination_class = UserPagination
+    
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
 

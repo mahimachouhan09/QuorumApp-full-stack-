@@ -23,7 +23,39 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ('user', 'answer',)
 
 
-class AnswerSerializer(serializers.ModelSerializer):
+class ActivitySerializerRelatedField(serializers.ModelSerializer):
+
+    act_object = GenericRelatedField({
+        Question: serializers.HyperlinkedRelatedField(
+            queryset = Question.objects.all(),
+            view_name='QuestionViewSet',
+        ),
+
+        Answer: serializers.HyperlinkedRelatedField(
+            queryset = Answer.objects.all(),
+            view_name='AnswerViewSet',
+        ),
+    })
+
+    class Meta:
+        model = Activity
+        fields = (
+            'user', 'object_id', 'content_type',
+            'activity_type', 'date', 'act_object', 'content_object')
+        read_only_fields = ('user',)
+
+    def to_representation(self, value):
+        if isinstance(value, Question):
+            serializer = QuestionSerializer(value)
+        elif isinstance(value, Answer):
+            serializer = AnswerSerializer(value)
+        else:
+            raise Exception('Unexpected type of tagged object')
+        return serializer.data
+
+
+class AnswerSerializer(serializers.HyperlinkedModelSerializer):
+    vote = ActivitySerializerRelatedField(many=True)
     likes_count = serializers.IntegerField(
         source='up_vote_count', read_only=True)
     dislikes_count = serializers.IntegerField(
@@ -36,14 +68,15 @@ class AnswerSerializer(serializers.ModelSerializer):
         fields = (
             'question', 'user', 'content', 'answered_date',
             'likes_count', 'dislikes_count', 'comments_count',
-            'comments')
+            'comments',)
         read_only_fields = ('user', 'answered_date',)
 
     def get_comments_count(self, obj):
         return obj.comments.count()
 
 
-class QuestionSerializer(serializers.ModelSerializer):
+class QuestionSerializer(serializers.HyperlinkedModelSerializer):
+    vote = ActivitySerializerRelatedField(many=True)
     likes_count = serializers.IntegerField(
         source='up_vote_count', read_only=True)
     dislikes_count = serializers.IntegerField(
@@ -77,17 +110,37 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    topics_id = serializers.PrimaryKeyRelatedField(
-        queryset=Topic.objects.all(), write_only=True, many=True)
+    # topics_id = serializers.PrimaryKeyRelatedField(
+    #     queryset=Topic.objects.all(),write_only=True, many=True)
+    topics_id = serializers.SlugRelatedField(
+        queryset=Topic.objects.all(),write_only=True, many=True,slug_field='name')
     topics = TopicSerializer(many=True, read_only=True)
     dob = serializers.DateField()
     contact_number = serializers.CharField()
-
+    # topics_id = list(Topic.objects.filter(name__in=topics_id).values_list('pk', flat=True))
     class Meta:
         model = Profile
         fields = (
             'gender', 'contact_number',
-            'profile_pic', 'topics', 'dob', "topics_id")
+            'profile_pic',
+            'topics',
+            'dob',
+            'topics_id',
+            )
+        read_only_fields = ('topics',)
+
+    # def create(self, validated_data):
+    #     topics = validated_data.pop('topics_id')
+    #     profile = Profile.objects.create(**validated_data,
+    #         topic=self.context['request'].user.topic.id)
+    #     for c in topics:
+    #         topic.topics.add(c)
+    #     return topic
+
+    # def to_internal_value(self, data):
+    #     for name in data.get('topic', []):
+    #         Topic.objects.get_or_create(name=name)
+    #     return super().to_internal_value(data)
 
     def validate_dob(self, dob):
         today = date.today()
@@ -113,10 +166,11 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('profile', 'first_name', 'last_name', 'username', 'password')
+        fields = ('profile', 'first_name', 'last_name', 'username', 'password',)
 
     @transaction.atomic()
     def create(self, validated_data):
+        # import pdb;pdb.set_trace()
         user = User.objects.create(
             username=validated_data.get('username'),
             first_name=validated_data.get('first_name'),
@@ -128,18 +182,22 @@ class UserSerializer(serializers.ModelSerializer):
         profile_data = validated_data.pop('profile')
         profile_data['user'] = user
 
-        profile_serializer = ProfileSerializer(data=profile_data)
+        data=profile_data
+        topics= profile_data['topics_id']
+        # topics_id = list(Topic.objects.filter(name__in=topics).values_list('pk', flat=True))
+        
+        profile_serializer = ProfileSerializer(data=data)
         if profile_serializer.is_valid():
             profile = profile_serializer.save()
         else:
             raise exceptions.ValidationError(profile_serializer.errors)
 
-        if "topics_id" in profile_data and profile_data['topics_id']:
+        if 'topics_id' in profile_data and profile_data['topics_id']:
             profile.topics.clear()
 
         for topic in profile_data['topics_id']:
             profile.topics.add(topic)
-
+        
         profile.save()
         return user
 
@@ -165,28 +223,7 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 
-class ActivitySerializerRelatedField(serializers.ModelSerializer):
 
-    act_object = GenericRelatedField({
-        Question: QuestionSerializer(),
-        Answer: AnswerSerializer()
-    })
-
-    class Meta:
-        model = Activity
-        fields = (
-            'user', 'object_id', 'content_type',
-            'activity_type', 'date', 'act_object')
-        read_only_fields = ('user',)
-
-    def to_representation(self, value):
-        if isinstance(value, Question):
-            serializer = QuestionSerializer(value)
-        elif isinstance(value, Answer):
-            serializer = AnswerSerializer(value)
-        else:
-            raise Exception('Unexpected type of tagged object')
-        return serializer.data
 
 
 class FollowerSerializer(serializers.ModelSerializer):
