@@ -49,10 +49,11 @@ class UpdateApiView(mixins.ListModelMixin,
     def get_permissions(self):
         try:
             return [
-                permission() for permission in self.permission_classes_by_action[
+                permission() for permission in
+                self.permission_classes_by_action[
                     self.action]]
         except KeyError:
-            return (permissions.IsAuthenticated(),)
+            return (permissions.IsAuthenticated(),
 
     def get_user_profile(self, request, pk=None):
         try:
@@ -124,7 +125,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         try:
             return [
-                permission() for permission in self.permission_classes_by_action[
+                permission() for permission in
+                self.permission_classes_by_action[
                     self.action]]
         except KeyError:
             return (permissions.IsAuthenticated(),)
@@ -146,22 +148,21 @@ class AnswerViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         try:
             return [
-                permission() for permission in self.permission_classes_by_action[
+                permission() for permission in
+                self.permission_classes_by_action[
                     self.action]]
         except KeyError:
             return (permissions.IsAuthenticated(),)
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
-    
-
 
 
 class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializerRelatedField
     pagination_class = UserPagination
-    
+
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
 

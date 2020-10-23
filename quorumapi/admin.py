@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import Activity, Answer, Comment, Follow, Profile, Question, Topic
 
 admin.site.register(Activity)
