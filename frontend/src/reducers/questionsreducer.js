@@ -1,4 +1,4 @@
-import answersreducer from './answersreducer';
+// import answersreducer from './answersreducer';
 import { GET_QUESTION,QUESTION_LOADING, GET_QUESTION_ERROR } from "../actions/actionTypes"
 
 const initialState = {

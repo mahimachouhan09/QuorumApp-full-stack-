@@ -53,7 +53,7 @@ class UpdateApiView(mixins.ListModelMixin,
                 self.permission_classes_by_action[
                     self.action]]
         except KeyError:
-            return (permissions.IsAuthenticated(),
+            return (permissions.IsAuthenticated(),)
 
     def get_user_profile(self, request, pk=None):
         try:

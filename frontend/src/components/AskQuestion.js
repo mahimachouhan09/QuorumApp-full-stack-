@@ -3,35 +3,70 @@ import { connect } from 'react-redux';
 import { createQuestion } from '../actions/index';
 
 class AskQuestion extends Component {
-  constructor() {
-      super();
+  constructor(props) {
+      super(props);
       this.state = {
-        // postdata:{
-        "user": "",
-        "question": "",
-        "pub_date": "",
-        "topic": [],
-        "description": "",
-        "likes_count": 0,
-        "dislikes_count": 0,
-        "answers": [],
-        "vote": []
-      // }
+        newquestion:{
+          id: "",
+          user: "",
+          question: "",
+          pub_date: "",
+          topic: [],
+          description: "",
+          likes_count: "",
+          dislikes_count: "",
+          answers: [
+              {
+                  id: "",
+                  question: "",
+                  user: "",
+                  content: "",
+                  answered_date: "",
+                  likes_count: "",
+                  dislikes_count: "",
+                  comments_count: "",
+                  comments: [
+                      {
+                          id: "",
+                          comment: "",
+                          created_on: "",
+                          user: "",
+                          answer: ""
+                      }
+                  ],
+                  vote: []
+              },
+            ]
+        }
     }
   }
 
-  handleOnChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
+  handleOnChange = e => {
+    // const { name, value } = event.target;
+    // this.setState({
+    //   [name]: value
+    // });
+    if (e.target.name === 'topic') {
+      this.setState({newquestion :{
+        ...this.state.newquestion ,topic: e.target.value} });
+
+    } else if (e.target.name === 'question') {
+      this.setState({ newquestion :{
+        ...this.state.newquestion ,question: e.target.value} });
+  
+    } else if (e.target.name === 'description') {
+      this.setState({ newquestion :{
+        ...this.state.newquestion ,description: e.target.value  || '' }});
+  
+    }
   }
 
   handleOnSubmit = event => {
     event.preventDefault()
-    const { history, createQuestion } = this.props
-    createQuestion(this.state, history)
-    this.setState({ question: '', description: '' });
+    // const { history, createQuestion } = this.props
+    // createQuestion(this.state, history)
+    this.props.createQuestion(this.state.newquestion)
+    // this.props.getQuestions();
   }
 
   render() {
@@ -39,31 +74,23 @@ class AskQuestion extends Component {
       <form onSubmit={this.handleOnSubmit}>
         <input
           type="text"
+          name="topic"
+          value={this.state.newquestion.topic}
+          onChange={this.handleOnChange}
+        />
+        <input
+          type="text"
           name="question"
-          value={this.state.question}
+          value={this.state.newquestion.question}
           onChange={this.handleOnChange}
           placeholder="Ask a Question"
         />
         <input
           type="text"
           name="description"
-          value={this.state.description}
+          value={this.state.newquestion.description}
           onChange={this.handleOnChange}
           placeholder="Add description"
-        />
-        <input
-          type="text"
-          name="pub_date"
-          value={this.state.pub_date}
-          onChange={this.handleOnChange}
-          placeholder="pub_date"
-        />
-        <input
-          type="text"
-          name="answers"
-          value={this.state.answers}
-          onChange={this.handleOnChange}
-          placeholder="answers"
         />
         <button>Ask Question</button>
       </form>

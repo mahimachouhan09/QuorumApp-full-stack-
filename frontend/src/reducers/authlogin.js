@@ -1,4 +1,4 @@
-import { LOGIN } from "../actions/actionTypes"
+import { LOGIN, LOGOUT } from "../actions/actionTypes"
 
 const init = {
   token : localStorage.getItem("token"),
@@ -9,7 +9,7 @@ const init = {
 
 export default function authlogin(state = init ,action){
   switch(action.type){
-      case LOGIN:
+    case LOGIN:
     //   case REGISTER:
           localStorage.setItem("token" ,action.payload.token)
           return {
@@ -18,7 +18,15 @@ export default function authlogin(state = init ,action){
               isAuthenticated : true,
               user : action.payload.user,
           }
-
+      case LOGOUT:
+            localStorage.setItem("token",null)
+            return {
+                ...state,
+                token: localStorage.getItem("token"),
+                isAuthenticated: false,
+                user: null,
+                isLoading: false,
+            }
     //   case GET_USER:
     //   case UPDATE_USER_INFO:
     //   case UPDATE_IMAGE :

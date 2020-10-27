@@ -30,6 +30,9 @@ class Profile(models.Model):
     gender = models.CharField(max_length=2, choices=GENDER_CHOICES)
     dob = models.DateField()
 
+    def get_user_id(self):
+        return self.user.pk
+
     def create_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance)
@@ -47,6 +50,15 @@ class Profile(models.Model):
 
     def get_following_count(self):
         return Follow.objects.filter(follower=self.user).count()
+
+    def get_follow_status(self):
+        follow_status = Follow.objects.filter(
+            user = self.user,
+            follower = get_current_authenticated_user())
+        return "Following" if follow_status else "Follow"
+
+    def get_profile_belongs_to_authenticated_user(self):
+        return self.user == get_current_authenticated_user()
 
     def __str__(self):
         return "%s " % self.user.username
@@ -79,7 +91,7 @@ class Question(models.Model):
     vote = GenericRelation(Activity)
 
     def get_post_belongs_to_authenticated_user(self):
-        return self.user.pk == get_current_authenticated_user().pk
+        return self.user == get_current_authenticated_user()
 
     def get_user(self):
         user_dict = vars(self.user)

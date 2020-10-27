@@ -81,6 +81,8 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 class QuestionSerializer(serializers.ModelSerializer):
     vote = ActivitySerializerRelatedField(many=True, required=False)
+    get_question_belongs_to_authenticated_user = serializers.BooleanField(
+        source='get_post_belongs_to_authenticated_user', read_only=True)
     likes_count = serializers.IntegerField(
         source='up_vote_count', read_only=True)
     dislikes_count = serializers.IntegerField(
@@ -94,6 +96,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = (
             'id',
+            'get_question_belongs_to_authenticated_user',
             'user', "topic_id",
             'question', 'pub_date', 'topic',
             'description', 'likes_count',
@@ -101,7 +104,10 @@ class QuestionSerializer(serializers.ModelSerializer):
             'topic',
             'vote',
             )
-        read_only_fields = ('id', 'user', 'pub_date',)
+        read_only_fields = (
+            'id', 'user', 'pub_date',
+            'get_question_belongs_to_authenticated_user',
+            )
 
     @transaction.atomic()
     def create(self, validated_data):
@@ -126,6 +132,18 @@ class ProfileSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(many=True, read_only=True)
     dob = serializers.DateField()
     contact_number = serializers.CharField()
+    user_id = serializers.IntegerField(
+        source = 'get_user_id', read_only=True)
+    followers_count = serializers.IntegerField(
+        source = 'get_followers_count', read_only=True)
+    following_count = serializers.IntegerField(
+        source = 'get_following_count', read_only=True)
+    profile_belongs_to_authenticated_user = serializers.BooleanField(
+        source = 'get_profile_belongs_to_authenticated_user',
+        read_only=True
+        )
+    follow_status = serializers.CharField(
+        source = 'get_follow_status', read_only=True)
 
     class Meta:
         model = Profile
@@ -136,8 +154,14 @@ class ProfileSerializer(serializers.ModelSerializer):
             'topics',
             'dob',
             'topics_id',
+            'user_id', 'followers_count', 'following_count',
+            'profile_belongs_to_authenticated_user', 'follow_status',
             )
-        read_only_fields = ('id', 'topics',)
+        read_only_fields = (
+            'id', 'topics', 'user_id',
+            'followers_count', 'following_count',
+            'profile_belongs_to_authenticated_user', 'follow_status',
+            )
 
     def validate_dob(self, dob):
         today = date.today()
