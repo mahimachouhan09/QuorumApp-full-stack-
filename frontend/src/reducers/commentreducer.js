@@ -1,4 +1,4 @@
-import {CREATE_COMMENT} from "../actions/actionTypes"
+import {CREATE_COMMENT, EDIT_COMMENT} from "../actions/actionTypes"
 
 const initialState = {
   loading: false,
@@ -11,6 +11,9 @@ const commentreducer=(state = initialState, action) => {
 
     case CREATE_COMMENT:
       return { comment: action.payload,}
+
+    case EDIT_COMMENT:
+        return { comment: action.payload,}
 
     default:
       return state;

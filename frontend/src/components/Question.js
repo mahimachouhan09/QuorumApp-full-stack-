@@ -66,7 +66,9 @@ class Question extends Component {
                     <li key = { index }>
                       comments : {comment.comment}
                       
-                    {(pk === comment.user)? <p><DeleteComment id={comment.id} /><EditComment/> </p>: <p></p>}
+                    {(pk === comment.user)? 
+                    <p><DeleteComment id={comment.id} /><EditComment data={comment}/> </p>:
+                    <p></p>}
                     </li>
                   ))
                   }

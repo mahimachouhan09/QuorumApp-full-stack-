@@ -4,7 +4,7 @@ import { LOGIN, LOGIN_ERROR,LOGOUT,
     GET_PROFILES_REQUEST,GET_PROFILES_SUCCESS,GET_PROFILES_FAILURE,
     GET_FOLLOW_REQUEST,GET_FOLLOW_SUCCESS,GET_FOLLOW_FAILURE,
     GET_FOLLOWER_REQUEST,GET_FOLLOWER_SUCCESS,GET_FOLLOWER_FAILURE,
-    CREATE_ANSWER_SUCCESS,CREATE_COMMENT,
+    CREATE_ANSWER_SUCCESS,CREATE_COMMENT, EDIT_COMMENT,
   }
 from "./actionTypes"
 
@@ -221,6 +221,21 @@ export const createComment = (newComment) => {
               payload: res.data    
           })
         
+      })
+  }
+}
+
+
+export const editComment = (id, values) => {
+  return (dispatch , getState) => {
+      const config = setConfig(getState)
+      axios.put(`http://127.0.0.1:8000/comment/${id}/`, values, config).then((res) => {
+          console.log(res)
+          dispatch({
+              type : EDIT_COMMENT,
+              payload : res.data
+          })
+          
       })
   }
 }
