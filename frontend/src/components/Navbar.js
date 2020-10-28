@@ -21,21 +21,13 @@ class Navbar extends Component {
     render() {
         const { isAuthenticated } = this.props.authlogin
         if (isAuthenticated) {
-            const { username } = this.props.authlogin.user
+            const { username ,pk} = this.props.authlogin.user
             return (
                 <ul className="navbar-nav ml-auto">
                     <HomeIcon/>
                     <li className="nav-item" style={{ margin: "auto 0" }}>
                         <Link className="btn btn-sm btn-outline-info" to="/user-info">
-                            {username}<i className="fa fa-user ml-1"></i>
-                        </Link>
-                    </li>
-
-                    <li className="nav-item" style={{ margin: "auto 0" }}>
-                        <Link className="btn btn-sm btn-outline-info" to="/update-profile/:id/">
-                            <button onClick = { this.onClick } >
-                                EDIT PROFILE
-                            </button>
+                            {username} {pk}<i className="fa fa-user ml-1"></i>
                         </Link>
                     </li>
 

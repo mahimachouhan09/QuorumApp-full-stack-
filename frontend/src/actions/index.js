@@ -4,6 +4,7 @@ import { LOGIN, LOGIN_ERROR,LOGOUT,
     GET_PROFILES_REQUEST,GET_PROFILES_SUCCESS,GET_PROFILES_FAILURE,
     GET_FOLLOW_REQUEST,GET_FOLLOW_SUCCESS,GET_FOLLOW_FAILURE,
     GET_FOLLOWER_REQUEST,GET_FOLLOWER_SUCCESS,GET_FOLLOWER_FAILURE,
+    CREATE_ANSWER_SUCCESS,CREATE_COMMENT,
   }
 from "./actionTypes"
 
@@ -37,6 +38,20 @@ export const getprofiles = () => (dispatch,getState) => {
     });
 };
 
+
+export const editprofile = (profileData,id) => {
+  return (dispatch) => {
+    axios({
+      url :`http://127.0.0.1:8000/update-profile/${id}`,
+      method :'PUT',
+      data : JSON.stringify(profileData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response)    
+  }
+}
 
 export const follow = (id) => (dispatch,getState) => {
   const config = setConfig(getState)
@@ -114,7 +129,8 @@ export const getQuestions = () => (dispatch,getState) => {
         method :'POST',
         data : JSON.stringify(newquestion),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          // ...config.headers,
         }
       })
       .then(response => response)
@@ -158,36 +174,73 @@ export const getQuestions = () => (dispatch,getState) => {
     }
   }
 
-  export const addAnswer = (answer, questionId) => {
-    return {
-      type: 'CREATE_ANSWER_SUCCESS',
-      answer,
-      questionId: questionId
-    };
-  };
+  // export const createAnswer = (newAnswer) => {
+  //   return (dispatch,getState) => {
+  //     const config = setConfig(getState)
+  //       axios({
+  //       url :`http://127.0.0.1:8000/answers/`,config,
+  //       method :'POST',
+  //       data : JSON.stringify(newAnswer),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         // ...config.headers,
+  //       }
+  //     })
+  //     // return fetch(`http://127.0.0.1:8000/answers/`,newAnswer,config, {
+  //     //   method: 'POST',
+  //     // })
+  //       .then(response => response.json())
+  //       .then(answer => {
+  //         console.log("answer",answer)
+  //         dispatch(({ type: CREATE_ANSWER_SUCCESS, payload: answer }));
+  //     })
+  //       .catch(error => console.log(error))
+  //   }
+  // }
 
-  export const createAnswer = (answer, questionId) => {
-    return dispatch => {
-      return fetch(`http://127.0.0.1:8000/answers/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ answer: answer }),
-      })
-        .then(response => response.json())
-        .then(answer => {
-          dispatch(addAnswer(answer, questionId));
-      })
-        .catch(error => console.log(error))
+  export const createAnswer = (newAnswer) => {
+    return (dispatch , getState) => {
+        const config = setConfig(getState)
+        axios.post(`http://127.0.0.1:8000/answers/`, newAnswer ,config).then((res) => {
+            dispatch({
+                type: CREATE_ANSWER_SUCCESS,
+                payload: res.data    
+            })
+          
+        })
     }
+}
+
+
+export const createComment = (newComment) => {
+  return (dispatch , getState) => {
+      const config = setConfig(getState)
+      axios.post(`http://127.0.0.1:8000/comment/`, newComment ,config).then((res) => {
+          dispatch({
+              type: CREATE_COMMENT,
+              payload: res.data    
+          })
+        
+      })
   }
+}
+
+
+export const deletecomment = (id) => {
+  return (getState) => {
+    const config = setConfig(getState)
+      axios.delete(`http://127.0.0.1:8000/comment/${id}`,config,)
+      .then(response => response)
+  }
+}
+
 
 export const logout = () => (dispatch) => {
     dispatch({ type: LOGOUT });
     localStorage.removeItem("token");
     window.location.reload(true);
   };
+
 
 export const setConfig = (getState) =>{
     let config = null;
@@ -199,6 +252,5 @@ export const setConfig = (getState) =>{
             }
         }
     }
-    
     return config
 }

@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import { getprofiles } from '../actions/index'
-// import { Button } from '@material-ui/core';
 import Follow from './Follow'
-// import Follower from './Follower'
+import EditProfile from './EditProfile'
 import {Link} from 'react-router-dom'
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import {
-//   faYoutube,
-//   faFacebook,
-//   faTwitter,
-//   faInstagram
-// } from "@fortawesome/free-brands-svg-icons";
+import {Button} from '@material-ui/core';
+
 
 export class Profile extends Component {
   constructor(props) {
@@ -31,7 +25,10 @@ export class Profile extends Component {
   
   render() {
     const { profiles } = this.props.profilereducer
-    
+    // const { isAuthenticated } = this.props.authlogin
+        const {pk} = this.props.authlogin.user
+        // console.log(this.props.authlogin)
+        // console.log("as",pk)
     return (
       <div>
         <ul>
@@ -56,6 +53,9 @@ export class Profile extends Component {
           </a> */}
 
           <Follow id={value.id}> </Follow>
+          {(pk === value.id)?<EditProfile  data={value}>
+              <button >EDIT PROFILE</button></EditProfile>:<p>paragraph</p>  
+          }
           </li>
       ))
       }

@@ -57,9 +57,6 @@ class Profile(models.Model):
             follower = get_current_authenticated_user())
         return "Following" if follow_status else "Follow"
 
-    def get_profile_belongs_to_authenticated_user(self):
-        return self.user == get_current_authenticated_user()
-
     def __str__(self):
         return "%s " % self.user.username
 

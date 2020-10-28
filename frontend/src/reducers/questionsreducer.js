@@ -1,5 +1,5 @@
-// import answersreducer from './answersreducer';
-import { GET_QUESTION,QUESTION_LOADING, GET_QUESTION_ERROR } from "../actions/actionTypes"
+import answerreducer from './answerreducer';
+import { GET_QUESTION,QUESTION_LOADING, GET_QUESTION_ERROR,CREATE_ANSWER_SUCCESS } from "../actions/actionTypes"
 
 const initialState = {
   loading: false,
@@ -38,11 +38,11 @@ const questionsreducer=(state =  initialState, action) => {
     //         ];
     //   return removedQuestionObject
     //   }
-    // case 'CREATE_ANSWER_SUCCESS':
-    // case 'UPDATE_ANSWER_SUCCESS':
-    //   const index = state.findIndex(question => question.id == action.questionId);
+    // case CREATE_ANSWER_SUCCESS:
+    // // case 'UPDATE_ANSWER_SUCCESS':
+    //   const index = state.findIndex(question => question.id === action.questionId);
     //   const question = state[index]
-    //   const updatedQuestion = Object.assign( {}, question, { answers: answersReducer(question.answers, action) })
+    //   const updatedQuestion = Object.assign( {}, question, { answer: answerreducer(question.answer, action) })
     //       const updatedQuestions = [
     //       ...state.slice(0, index),
     //       updatedQuestion,

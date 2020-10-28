@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createAnswer } from '../actions/index';
 
-class AskQuestion extends Component {
-  constructor() {
-      super();
+class Answer extends Component {
+  constructor(props) {
+      super(props);
       this.state = {
         newAnswer:{
           id: "",
-            question: "",
+            question: this.props.id,
             user: "",
             content: "",
             answered_date: "",
@@ -30,11 +30,7 @@ class AskQuestion extends Component {
   }
 
   handleOnChange = e => {
-    if (e.target.name === 'question') {
-      this.setState({newAnswer :{
-        ...this.state.newAnswer ,question: e.target.value} });
-
-    } else if (e.target.name === 'content') {
+    if (e.target.name === 'content') {
       this.setState({ newAnswer :{
         ...this.state.newAnswer ,content: e.target.value} });
   
@@ -49,13 +45,7 @@ class AskQuestion extends Component {
   render() {
     return (
       <form onSubmit={this.handleOnSubmit}>
-        <label>question</label>
-        <input
-          type="text"
-          name="question"
-          value={this.state.newAnswer.question}
-          onChange={this.handleOnChange}
-        />
+
         <label>answer</label>
         <input
           type="text"
@@ -63,10 +53,17 @@ class AskQuestion extends Component {
           value={this.state.newAnswer.content}
           onChange={this.handleOnChange}
         />
-        <button>Answer</button>
+        <button >Answer</button>
       </form>
     );
   }
 }
 
-export default connect(null, {createAnswer})(AskQuestion);
+const mapStateToProps = ({ authlogin, answerreducer  }) => {
+  return { 
+      authlogin,
+      answerreducer
+  }
+}
+
+export default connect(mapStateToProps, {createAnswer})(Answer);

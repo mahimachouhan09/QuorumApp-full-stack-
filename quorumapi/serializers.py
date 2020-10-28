@@ -81,8 +81,6 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 class QuestionSerializer(serializers.ModelSerializer):
     vote = ActivitySerializerRelatedField(many=True, required=False)
-    get_question_belongs_to_authenticated_user = serializers.BooleanField(
-        source='get_post_belongs_to_authenticated_user', read_only=True)
     likes_count = serializers.IntegerField(
         source='up_vote_count', read_only=True)
     dislikes_count = serializers.IntegerField(
@@ -96,7 +94,6 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = (
             'id',
-            'get_question_belongs_to_authenticated_user',
             'user', "topic_id",
             'question', 'pub_date', 'topic',
             'description', 'likes_count',
@@ -106,7 +103,6 @@ class QuestionSerializer(serializers.ModelSerializer):
             )
         read_only_fields = (
             'id', 'user', 'pub_date',
-            'get_question_belongs_to_authenticated_user',
             )
 
     @transaction.atomic()

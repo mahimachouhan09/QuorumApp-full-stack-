@@ -21,11 +21,7 @@ export class SearchQuestion extends Component {
     return (
       <div>
         <form onSubmit = {this.onFormSubmit} >
-        <input  
-          type = 'text'
-          value = {this.state.topic}
-          onChange = {this.onInputChange}
-        />
+        <input type = 'text' value = {this.state.topic} onChange = {this.onInputChange}/>
         <button> search </button>
         </form>
       </div>

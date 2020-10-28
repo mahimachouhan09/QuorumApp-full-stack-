@@ -88,7 +88,7 @@ function App(props) {
           <Route path="/update-profile/:id/" 
           render={() => {
             if (isAuthenticated) {
-              return <EditProfile {...props} />;
+              return <EditProfile {...props}  />;
             } else {
               return <Redirect to="/login" />;
             }

@@ -2,13 +2,15 @@ import { combineReducers } from 'redux';
 import users from './users'
 import authlogin from './authlogin'
 import questionsreducer from './questionsreducer'
-import answersreducer from './answersreducer'
+import answerreducer from './answerreducer'
 import profilereducer from './profilereducer'
+import commentreducer from './commentreducer'
 
 export default combineReducers({
   users,
   authlogin,
   questionsreducer,
-  answersreducer,
+  answerreducer,
   profilereducer,
+  commentreducer,
 });

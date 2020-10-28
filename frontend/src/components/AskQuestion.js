@@ -8,7 +8,7 @@ class AskQuestion extends Component {
       this.state = {
         newquestion:{
           id: "",
-          user: "",
+          user: this.props.authlogin.user.pk,
           question: "",
           pub_date: "",
           topic: [],
@@ -98,4 +98,9 @@ class AskQuestion extends Component {
   }
 }
 
-export default connect(null, {createQuestion})(AskQuestion);
+const mapStateToProps = ({ authlogin }) => {
+  return {
+      authlogin,
+  }
+}
+export default connect(mapStateToProps, {createQuestion})(AskQuestion);

@@ -13,9 +13,9 @@ componentDidMount(){
   
 render() { 
   console.log("this.props",this.props)
-  const { match: { params } } = this.props;
-  const { id } = params;
-  console.log("params Id:", id);
+  // const { match: { params } } = this.props;
+  // const { id } = params;
+  // console.log("params Id:", id);
     return (
       <div>
       </div>
