@@ -4,8 +4,7 @@ import { getprofiles } from '../actions/index'
 import Follow from './Follow'
 import EditProfile from './EditProfile'
 import {Link} from 'react-router-dom'
-import {Button} from '@material-ui/core';
-
+// import profile_pics from '../profile_pics'
 
 export class Profile extends Component {
   constructor(props) {
@@ -25,36 +24,39 @@ export class Profile extends Component {
   
   render() {
     const { profiles } = this.props.profilereducer
-    // const { isAuthenticated } = this.props.authlogin
-        const {pk} = this.props.authlogin.user
-        // console.log(this.props.authlogin)
-        // console.log("as",pk)
+    const {pk} = this.props.authlogin.user
+
     return (
       <div>
         <ul>
+          
       { profiles.map((value ,index)=> ( 
         <li key = { index }>   
-          userId :     
           id : {value.id}<br/>   
           first_name : {value.first_name}<br/>              
           last_name : {value.last_name}<br/>   
           username  : {value.username}<br/>
-              {/* {value.profile.map((item,index)=>(
-                    <li key = { index }>
-                      {console.log("idprofile",item.id)}
-                        id : {item.id}
-                    </li>
-                  ))} */}
+          dob: {value.dob}<br/>
+          {console.log(value.profile_pic)}
+          profile_pic :<img alt = 'abc' src= {`../profile_pics/${value.profile_pic}`}/><br/>
+          gender:{value.gender}<br/>
+          contact_number:{value.contact_number}<br/>
+          user_id: {value.user_id},<br/>
+          followers_count: {value.followers_count},<br/>
+          following_count: {value.following_count},<br/>
+          follow_status:{value.follow_status}<br/>
 
           <Link to={`/followers/${value.id}`}>followers</Link>
           <Link to={`/following/${value.id}`}>following</Link>
-          {/* <a href="/${value.id}/followers">
-            followers
-          </a> */}
 
-          <Follow id={value.id}> </Follow>
-          {(pk === value.id)?<EditProfile  data={value}>
-              <button >EDIT PROFILE</button></EditProfile>:<p>paragraph</p>  
+          {(pk !== value.user_id)?
+            <Follow  id={value.user_id} follow_status={value.follow_status} />
+          :<p></p>  
+          }
+          {/* <Follow id={value.user_id} follow_status={value.follow_status}/> */}
+
+          {(pk === value.user_id)?<EditProfile  data={value}>
+              <button >EDIT PROFILE</button></EditProfile>:<p></p>  
           }
           </li>
       ))

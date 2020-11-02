@@ -37,6 +37,12 @@ class Navbar extends Component {
                             Logout
                         </button>
                     </li>
+
+                    <li className="nav-item" style={{ margin: "auto 0" }}>
+                        <Link to="/changepassword">
+                            Change password
+                        </Link>
+                    </li>
                 </ul>
             )
         }
@@ -48,6 +54,9 @@ class Navbar extends Component {
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link" to="/signup">Signup</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/forgetpassword">forget password</Link>
                     </li>
                 </ul>
             )

@@ -11,7 +11,6 @@ class AskQuestion extends Component {
           user: this.props.authlogin.user.pk,
           question: "",
           pub_date: "",
-          topic: [],
           description: "",
           likes_count: "",
           dislikes_count: "",
@@ -34,7 +33,6 @@ class AskQuestion extends Component {
                           answer: ""
                       }
                   ],
-                  vote: []
               },
             ]
         }
@@ -42,15 +40,7 @@ class AskQuestion extends Component {
   }
 
   handleOnChange = e => {
-    // const { name, value } = event.target;
-    // this.setState({
-    //   [name]: value
-    // });
-    if (e.target.name === 'topic') {
-      this.setState({newquestion :{
-        ...this.state.newquestion ,topic: e.target.value} });
-
-    } else if (e.target.name === 'question') {
+    if (e.target.name === 'question') {
       this.setState({ newquestion :{
         ...this.state.newquestion ,question: e.target.value} });
   
@@ -72,12 +62,6 @@ class AskQuestion extends Component {
   render() {
     return (
       <form onSubmit={this.handleOnSubmit}>
-        <input
-          type="text"
-          name="topic"
-          value={this.state.newquestion.topic}
-          onChange={this.handleOnChange}
-        />
         <input
           type="text"
           name="question"

@@ -3,9 +3,6 @@ import { connect } from 'react-redux'
 import {deletecomment ,getQuestions} from '../actions/index'
 
 class DeleteComment extends Component {
-  constructor(props){
-    super(props)
-  }
 
   handleOnSubmit =  event => {
     event.preventDefault()

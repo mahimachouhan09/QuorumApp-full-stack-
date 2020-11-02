@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route ,Redirect} from "react-router-dom";
-import Users  from "./components/Users";
+import Users  from "./components/Register";
 import Login from "./components/Login";
 import Question from "./components/Question";
 import AskQuestion from './components/AskQuestion'
@@ -13,6 +13,10 @@ import Profile from './components/Profile'
 import Follow from './components/Follow'
 import Follower from './components/Follower'
 import EditProfile from './components/EditProfile'
+import ForgetPassword from './components/ForgetPassword'
+import ChangePassword from './components/ChangePassword'
+import Signup from './components/Register'
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App(props) { 
   const { isAuthenticated } = props
@@ -44,8 +48,12 @@ function App(props) {
           </ul>
         </nav> */}
         <Switch>
-          <Route path="/users"  ><Users /></Route>
+          <Route path="/signup" >
+            <Signup />
+          </Route>
+
           <Route path="/login"><Login /></Route>
+
           <Route path="/questions"  
           render={() => {
             if (isAuthenticated) {
@@ -75,14 +83,18 @@ function App(props) {
           }}>
           </Route>
           
-          <Route path="/viewprofiles" 
+          <Route path="/changepassword" 
           render={() => {
             if (isAuthenticated) {
-              return <Profile {...props} />;
+              return <ChangePassword {...props} />;
             } else {
               return <Redirect to="/login" />;
             }
           }}>
+          </Route>
+
+          <Route path="/forgetpassword" >
+            <ForgetPassword />
           </Route>
 
           <Route path="/update-profile/:id/" 
@@ -95,15 +107,15 @@ function App(props) {
           }}>
           </Route>
 
-          <Route path="/follow/id" 
+          {/* <Route path="/follow/id" 
           render={() => {
             if (isAuthenticated) {
-              return <Follow {...props} />;
+              return <Follow />;
             } else {
               return <Redirect to="/login" />;
             }
           }}>
-          </Route>
+          </Route> */}
 
           <Route exact path="/followers/:id" 
           // key={this.props.id.key}

@@ -1,16 +1,18 @@
 import { combineReducers } from 'redux';
-import users from './users'
+import registerreducer from './registerreducer'
 import authlogin from './authlogin'
 import questionsreducer from './questionsreducer'
 import answerreducer from './answerreducer'
 import profilereducer from './profilereducer'
 import commentreducer from './commentreducer'
+import forgetpassword from './forgetpassword'
 
 export default combineReducers({
-  users,
+  registerreducer,
   authlogin,
   questionsreducer,
   answerreducer,
   profilereducer,
   commentreducer,
+  forgetpassword
 });

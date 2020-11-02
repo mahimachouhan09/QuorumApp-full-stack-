@@ -6,13 +6,6 @@ from django.db import models
 from django_currentuser.middleware import get_current_authenticated_user
 
 
-class Topic(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        return "%s " % self.name
-
-
 class Profile(models.Model):
     GENDER_CHOICES = (
         ('M', 'Male'),
@@ -25,18 +18,15 @@ class Profile(models.Model):
         User, on_delete=models.CASCADE, related_name='profile')
     contact_number = models.CharField(max_length=12)
     profile_pic = models.ImageField(
-        upload_to='profile_pics', null=True, blank=True)
-    topics = models.ManyToManyField(Topic, blank=True, related_name='topics')
+        upload_to='frontend/src/profile_pics', null=True, blank=True)
     gender = models.CharField(max_length=2, choices=GENDER_CHOICES)
     dob = models.DateField()
 
     def get_user_id(self):
         return self.user.pk
 
-    def create_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-            post_save.connect(create_profile, sender=User)
+    def get_username(self):
+        return self.user.username
 
     def get_first_name(self):
         return self.user.first_name
@@ -53,8 +43,8 @@ class Profile(models.Model):
 
     def get_follow_status(self):
         follow_status = Follow.objects.filter(
-            user = self.user,
-            follower = get_current_authenticated_user())
+            user=self.user,
+            follower=get_current_authenticated_user())
         return "Following" if follow_status else "Follow"
 
     def __str__(self):
@@ -83,7 +73,6 @@ class Question(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.CharField(max_length=200)
     pub_date = models.DateField(auto_now_add=True)
-    topic = models.ManyToManyField(Topic)
     description = models.CharField(max_length=100, null=True, blank=True)
     vote = GenericRelation(Activity)
 

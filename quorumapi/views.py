@@ -3,39 +3,22 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
-from rest_framework import (filters, generics, mixins, permissions, status,
-                            viewsets)
+from rest_framework import (generics, permissions, status, viewsets)
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
 
-from .models import Activity, Answer, Comment, Follow, Question, Topic
+from .models import Activity, Answer, Comment, Follow, Profile, Question
 from .paginators import UserPagination
 from .permissions import IsInstanceOwner
 from .serializers import (ActivitySerializerRelatedField, AnswerSerializer,
                           CommentSerializer, FollowerSerializer,
-                          QuestionSerializer, TopicSerializer, UserSerializer)
+                          ProfileSerializer, QuestionSerializer)
 
 
-class UserList(generics.ListCreateAPIView):
-    serializer_class = UserSerializer
+class UserList(viewsets.ModelViewSet):
+    serializer_class = ProfileSerializer
     pagination_class = UserPagination
-    queryset = User.objects.all()
-
-    def post(self, request, format=None):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UpdateApiView(mixins.ListModelMixin,
-                    mixins.RetrieveModelMixin,
-                    mixins.UpdateModelMixin,
-                    mixins.DestroyModelMixin,
-                    viewsets.GenericViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    queryset = Profile.objects.all()
     filter_backends = (SearchFilter,)
     pagination_class = UserPagination
     search_fields = ['user__username', ]
@@ -43,8 +26,11 @@ class UpdateApiView(mixins.ListModelMixin,
         'partial_update': [IsInstanceOwner],
         'destroy': [IsInstanceOwner],
         'update': [IsInstanceOwner],
-        'get_user_profile': [IsInstanceOwner]
+        'get_user_profile': [IsInstanceOwner],
     }
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
 
     def get_permissions(self):
         try:
@@ -58,20 +44,12 @@ class UpdateApiView(mixins.ListModelMixin,
     def get_user_profile(self, request, pk=None):
         try:
             queryset = self.get_queryset().get(id=request.user.id)
-            serializer = UserSerializer(queryset, many=True)
+            serializer = ProfileSerializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except(User.DoesNotExist):
             return Response(
                 {"error": 'The user does not exist'},
                 status=status.HTTP_204_NO_CONTENT)
-
-
-class TopicViewSet(viewsets.ModelViewSet):
-    queryset = Topic.objects.all()
-    serializer_class = TopicSerializer
-    pagination_class = UserPagination
-    filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['topics__topics', ]
 
 
 @login_required
@@ -114,7 +92,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     pagination_class = UserPagination
-    search_fields = ['topic__name', 'user__username']
+    search_fields = ['user__username']
 
     permission_classes_by_action = {
         'partial_update': [IsInstanceOwner],
@@ -130,6 +108,9 @@ class QuestionViewSet(viewsets.ModelViewSet):
                     self.action]]
         except KeyError:
             return (permissions.IsAuthenticated(),)
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
 
 
 class AnswerViewSet(viewsets.ModelViewSet):

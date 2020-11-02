@@ -1,5 +1,5 @@
-import answerreducer from './answerreducer';
-import { GET_QUESTION,QUESTION_LOADING, GET_QUESTION_ERROR,CREATE_ANSWER_SUCCESS } from "../actions/actionTypes"
+// import answerreducer from './answerreducer';
+import { GET_QUESTION,QUESTION_LOADING, GET_QUESTION_ERROR, CREATE_QUESTION} from "../actions/actionTypes"
 
 const initialState = {
   loading: false,
@@ -27,6 +27,9 @@ const questionsreducer=(state =  initialState, action) => {
         questions: [],
         error: action.payload
       }
+
+    case CREATE_QUESTION:
+      return {questions :action.payload};
 
     // case 'CREATE_QUESTION_SUCCESS':
     //   return state.concat(action.question);
