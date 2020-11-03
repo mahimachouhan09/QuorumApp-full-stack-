@@ -24,6 +24,7 @@ export const login = (values ,callBack) => {
               type: LOGIN_ERROR,
               payload: err.response.data
           })
+          alert("Enter correct username and password")
           callBack()
       }
   )}

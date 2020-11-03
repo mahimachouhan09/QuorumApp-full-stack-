@@ -8,7 +8,6 @@ const initialState = {
 
 const commentreducer=(state = initialState, action) => {
   switch(action.type) {
-
     case CREATE_COMMENT:
       return { comment: action.payload,}
 
