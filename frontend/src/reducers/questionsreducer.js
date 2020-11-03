@@ -8,7 +8,6 @@ const initialState = {
 }
 
 const questionsreducer=(state =  initialState, action) => {
-  console.log(action.type)
   switch(action.type) {
     case QUESTION_LOADING:
       return {

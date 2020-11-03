@@ -3,7 +3,6 @@ import { Link} from "react-router-dom";
 import Answer from './Answer'
 import { getQuestions } from '../actions/index'
 import { connect } from 'react-redux';
-// import Navbar from './Navbar';
 // import ReactPaginate from 'react-paginate'
 import Comment from './Comment';
 import SearchQuestion from './SearchQuestion';
@@ -22,7 +21,6 @@ class Question extends Component {
   }
   componentDidMount() {
     const { isAuthenticated } = this.props.authlogin
-    console.log(isAuthenticated)
     if(isAuthenticated){
     this.props.getQuestions()}
   }

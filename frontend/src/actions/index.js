@@ -9,14 +9,16 @@ import { REGISTER_FAIL, LOGIN, LOGIN_ERROR,LOGOUT,
     CREATE_QUESTION
   }
 from "./actionTypes"
+const baseURL = `http://127.0.0.1:8000`
 
 export const login = (values ,callBack) => {
   return (dispatch) => {
-      axios.post("http://127.0.0.1:8000/rest-auth/login/",values).then( (res) => {
+      axios.post(`${baseURL}/rest-auth/login/`,values).then( (res) => {
           dispatch({
               type : LOGIN,
               payload : res.data
           })
+          alert("login successfully.")
       } ,(err) =>{
           dispatch({
               type: LOGIN_ERROR,
@@ -27,28 +29,29 @@ export const login = (values ,callBack) => {
   )}
 }
 
-  export const register = (username, email, password1, password2) => {
-    console.log(username, email, password1, password2)
-    return (dispatch) =>{
-      axios.post(`http://127.0.0.1:8000/rest-auth/registration/`, {
-        username,email, password1, password2,}).then( (res) => {
+  export const register = (username, email, password1, password2) => 
+    (dispatch) =>{
+      axios.post(`${baseURL}/rest-auth/registration/`, {
+        username, email, password1, password2,}).then( (res) => {
           dispatch({
             type : REGISTER_SUCCESS,
             payload : res.data
           })
+          alert("registered successfully.")
+        })
           .catch((error) => {
             dispatch({ type: REGISTER_FAIL, payload: error.message });
           });
-        })
+        
       }
-  };
+
 
 
 export const forgetpassword = (email) => {
   return (dispatch) => {
     const headers = {'Content-Type': 'multipart/form-data' }
     axios({
-      url :`http://127.0.0.1:8000/password/reset/`,
+      url :`${baseURL}/password/reset/`,
       method :'POST',
       data : email,
       headers
@@ -61,15 +64,14 @@ export const changepassword = (input) => {
   console.log(input,'input')
   return (dispatch,getState) => {
     const config = setConfig(getState)
-      axios.post("http://127.0.0.1:8000/rest-auth/password/change/",input,config,{
-        headers : {'Content-Type': 'multipart/form-data, boundary=----WebKitFormBoundaryyNKXPdTBsgXBBNAB'}
-      }).then( (res) => {
+    config.headers['content-type'] = "application/json";
+      axios.post(`${baseURL}/rest-auth/password/change/`,input,config
+      ).then( (res) => {
         dispatch({
           type : CHANGE_PASSWORD,
           payload : res.data
         })
       console.log('res',res)
-
       }
   )}
 }
@@ -79,7 +81,7 @@ export const getprofiles = () => (dispatch,getState) => {
   dispatch({ type: GET_PROFILES_REQUEST });
   const config = setConfig(getState)
   axios
-    .get(`http://127.0.0.1:8000/profile/`,config)
+    .get(`${baseURL}/profile/`,config)
     .then((response) => {
       dispatch({ type: GET_PROFILES_SUCCESS, payload: response.data.results });
     })
@@ -92,7 +94,7 @@ export const getprofiles = () => (dispatch,getState) => {
 export const editprofile = (profileData,id) => {
   return (dispatch) => {
     axios({
-      url :`http://127.0.0.1:8000/update-profile/${id}`,
+      url :`${baseURL}/update-profile/${id}`,
       method :'PUT',
       data : JSON.stringify(profileData),
       headers: {
@@ -118,7 +120,7 @@ export const editprofile = (profileData,id) => {
 export const follow = (id) => (dispatch,getState) => {
   const config = setConfig(getState)
   console.log(config,id)
-  const newUrl =`http://127.0.0.1:8000/follow/${id}/`;
+  const newUrl =`${baseURL}/follow/${id}/`;
   axios
     .get(newUrl,config)
     .then((response) => {
@@ -132,7 +134,7 @@ export const follow = (id) => (dispatch,getState) => {
 export const followers = (id) => (dispatch,getState) => {
   const config = setConfig(getState)
   dispatch({ type: GET_FOLLOWER_REQUEST });
-  axios.get(`http://127.0.0.1:8000/followers/${id}/`,config).then((response) => {
+  axios.get(`${baseURL}/followers/${id}/`,config).then((response) => {
       dispatch({ type: GET_FOLLOWER_SUCCESS, payload: response.data.results });
       console.log(response)
     })
@@ -146,7 +148,7 @@ export const getQuestions = () => (dispatch,getState) => {
   dispatch({ type: QUESTION_LOADING });
   const config = setConfig(getState)
   axios
-    .get(`http://127.0.0.1:8000/questions/`,config)
+    .get(`${baseURL}/questions/`,config)
     .then((response) => {
       dispatch({ type: GET_QUESTION, payload: response.data.results });
     })
@@ -159,7 +161,7 @@ export const getQuestions = () => (dispatch,getState) => {
 export const createQuestion = (newquestion) => {
   return (dispatch , getState) => {
     const config = setConfig(getState)
-    axios.post(`http://127.0.0.1:8000/questions/`, newquestion ,config).then((res) => {
+    axios.post(`${baseURL}/questions/`, newquestion ,config).then((res) => {
       dispatch({
         type: CREATE_QUESTION,
         payload: res.data    
@@ -173,7 +175,7 @@ export const createQuestion = (newquestion) => {
     return (dispatch,getState) => {
       const config = setConfig(getState)
       axios
-      .get(`http://127.0.0.1:8000/questions/?search=${questions}`,config)
+      .get(`${baseURL}/questions/?search=${questions}`,config)
       .then(response => {
         const question = response.data
         dispatch(getquestionSuccess(question))
@@ -205,34 +207,11 @@ export const createQuestion = (newquestion) => {
     }
   }
 
-  // export const createAnswer = (newAnswer) => {
-  //   return (dispatch,getState) => {
-  //     const config = setConfig(getState)
-  //       axios({
-  //       url :`http://127.0.0.1:8000/answers/`,config,
-  //       method :'POST',
-  //       data : JSON.stringify(newAnswer),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         // ...config.headers,
-  //       }
-  //     })
-  //     // return fetch(`http://127.0.0.1:8000/answers/`,newAnswer,config, {
-  //     //   method: 'POST',
-  //     // })
-  //       .then(response => response.json())
-  //       .then(answer => {
-  //         console.log("answer",answer)
-  //         dispatch(({ type: CREATE_ANSWER_SUCCESS, payload: answer }));
-  //     })
-  //       .catch(error => console.log(error))
-  //   }
-  // }
 
 export const createAnswer = (newAnswer) => {
   return (dispatch , getState) => {
     const config = setConfig(getState)
-    axios.post(`http://127.0.0.1:8000/answers/`, newAnswer ,config).then((res) => {
+    axios.post(`${baseURL}/answers/`, newAnswer ,config).then((res) => {
       dispatch({
         type: CREATE_ANSWER_SUCCESS,
         payload: res.data    
@@ -245,7 +224,7 @@ export const createAnswer = (newAnswer) => {
 export const createComment = (newComment) => {
   return (dispatch , getState) => {
     const config = setConfig(getState)
-    axios.post(`http://127.0.0.1:8000/comment/`, newComment ,config).then((res) => {
+    axios.post(`${baseURL}/comment/`, newComment ,config).then((res) => {
       dispatch({
         type: CREATE_COMMENT,
         payload: res.data    
@@ -258,7 +237,7 @@ export const createComment = (newComment) => {
 export const editComment = (id, values) => {
   return (dispatch , getState) => {
     const config = setConfig(getState)
-    axios.put(`http://127.0.0.1:8000/comment/${id}/`, values, config).then((res) => {
+    axios.put(`${baseURL}/comment/${id}/`, values, config).then((res) => {
       dispatch({
         type : EDIT_COMMENT,
         payload : res.data
@@ -271,7 +250,7 @@ export const editComment = (id, values) => {
 export const deletecomment = (id) => {
   return (getState) => {
     const config = setConfig(getState)
-      axios.delete(`http://127.0.0.1:8000/comment/${id}`,config,)
+      axios.delete(`${baseURL}/comment/${id}`,config,)
       .then(response => response)
   }
 }

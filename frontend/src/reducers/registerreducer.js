@@ -7,7 +7,7 @@ const initialState = user
   : { isLoggedIn: false, user: null };
 
 function registerreducer (state = initialState, action) {
-  const { type, payload } = action;
+  const { type } = action;
   switch (type) {
     case REGISTER_SUCCESS:
       return {

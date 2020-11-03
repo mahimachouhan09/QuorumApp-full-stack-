@@ -4,7 +4,7 @@ import { getprofiles } from '../actions/index'
 import Follow from './Follow'
 import EditProfile from './EditProfile'
 import {Link} from 'react-router-dom'
-// import profile_pics from '../profile_pics'
+import {Image, Transformation} from 'cloudinary-react';
 
 export class Profile extends Component {
   constructor(props) {
@@ -29,7 +29,7 @@ export class Profile extends Component {
     return (
       <div>
         <ul>
-          
+  
       { profiles.map((value ,index)=> ( 
         <li key = { index }>   
           id : {value.id}<br/>   
@@ -38,7 +38,17 @@ export class Profile extends Component {
           username  : {value.username}<br/>
           dob: {value.dob}<br/>
           {console.log(value.profile_pic)}
-          profile_pic :<img alt = 'abc' src= {`../profile_pics/${value.profile_pic}`}/><br/>
+          profile_pic : 
+          <Image cloudName="demo" publicId={value.profile_pic} resizeMode="contain"
+           style={{width:300,height:200,backgroundColor:"red"}}>
+            <Transformation effect="cartoonify" />
+            <Transformation radius="min" />
+            <Transformation effect="outline:50" color="lightblue" />
+            <Transformation background="lightblue" />
+            <Transformation height="25%" crop="scale" />
+            <Transformation width="25%" fetchFormat="auto" crop="scale" />
+          </Image>
+          <br/>
           gender:{value.gender}<br/>
           contact_number:{value.contact_number}<br/>
           user_id: {value.user_id},<br/>
@@ -53,7 +63,6 @@ export class Profile extends Component {
             <Follow  id={value.user_id} follow_status={value.follow_status} />
           :<p></p>  
           }
-          {/* <Follow id={value.user_id} follow_status={value.follow_status}/> */}
 
           {(pk === value.user_id)?<EditProfile  data={value}>
               <button >EDIT PROFILE</button></EditProfile>:<p></p>  

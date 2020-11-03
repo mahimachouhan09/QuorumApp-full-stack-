@@ -1,4 +1,3 @@
-
 import {CREATE_ANSWER_SUCCESS} from "../actions/actionTypes"
 
 const initialState = {
