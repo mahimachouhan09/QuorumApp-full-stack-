@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createAnswer } from '../actions/index';
+import { createAnswer, getQuestions } from '../actions/index';
+import { Button } from '@material-ui/core';
 
 class Answer extends Component {
   constructor(props) {
@@ -24,7 +25,6 @@ class Answer extends Component {
                     answer: ""
                 }
             ],
-            vote: []
         }
     }
   }
@@ -37,9 +37,10 @@ class Answer extends Component {
     } 
   }
 
-  handleOnSubmit = event => {
+  handleOnSubmit = async(event) => {
     event.preventDefault()
-    this.props.createAnswer(this.state.newAnswer)
+    await this.props.createAnswer(this.state.newAnswer)
+    await this.props.getQuestions()
   }
 
   render() {
@@ -53,7 +54,7 @@ class Answer extends Component {
           value={this.state.newAnswer.content}
           onChange={this.handleOnChange}
         />
-        <button >Answer</button>
+        <Button variant="contained" color="secondary" onClick= {this.handleOnSubmit} >Answer</Button>
       </form>
     );
   }
@@ -66,4 +67,4 @@ const mapStateToProps = ({ authlogin, answerreducer  }) => {
   }
 }
 
-export default connect(mapStateToProps, {createAnswer})(Answer);
+export default connect(mapStateToProps, {createAnswer, getQuestions})(Answer);

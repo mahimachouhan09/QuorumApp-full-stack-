@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {deletecomment ,getQuestions} from '../actions/index'
-
+import { Button } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 class DeleteComment extends Component {
 
   handleOnSubmit =  event => {
@@ -14,7 +15,13 @@ class DeleteComment extends Component {
     return (
       <div>
         <form onSubmit={this.handleOnSubmit}>
-        <button onClick = {() => {deletecomment(this.props.id)}}>delete comment</button>
+        <Button
+        variant="contained"
+        color="primary"
+        startIcon={<DeleteIcon />}
+        onClick = {() => {deletecomment(this.props.id)}}>
+          delete comment
+        </Button>
         </form>
       </div>
     )

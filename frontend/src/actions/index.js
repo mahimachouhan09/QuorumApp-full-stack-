@@ -6,7 +6,8 @@ import { REGISTER_FAIL, LOGIN, LOGIN_ERROR,LOGOUT,
     GET_FOLLOWER_REQUEST,GET_FOLLOWER_SUCCESS,GET_FOLLOWER_FAILURE,
     CREATE_ANSWER_SUCCESS,CREATE_COMMENT, EDIT_COMMENT,
     FORGET_PASSWORD_SUCCESS, CHANGE_PASSWORD,REGISTER_SUCCESS,
-    CREATE_QUESTION
+    CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, DELETE_ANSWER,
+    EDIT_ANSWER
   }
 from "./actionTypes"
 const baseURL = `http://127.0.0.1:8000`
@@ -18,7 +19,6 @@ export const login = (values ,callBack) => {
               type : LOGIN,
               payload : res.data
           })
-          alert("login successfully.")
       } ,(err) =>{
           dispatch({
               type: LOGIN_ERROR,
@@ -62,17 +62,16 @@ export const forgetpassword = (email) => {
 }
 
 export const changepassword = (input) => {
-  console.log(input,'input')
   return (dispatch,getState) => {
     const config = setConfig(getState)
-    config.headers['content-type'] = "application/json";
+    // config.headers['content-type'] = "multipart/form-data";
       axios.post(`${baseURL}/rest-auth/password/change/`,input,config
       ).then( (res) => {
         dispatch({
           type : CHANGE_PASSWORD,
           payload : res.data
         })
-      console.log('res',res)
+        alert("password changed successfully.")
       }
   )}
 }
@@ -120,8 +119,7 @@ export const editprofile = (profileData,id) => {
 
 export const follow = (id) => (dispatch,getState) => {
   const config = setConfig(getState)
-  console.log(config,id)
-  const newUrl =`${baseURL}/follow/${id}/`;
+  const newUrl =`http://127.0.0.1:8000/follow/${id}/`;
   axios
     .get(newUrl,config)
     .then((response) => {
@@ -170,7 +168,30 @@ export const createQuestion = (newquestion) => {
     })
   }
 }
-  
+
+export const editQuestion = (id, values) => {
+  return (dispatch , getState) => {
+    const config = setConfig(getState)
+    axios.put(`${baseURL}/questions/${id}/`, values, config).then((res) => {
+      dispatch({
+        type : UPDATE_QUESTION,
+        payload : res.data
+      })     
+    })
+  }
+}
+
+export const deleteQuestion = (id) => {
+  return (dispatch,getState) => {
+    const config = setConfig(getState)
+      axios.delete(`${baseURL}/questions/${id}`,config,)
+      .then(res => dispatch({
+        type : DELETE_QUESTION,
+        payload : res.data
+      }) )
+  }
+}
+
 
   export const searchquestion = (questions) => {
     return (dispatch,getState) => {
@@ -217,6 +238,30 @@ export const createAnswer = (newAnswer) => {
         type: CREATE_ANSWER_SUCCESS,
         payload: res.data    
       })
+    })
+  }
+}
+
+export const deleteAnswer = (id) => {
+  return (dispatch,getState) => {
+    const config = setConfig(getState)
+      axios.delete(`${baseURL}/answers/${id}`,config,)
+      .then(res => dispatch({
+        type : DELETE_ANSWER,
+        payload : res.data
+      }) )
+  }
+}
+
+
+export const editAnswer = (id, values) => {
+  return (dispatch , getState) => {
+    const config = setConfig(getState)
+    axios.put(`${baseURL}/answers/${id}/`, values, config).then((res) => {
+      dispatch({
+        type : EDIT_ANSWER,
+        payload : res.data
+      })     
     })
   }
 }

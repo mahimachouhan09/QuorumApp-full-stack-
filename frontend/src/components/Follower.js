@@ -3,11 +3,7 @@ import { followers } from '../actions/index'
 import { connect } from 'react-redux'
 
 export class Follower extends Component {
-  // constructor(props){
-  //   super(props);
-  // }
 componentDidMount(){
-  console.log(this.props)
   this.props.followers(this.props.id)
 }
   

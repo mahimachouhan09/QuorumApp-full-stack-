@@ -30,6 +30,12 @@ class Navbar extends Component {
                             Change password
                         </Link>
                     </li>
+
+                    <li className="nav-item" style={{ margin: "auto 0" }}>
+                        <Link to="/questions">
+                            questions list
+                        </Link>
+                    </li>
                 </ul>
             )
         }

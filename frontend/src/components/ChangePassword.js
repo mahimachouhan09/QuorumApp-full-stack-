@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import  {connect} from 'react-redux'
 import {changepassword} from '../actions/index'
+import { browserHistory } from 'react-router'
 
 export class ChangePassword extends Component {
   constructor(props) {
@@ -27,15 +28,15 @@ export class ChangePassword extends Component {
     event.preventDefault();
     if(this.validate()){
       var changeEmailFormData = new FormData();
-      changeEmailFormData.append('newpassword1', this.state.input.newpassword1);
-      changeEmailFormData.append('newpassword2', this.state.input.newpassword2);
+      changeEmailFormData.append('new_password1', this.state.input.new_password1);
+      changeEmailFormData.append('new_password2', this.state.input.new_password2);
       this.props.changepassword(changeEmailFormData)
+      browserHistory.push('/login')
       let input = {};
-      input["newpassword1"] = "";
-      input["newpassword2"] = "";
+      input["new_password1"] = "";
+      input["new_password2"] = "";
         
       this.setState({input:input});
-      alert('Demo Form is submited');
     }
     else {
       alert("both password must be same.")
@@ -47,21 +48,21 @@ export class ChangePassword extends Component {
     let errors = {};
     let isValid = true;
   
-    if (!input["newpassword1"]) {
+    if (!input["new_password1"]) {
       isValid = false;
-      errors["newpassword1"] = "Please enter your password.";
+      errors["new_password1"] = "Please enter your password.";
     }
   
-    if (!input["newpassword2"]) {
+    if (!input["new_password2"]) {
       isValid = false;
-      errors["newpassword2"] = "Please enter your confirm password.";
+      errors["new_password2"] = "Please enter your confirm password.";
     }
   
-    if (typeof input["newpassword1"] !== "undefined" && typeof input["newpassword2"] !== "undefined") {
+    if (typeof input["new_password1"] !== "undefined" && typeof input["new_password2"] !== "undefined") {
      
-      if (input["newpassword1"] !== input["newpassword2"]) {
+      if (input["new_password1"] !== input["new_password2"]) {
         isValid = false;
-        errors["newpassword1"] = "Passwords don't match.";
+        errors["new_password1"] = "Passwords don't match.";
       }
     } 
   
@@ -76,21 +77,24 @@ export class ChangePassword extends Component {
     return (
       <div>
         <form onSubmit={this.handleOnSubmit}>
-        <label>newpassword1</label>
+          <div>
+        <label>new_password1</label>
         <input
           type="password"
-          name="newpassword1"
-          value={this.state.input.newpassword1}
+          name="new_password1"
+          value={this.state.input.new_password1}
           onChange={this.handleOnChange}
-        />
-
-        <label>newpassword2</label>
+        /><br/>
+        </div>
+        <div>
+        <label>new_password2</label>
         <input
           type="password"
-          name="newpassword2"
-          value={this.state.input.newpassword2}
+          name="new_password2"
+          value={this.state.input.new_password2}
           onChange={this.handleOnChange}
         />
+        </div>
         <button> change password</button>
         </form>
       </div>

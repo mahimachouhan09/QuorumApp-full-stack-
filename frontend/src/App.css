@@ -63,3 +63,27 @@ label {
   -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 }
+
+ul{
+  list-style: none;
+  list-style-type: none;
+}
+
+li{
+  padding: 1%;
+  margin: 1%;
+}
+
+.feed-block-ul .feed-block-li{
+  padding: 35px;
+  list-style-type: none;
+  text-decoration: none;
+  text-decoration-style: none;
+  border-color: dodgerblue;
+  border-width: thin;
+  border-style: solid;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 3% ;
+  background-color: rgb(179, 207, 235);
+}
