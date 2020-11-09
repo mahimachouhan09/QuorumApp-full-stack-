@@ -13,6 +13,7 @@ import EditQuestion from './EditQuestion';
 import EditAnswer from './EditAnswer';
 import DeleteAnswer from './DeleteAnswer';
 import Typography from '@material-ui/core/Typography';
+import {Button} from '@material-ui/core'
 
 class Question extends Component {
   constructor(props) {
@@ -42,13 +43,13 @@ class Question extends Component {
       <p>But for now, why don't you answer or ask some questions!</p>
 
       <Typography >
-      <Link style={{ color: 'white' }} to = {`/askquestions`}>
-          <button>Ask Question </button>
-      </Link>
+        <Link style={{ color: 'white' }} to = {`/askquestions`}>
+            <Button variant="contained" color="primary" >Ask Question </Button>
+        </Link>
 
-      <Link style={{ color: 'white' }} to = {`/viewprofiles`}>
-          <button> View Profiles </button>
-      </Link>
+        <Link style={{ color: 'white' }} to = {`/viewprofiles`}>
+            <Button variant="contained" color="primary"> View Profiles </Button>
+        </Link>
       </Typography>
       <ul className= 'feed-block-ul'>
       { questions.map((value ,index)=> ( 
@@ -56,7 +57,7 @@ class Question extends Component {
               asked by : userid {value.user}<br/>   
               question : {value.question}<br/>              
               pub_date : {value.pub_date}<br/>   
-              description  : {value.description}
+              description : {value.description}
               <Answer id={value.id}/>
               <div>
                 {value.answers.map((item,index)=>(

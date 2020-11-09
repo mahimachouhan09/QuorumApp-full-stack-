@@ -1,107 +1,81 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {editprofile} from '../actions/index'
-import { Radio ,FormControl,FormLabel,RadioGroup,FormControlLabel} from '@material-ui/core';
+import { Button, Radio ,FormControl,FormLabel,RadioGroup,FormControlLabel} from '@material-ui/core';
 
 export class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ProfileData:{
+      profileData:{
         id: this.props.data.id,
-   
-           
-        //     gender: this.props.data.profile.gender,
-        //     contact_number: this.props.data.profile.contact_number,
-        //     profile_pic: this.props.data.profile.profile_pic,
-        //     dob: this.props.data.profile.dob,
-        //     user_id: this.props.data.profile.user_id,
-        //     followers_count: this.props.data.profile.followers_count,
-        //     following_count: this.props.data.profile.following_count,
-        //     follow_status: this.props.data.profile.follow_status
-        // },
-        // first_name: this.props.data.first_name,
-        // last_name: this.props.data.last_name,
-        // username: this.props.data.username,
-        // password: this.props.data.password,
-
-        // "id": 1,
-        //     "username": "mahimachouhan",
-        //     "first_name": "mahima",
-        //     "last_name": "Chouhan",
-        //     "dob": "1998-12-09",
-        //     "profile_pic": "http://127.0.0.1:8000/profile/frontend/src/profile_pics/userauthapi.png",
-        //     "gender": "F",
-        //     "contact_number": "7415405719",
-        //     "user_id": 2,
-        //     "followers_count": 0,
-        //     "following_count": 0,
-        //     "follow_status": "Follow"
+        username: this.props.data.id,
+        first_name: this.props.data.first_name,
+        last_name: this.props.data.last_name ,
+        dob: this.props.data.dob,
+        profile_pic: this.props.data.profile_pic,
+        gender: this.props.data.gender,
+        contact_number: this.props.data.contact_number,
+        user_id: this.props.data.user_id,
+        followers_count:this.props.data.followers_count,
+        following_count: this.props.data.following_count,
+        follow_status: this.props.data.follow_status
       },
 
       }
-      // this.onClick = this.onClick.bind(this);
+
+      this.handleOnChange = this.handleOnChange.bind(this);
   }
-  // handleOnChange = e => {
-  //   if (e.target.name === 'username') {
-  //     this.setState({ProfileData :{
-  //       ...this.state.ProfileData ,username: e.target.value} });
 
-  //   } else if (e.target.name === 'first_name') {
-  //     this.setState({ ProfileData :{
-  //       ...this.state.ProfileData ,first_name: e.target.value} });
+  handleOnChange = e => {
+    if (e.target.name === 'dob') {
+      this.setState({
+        profileData :{
+          ...this.state.profileData , dob: e.target.value}
+      });
   
-  //   } else if (e.target.name === 'last_name') {
-  //     this.setState({ ProfileData :{
-  //       ...this.state.ProfileData ,last_name: e.target.value  || '' }});
+    } if (e.target.name === 'contact_number') {
+      this.setState({
+        profileData :{
+          ...this.state.profileData ,contact_number: e.target.value }
+      });
+    } if (e.target.name === 'gender') {
+      this.setState({
+        profileData :{
+          ...this.state.profileData ,gender: e.target.value }
+      });
   
-  //   } else if (e.target.name === 'dob') {
-  //     this.setState({
-  //       newUser :{
-  //         ...this.state.newUser ,profile:{ ...this.state.profile, dob: e.target.value || ''}}
-  //     });
+    } if (e.target.name === 'profile_pic') {
+      this.setState({
+        profileData :{
+          ...this.state.profileData ,profile_pic: e.target.files[0]}
+      });
   
-  //   } else if (e.target.name === 'contact_number') {
-  //     this.setState({
-  //       newUser :{
-  //         ...this.state.newUser ,profile:{ ...this.state.profile , contact_number: e.target.value }}
-  //     });
-  //   } else if (e.target.name === 'gender') {
-  //     this.setState({
-  //       newUser :{
-  //         ...this.state.newUser ,profile:{ ...this.state.profile, gender: e.target.value || ''}}
-  //     });
-  
-  //   }
-  // }
+    }
+  }
 
-  // handleOnSubmit = event => {
-  //   event.preventDefault()
-  //   // console.log(this.state.ProfileData,this.props.data)
-  //   this.props.editprofile(this.state.ProfileData,this.props.data.id)
-  // }
 
-  // handleSubmit = async(e) => {
-  //   e.preventDefault();
-  //   console.log(this.state.newUser,this.props.data.id)
-  //   await this.props.updateUser(this.state.newUser,this.props.data.id)
-  //   await this.props.fetchUser();
-  // }
+  handleOnSubmit = (e) => {
+    e.preventDefault();
+    // console.log( this.props.profile_pic, this.props.profile_pic.name)
+    var EditformData = new FormData();
+    EditformData.append('dob', this.state.dob);
+    EditformData.append('contact_number', this.state.contact_number)
+    EditformData.append('profile_pic', this.state.profile_pic, this.state.profile_pic.name);
+    this.props.editprofile(EditformData, this.props.data.id)
+  }
 
-  render() {
-    return (
-      <div>
-        {/* <form onSubmit={this.handleOnSubmit}>
+  showForm = () => {
+    return (<div>
+         <form onSubmit={this.handleOnSubmit}>
           <div>
-          <FormControl component="fieldset">
-          <FormLabel component="legend">Gender</FormLabel>
-          <RadioGroup aria-label="gender" name="gender1" value={this.state.value} onChange={this.handleOnChange}>
-            <FormControlLabel value="female" control={<Radio />} label="Female" />
-            <FormControlLabel value="male" control={<Radio />} label="Male" />
-            <FormControlLabel value="other" control={<Radio />} label="Other" />
-            <FormControlLabel value="disabled" disabled control={<Radio />} label="(Disabled option)" />
-          </RadioGroup>
-        </FormControl>
+            <label>dob</label>
+            <input
+              type="date"
+              name="dob"
+              value={this.state.profileData.dob}
+              onChange={this.handleOnChange}
+            />
           </div>
 
           <div>
@@ -109,50 +83,38 @@ export class EditProfile extends Component {
           <input
             type="text"
             name="contact_number"
-            value={this.state.ProfileData.profile.contact_number}
+            value={this.state.profileData.contact_number}
             onChange={this.handleOnChange}
           />
           </div>
-          <div>
-            <input
-              type="text"
-              name="dob"
-              value={this.state.ProfileData.profile.dob}
-              onChange={this.handleOnChange}
-            />
-          </div>
+          
         <div>
-          <label>first name</label>
+          <label>Profile Pic</label>
           <input
-            type="text"
-            name="first_name"
-            value={this.state.ProfileData.first_name}
+            type="file"
+            name="profile_pic"
+            accept="image/png, image/jpeg"
             onChange={this.handleOnChange}
           />
         </div>
-        <div>
-        <label>last name</label>
-        <input
-          type="text"
-          name="last_name"
-          value={this.state.ProfileData.last_name}
-          onChange={this.handleOnChange}
-        />
-        </div>
+        <Button type='submit' onClick={this.handleOnSubmit} variant="contained" color="secondary">
+         EDIT PROFILE
+        </Button>
+      </form>
+    </div>
+    );
+}
 
-        <div>
-        <label>Username</label>
-        <input
-          type="text"
-          name="username"
-          value={this.state.ProfileData.username}
-          onChange={this.handleOnChange}
-          placeholder="Ask a username"
-        />
-        </div>
-
-        <button>Edit</button>
-      </form> */}
+  render() {
+    return (
+      <div>
+        <button
+         type="button" 
+         onClick={() => this.setState({ showForm: true })}
+        >
+          Edit Profile
+        </button>
+        {this.state.showForm ? this.showForm() : null}
       </div>
     )
   }

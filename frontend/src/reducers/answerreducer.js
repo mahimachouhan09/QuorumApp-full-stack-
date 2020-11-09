@@ -10,7 +10,7 @@ const answerreducer=(state = initialState, action) => {
   switch(action.type) {
     case CREATE_ANSWER_SUCCESS:
       return { answer: action.payload,}
-      
+    
     default:
       return state;
   }

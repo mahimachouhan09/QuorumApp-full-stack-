@@ -3,7 +3,9 @@ import { followers } from '../actions/index'
 import { connect } from 'react-redux'
 
 export class Follower extends Component {
+  
 componentDidMount(){
+  console.log('this.props.id',this.props.id)
   this.props.followers(this.props.id)
 }
   

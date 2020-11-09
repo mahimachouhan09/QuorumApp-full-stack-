@@ -7,7 +7,7 @@ import { REGISTER_FAIL, LOGIN, LOGIN_ERROR,LOGOUT,
     CREATE_ANSWER_SUCCESS,CREATE_COMMENT, EDIT_COMMENT,
     FORGET_PASSWORD_SUCCESS, CHANGE_PASSWORD,REGISTER_SUCCESS,
     CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, DELETE_ANSWER,
-    EDIT_ANSWER
+    EDIT_ANSWER, UPDATE_PROFILE, DELETE_COMMENT
   }
 from "./actionTypes"
 const baseURL = `http://127.0.0.1:8000`
@@ -43,7 +43,6 @@ export const login = (values ,callBack) => {
           .catch((error) => {
             dispatch({ type: REGISTER_FAIL, payload: error.message });
           });
-        
       }
 
 
@@ -91,19 +90,34 @@ export const getprofiles = () => (dispatch,getState) => {
 };
 
 
-export const editprofile = (profileData,id) => {
-  return (dispatch) => {
-    axios({
-      url :`${baseURL}/update-profile/${id}`,
-      method :'PUT',
-      data : JSON.stringify(profileData),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+// export const editprofile = (profileData,id) => {
+//   return (dispatch,getState) => {
+//     const config = setConfig(getState)
+//     axios({
+//       url :`${baseURL}/profile/${id}/`,config,
+//       method :'PUT',
+//       data : JSON.stringify(profileData),
+//       // headers: {
+//       //   'Content-Type': 'application/json'
+//       // }
+//     })
+//     .then(response => response)    
+//   }
+// }
+
+export const editprofile = ( values,id) => {
+  return (dispatch , getState) => {
+    const config = setConfig(getState)
+    config.headers['content-type'] = "multipart/form-data";
+    axios.put(`${baseURL}/profile/${id}/`, values, config).then((res) => {
+      dispatch({
+        type : UPDATE_PROFILE,
+        payload : res.data
+      })     
     })
-    .then(response => response)    
   }
 }
+
 
 // export const follow = (uuid) => (dispatch,getState) => {
 //   const config = setConfig(getState)
@@ -193,41 +207,18 @@ export const deleteQuestion = (id) => {
 }
 
 
-  export const searchquestion = (questions) => {
-    return (dispatch,getState) => {
-      const config = setConfig(getState)
-      axios
-      .get(`${baseURL}/questions/?search=${questions}`,config)
-      .then(response => {
-        const question = response.data
-        dispatch(getquestionSuccess(question))
-      })
-      .catch(error => {
-        dispatch(getquestionFailure(error.message))
-      })
-
-    }
-  }
-  
-  export const getquestionRequest = () => {
-    return {
-      type: QUESTION_LOADING, 
-    }
-  }
-  
-  export const getquestionSuccess = question => {
-    return {
-      type: GET_QUESTION,
-      payload: question
-    }
-  }
-  
-  export const getquestionFailure = error => {
-    return {
-      type: GET_QUESTION_ERROR,
-      payload: error
-    }
-  }
+export const searchQuestions = (username) => (dispatch,getState) => {
+  dispatch({ type: QUESTION_LOADING });
+  const config = setConfig(getState)
+  axios
+    .get(`${baseURL}/questions/?search=${username}`,config)
+    .then((response) => {
+      dispatch({ type: GET_QUESTION, payload: response.data.results });
+    })
+    .catch((error) => {
+      dispatch({ type: GET_QUESTION_ERROR, payload: error.message });
+    });
+};
 
 
 export const createAnswer = (newAnswer) => {
@@ -294,10 +285,13 @@ export const editComment = (id, values) => {
 
 
 export const deletecomment = (id) => {
-  return (getState) => {
+  return (dispatch ,getState) => {
     const config = setConfig(getState)
       axios.delete(`${baseURL}/comment/${id}`,config,)
-      .then(response => response)
+      .then(res => dispatch({
+        type : DELETE_COMMENT,
+        payload : res.data
+      }))
   }
 }
 

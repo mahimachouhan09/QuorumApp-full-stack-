@@ -65,7 +65,8 @@ export class Profile extends Component {
           }
 
           {(pk === value.user_id)?<EditProfile  data={value}>
-              <button >EDIT PROFILE</button></EditProfile>:<p></p>  
+            {/* <button>EDIT PROFILE</button> */}
+            </EditProfile>:<p></p>  
           }
           </li>
       ))

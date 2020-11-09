@@ -1,27 +1,28 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { searchquestion } from '../actions'
+import { searchQuestions } from '../actions'
 
 export class SearchQuestion extends Component {
   constructor(props){
     super(props)
     this.state = {
-      topic : '',
+      username : '',
     }
   }
-  onInputChange = event => this.setState({ topic: event.target.value })
+  onInputChange = event => this.setState({ username: event.target.value })
 
   onFormSubmit = event => {
     event.preventDefault();
-    this.props.searchquestion(this.state.topic)
-    this.setState({ topic: '' })
+    console.log(this.props)
+    this.props.searchQuestions(this.state.username)
+    this.setState({ username: '' })
   }
 
   render() {
     return (
       <div>
         <form onSubmit = {this.onFormSubmit} >
-        <input type = 'text' value = {this.state.topic} onChange = {this.onInputChange}/>
+        <input type = 'text' value = {this.state.username} onChange = {this.onInputChange}/>
         <button> search </button>
         </form>
       </div>
@@ -29,4 +30,4 @@ export class SearchQuestion extends Component {
   }
 }
 
-export default connect(null, { searchquestion })(SearchQuestion)
+export default connect(null, { searchQuestions })(SearchQuestion)

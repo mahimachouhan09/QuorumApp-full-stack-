@@ -10,7 +10,7 @@ class Navbar extends Component {
         if (isAuthenticated) {
             const { username ,pk} = this.props.authlogin.user
             return (
-                <ul className="navbar-nav ml-auto">
+                <ul className="navbar-nav-ml-auto">
                     <HomeIcon/>
                     <li className="nav-item" style={{ margin: "auto 0" }}>
                         <Link className="btn btn-sm btn-outline-info" to="/user-info">
@@ -26,13 +26,17 @@ class Navbar extends Component {
                     </li>
 
                     <li className="nav-item" style={{ margin: "auto 0" }}>
-                        <Link to="/changepassword">
+                        <Link 
+                            className="btn btn-sm btn-outline-danger ml-2" 
+                            to="/changepassword">
                             Change password
                         </Link>
                     </li>
 
                     <li className="nav-item" style={{ margin: "auto 0" }}>
-                        <Link to="/questions">
+                        <Link 
+                            className="btn btn-sm btn-outline-danger ml-2" 
+                            to="/questions">
                             questions list
                         </Link>
                     </li>

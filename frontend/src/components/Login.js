@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {Redirect ,Link} from "react-router-dom";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { login } from '../actions'
+import { Button } from '@material-ui/core'
 
 class Login extends Component {
   state = {
@@ -29,11 +30,11 @@ class Login extends Component {
 
   render() {
     const { isAuthenticated,token } = this.props.authlogin
-    console.log(token)
-        const {progress} = this.state
-        if ( isAuthenticated ){
-            return <Redirect to='/questions' />
+      const { progress } = this.state
+        if( isAuthenticated ){
+          return <Redirect to='/questions' />
         }
+        
     return (
       <form onSubmit={this.onSubmit.bind(this)}>
         <fieldset>
@@ -59,12 +60,14 @@ class Login extends Component {
             />
           </p>
           <p>
-            <button>Login</button>
-            <CircularProgress style={progress ? { display: "inline-block" } : { display: "none" }} />
+            <Button variant="contained" color="primary" onClick= {this.onSubmit}>
+              Login
+            </Button>
+          <CircularProgress style={progress ? { display: "inline-block" } : { display: "none" }} />
           </p>
 
           <p>
-            Don't have an account? <Link to="/register">Register</Link>
+            Don't have an account? <Link to="/signup">Register</Link>
           </p>
         </fieldset>
       </form>

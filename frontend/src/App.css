@@ -73,8 +73,29 @@ li{
   padding: 1%;
   margin: 1%;
 }
+.navbar-nav-ml-auto .nav-item{
+  /* width: 30%; */
+  display:inline;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+  min-height: 10vh;
+  text-decoration:none rgb(57, 45, 138);
+}
+.button{
+  background-color: rgb(112, 76, 148);
+  border-radius: 15px;
+  color:white;
+  padding:1%;
+  text-align: justify;
+  text-decoration: unset;
+  font-size: 14px;
+}
 
-.feed-block-ul .feed-block-li{
+.button:hover{
+  background-color: rgb(143, 114, 170);
+}
+/* .feed-block-ul .feed-block-li{
   padding: 35px;
   list-style-type: none;
   text-decoration: none;
@@ -86,4 +107,4 @@ li{
   margin-right: 5%;
   margin-top: 3% ;
   background-color: rgb(179, 207, 235);
-}
+} */
