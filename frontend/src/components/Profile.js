@@ -4,7 +4,8 @@ import { getprofiles } from '../actions/index'
 import Follow from './Follow'
 import EditProfile from './EditProfile'
 import {Link} from 'react-router-dom'
-import {Image, Transformation} from 'cloudinary-react';
+import { Image, Transformation } from 'cloudinary-react';
+// import Pagination from "react-js-pagination";
 
 export class Profile extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ export class Profile extends Component {
       currentPage: 0,
     };
   }
+
   componentDidMount() {
     const { isAuthenticated } = this.props.authlogin
     if(isAuthenticated){
@@ -24,7 +26,7 @@ export class Profile extends Component {
   
   render() {
     const { profiles } = this.props.profilereducer
-    const {pk} = this.props.authlogin.user
+    const { pk } = this.props.authlogin.user
 
     return (
       <div>
@@ -52,7 +54,7 @@ export class Profile extends Component {
           gender:{value.gender}<br/>
           contact_number:{value.contact_number}<br/>
           user_id: {value.user_id},<br/>
-          followers_count: {value.followers_count},<br/>
+          followers_count: {value.followers_count},
           following_count: {value.following_count},<br/>
           follow_status:{value.follow_status}<br/>
 

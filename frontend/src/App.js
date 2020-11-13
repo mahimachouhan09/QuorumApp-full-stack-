@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route ,Redirect} from "react-router-dom";
-import Users  from "./components/Register";
 import Login from "./components/Login";
 import Question from "./components/Question";
 import AskQuestion from './components/AskQuestion'
@@ -16,6 +15,7 @@ import EditProfile from './components/EditProfile'
 import ForgetPassword from './components/ForgetPassword'
 import ChangePassword from './components/ChangePassword'
 import Signup from './components/Register'
+import UserInfo from './components/UserInfo'
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App(props) { 
@@ -107,15 +107,15 @@ function App(props) {
           }}>
           </Route>
 
-          {/* <Route path="/follow/id" 
+          <Route path="/user-info" 
           render={() => {
             if (isAuthenticated) {
-              return <Follow />;
+              return <UserInfo />;
             } else {
-              return <Redirect to="/login" />;
+              return <Redirect to="/user-info" />;
             }
           }}>
-          </Route> */}
+          </Route>
 
           <Route exact path="/followers/:id" 
           // key={this.props.id.key}

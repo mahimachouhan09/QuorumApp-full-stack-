@@ -20,7 +20,6 @@ class Login extends Component {
     e.preventDefault();
     const { progress , ...values} = this.state
         this.setState({ progress: true })
-        console.log(values,progress)
         this.props.login(values , () => {
             this.setState({
               progress: false, username : "" , password : ""
@@ -37,7 +36,7 @@ class Login extends Component {
         
     return (
       <form onSubmit={this.onSubmit.bind(this)}>
-        <fieldset>
+        <div>
           <legend>Login</legend>
           <p>
             <label>Username</label>
@@ -69,7 +68,7 @@ class Login extends Component {
           <p>
             Don't have an account? <Link to="/signup">Register</Link>
           </p>
-        </fieldset>
+        </div>
       </form>
     )
   }

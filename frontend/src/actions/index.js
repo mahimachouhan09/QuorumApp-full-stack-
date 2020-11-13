@@ -7,7 +7,7 @@ import { REGISTER_FAIL, LOGIN, LOGIN_ERROR,LOGOUT,
     CREATE_ANSWER_SUCCESS,CREATE_COMMENT, EDIT_COMMENT,
     FORGET_PASSWORD_SUCCESS, CHANGE_PASSWORD,REGISTER_SUCCESS,
     CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, DELETE_ANSWER,
-    EDIT_ANSWER, UPDATE_PROFILE, DELETE_COMMENT
+    EDIT_ANSWER, UPDATE_PROFILE, DELETE_COMMENT, CREATE_PROFILE
   }
 from "./actionTypes"
 const baseURL = `http://127.0.0.1:8000`
@@ -104,6 +104,19 @@ export const getprofiles = () => (dispatch,getState) => {
 //     .then(response => response)    
 //   }
 // }
+
+export const createProfile = (values) => {
+  console.log(values)
+  return (dispatch , getState) => {
+    const config = setConfig(getState)
+    axios.post(`${baseURL}/profile/`, values ,config).then((res) => {
+      dispatch({
+        type: CREATE_PROFILE,
+        payload: res.data    
+      })
+    })
+  }
+}
 
 export const editprofile = ( values,id) => {
   return (dispatch , getState) => {

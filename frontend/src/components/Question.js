@@ -53,11 +53,11 @@ class Question extends Component {
       </Typography>
       <ul className= 'feed-block-ul'>
       { questions.map((value ,index)=> ( 
-            <li classname ='feed-block-li' key = { index }>       
-              asked by : userid {value.user}<br/>   
-              question : {value.question}<br/>              
-              pub_date : {value.pub_date}<br/>   
+            <li classname ='feed-block-li' key = { index }>
+              question : {value.question}<br/>
               description : {value.description}
+              asked by : userid {value.user}                
+              pub_date : {value.pub_date}<br/>   
               <Answer id={value.id}/>
               <div>
                 {value.answers.map((item,index)=>(
