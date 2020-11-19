@@ -1,5 +1,4 @@
 # quorum app 
-<<<<<<< HEAD
  The objective of quorum app is to connect people with each other to search for their query(questions) and users among them can provide multiple answers to it and  comment on it.Creating an Rest Api Endpoint for this.
 
 # Features 
@@ -9,20 +8,6 @@
 - User can Answer questions
 - User can comment on answer
 - Search questions asked by specific user
-=======
- The objective of quorum app is to connect people with each other to search for their query(questions) and users among them can provide multiple answers to it.Creating an Rest Api Endpoint for this.
-
-# Features 
-- User authentication and authorization
-- User profile
-- User can choose intrested topics
-- User can ask Question
-- User can Answer questions
-- User can Upvote, DownVote questions and answers
-- User can comment on answer
-- Follow and Unfollow(User)
-- Search based on topic 
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
 
 # Technology-Used
 - python,
@@ -34,7 +19,6 @@
   - `pip install -r requirements.txt`
   - `python manage.py runserver`
   
-<<<<<<< HEAD
 ## URLs to target for backend:
   - Basic route
     - http://127.0.0.1:8000/
@@ -52,48 +36,24 @@
     - localhost:8000/rest-auth/user/,
   - to update the user profile
     - localhost:8000/profile/,
-=======
-## URLs to target:
-  - to register a user
-    - localhost:8000/users
-  - to login a user
-    - localhost:8000/api/auth/login
-  - to logout a user
-    - localhost:8000/api/auth/logout
-  - to change password
-    - localhost:8000/api/auth/password_change
-  - to forget password
-    - localhost:8000/^password/reset/$
-  - to update the user profile
-    - localhost:8000/profile-update/
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
   - to view following
     - localhost:8000/following/id/
   - to view followers
     - localhost:8000/followers/id/
 
-<<<<<<< HEAD
 ## Useful commands for backend :
-=======
-## Useful commands:
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
   - `python manage.py createsuperuser`
   - `python manage.py makemigrations`
   - `python manage.py migrate`
 
-<<<<<<< HEAD
 ## Useful commands for frontend : 
   - run using `npm start`
-  - `python manage.py makemigrations`
 
-=======
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
 # Future scope of the project
 In future, this project can be extend by adding the feature of chat application and user can get
 notification for their activities .Also there is the scope of payment gateway for viewing answers,
 users can request another members to answer his/her questions. User can save particular Q/A
 for future reference.
-<<<<<<< HEAD
 
 # structure of the project
 ├── frontend
@@ -183,5 +143,3 @@ for future reference.
 │   └── wsgi.py
 ├── README.md
 └── requirements.txt
-=======
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
