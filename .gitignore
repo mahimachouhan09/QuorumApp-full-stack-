@@ -1,0 +1,7 @@
+**__pycache__
+.env
+
+#Database
+db.sqlite3
+
+**node_modules
