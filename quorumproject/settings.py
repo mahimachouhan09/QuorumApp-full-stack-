@@ -45,17 +45,11 @@ INSTALLED_APPS = [
     'allauth.account',
     'rest_auth.registration',
     'generic_relations',
-<<<<<<< HEAD
     'corsheaders',
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-=======
-]
-
-MIDDLEWARE = [
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -120,14 +114,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
-<<<<<<< HEAD
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         ),
-=======
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
         'rest_framework.permissions.IsAuthenticated',
@@ -136,7 +127,6 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.SearchFilter',
     ),
-<<<<<<< HEAD
 }
 
 CORS_ALLOW_CREDENTIALS = True
@@ -147,12 +137,6 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 REST_USE_JWT = True
-=======
-
-    'DEFAULT_PAGINATION_CLASS': (
-        'rest_framework.pagination.PageNumberPagination',),
-}
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -172,25 +156,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-<<<<<<< HEAD
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 SITE_ID = 3
-=======
-SITE_ID = 2
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
-<<<<<<< HEAD
 JWT_AUTH = {
-    # Authorization:Token xxx
     'JWT_AUTH_HEADER_PREFIX': 'Token',
 }
-=======
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e

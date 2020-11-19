@@ -1,21 +1,8 @@
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import (GenericForeignKey,
-                                                GenericRelation)
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django_currentuser.middleware import get_current_authenticated_user
 
 
-<<<<<<< HEAD
-=======
-class Topic(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        return "%s " % self.name
-
-
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
 class Profile(models.Model):
     GENDER_CHOICES = (
         ('M', 'Male'),
@@ -26,7 +13,6 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=30, null=True)
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name='profile')
-<<<<<<< HEAD
     contact_number = models.CharField(max_length=13)
     profile_pic = models.ImageField(
         upload_to='frontend/src/profile_pics', null=True, blank=True)
@@ -38,19 +24,6 @@ class Profile(models.Model):
 
     def get_username(self):
         return self.user.username
-=======
-    contact_number = models.CharField(max_length=12)
-    profile_pic = models.ImageField(
-        upload_to='profile_pics', null=True, blank=True)
-    topics = models.ManyToManyField(Topic, blank=True, related_name='topics')
-    gender = models.CharField(max_length=2, choices=GENDER_CHOICES)
-    dob = models.DateField()
-
-    def create_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-            post_save.connect(create_profile, sender=User)
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
 
     def get_first_name(self):
         return self.user.first_name
@@ -65,64 +38,28 @@ class Profile(models.Model):
     def get_following_count(self):
         return Follow.objects.filter(follower=self.user).count()
 
-<<<<<<< HEAD
     def get_follow_status(self):
         follow_status = Follow.objects.filter(
             user=self.user,
             follower=get_current_authenticated_user())
         return "Following" if follow_status else "Follow"
 
-=======
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
     def __str__(self):
         return "%s " % self.user.username
-
-
-class Activity(models.Model):
-    UP_VOTE = 'U'
-    DOWN_VOTE = 'D'
-    ACTIVITY_TYPES = (
-        (UP_VOTE, 'Up Vote'),
-        (DOWN_VOTE, 'Down Vote'),
-    )
-    activity_type = models.CharField(max_length=6, choices=ACTIVITY_TYPES)
-    user = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True, null=True)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
-
-    def __str__(self):
-        return "%s " % self.activity_type
 
 
 class Question(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.CharField(max_length=200)
     pub_date = models.DateField(auto_now_add=True)
-<<<<<<< HEAD
-=======
-    topic = models.ManyToManyField(Topic)
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
     description = models.CharField(max_length=100, null=True, blank=True)
-    vote = GenericRelation(Activity)
 
     def get_post_belongs_to_authenticated_user(self):
-<<<<<<< HEAD
         return self.user == get_current_authenticated_user()
-=======
-        return self.user.pk == get_current_authenticated_user().pk
->>>>>>> a26299efc64c6acbc3e4f6dcb39f446dee7cc00e
 
     def get_user(self):
         user_dict = vars(self.user)
         return {"id": user_dict["id"], "username": user_dict["username"]}
-
-    def down_vote_count(self):
-        return self.vote.filter(activity_type='D').count()
-
-    def up_vote_count(self):
-        return self.vote.filter(activity_type='U').count()
 
     def __str__(self):
         return "%s " % self.id
@@ -134,13 +71,6 @@ class Answer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     answered_date = models.DateField(auto_now_add=True)
-    vote = GenericRelation(Activity)
-
-    def down_vote_count(self):
-        return self.vote.filter(activity_type='D').count()
-
-    def up_vote_count(self):
-        return self.vote.filter(activity_type='U').count()
 
     def __str__(self):
         return "%s" % self.content
