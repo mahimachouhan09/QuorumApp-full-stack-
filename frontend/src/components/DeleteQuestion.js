@@ -14,11 +14,11 @@ class DeleteQuestion extends Component {
 
   render() {
     return (
-        <form onSubmit={this.handleOnSubmit}>
+      <form onSubmit={this.handleOnSubmit}>
         <Button variant="contained" color="primary" startIcon={<DeleteIcon />} onClick = {this.handleOnSubmit}>
           delete Question
         </Button>
-        </form>
+      </form>
     )
   }
 }

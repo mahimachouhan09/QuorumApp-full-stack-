@@ -15,14 +15,14 @@ class DeleteAnswer extends Component {
     return (
       <div>
         <form onSubmit={this.handleOnSubmit}>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<DeleteIcon />}
-          onClick = {this.handleOnSubmit}
-        >
-        {/* onClick = {() => {deleteAnswer(this.props.id)}}> */}
-          delete Answer</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<DeleteIcon />}
+            onClick = {this.handleOnSubmit}
+          >
+            delete Answer
+          </Button>
         </form>
       </div>
     )

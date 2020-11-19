@@ -25,27 +25,6 @@ function App(props) {
       <Router>
       <div>
         <Navbar />
-        {/* <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/register">register</Link>
-            </li>
-            <li>
-            <div>
-              <a href="#" onClick={props.logout}>LOGOUT</a>
-              </div>
-            </li>
-          </ul>
-        </nav> */}
         <Switch>
           <Route path="/signup" >
             <Signup />
@@ -117,16 +96,14 @@ function App(props) {
           </Route>
 
           <Route exact path="/followers/:id" 
-          // key={this.props.id.key}
-          render={() => {
-            if (isAuthenticated) {
-              return <Follower {...props} 
-              // key={this.props.id.key}
-              />;
-            } else {
-              return <Redirect to="/login" />;
-            }
-          }}>
+            render={() => {
+              if (isAuthenticated) {
+                return <Follower {...props} 
+                />;
+              } else {
+                return <Redirect to="/login" />;
+              }
+            }}>
           </Route>
         </Switch>
       </div>

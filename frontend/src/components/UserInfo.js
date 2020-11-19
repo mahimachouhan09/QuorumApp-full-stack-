@@ -72,7 +72,6 @@ export class UserInfo extends Component {
             <FormControlLabel value="F" control={<Radio />} label="Female" />
             <FormControlLabel value="M" control={<Radio />} label="Male" />
             <FormControlLabel value="O" control={<Radio />} label="Others" />
-            {/* <FormControlLabel value="disabled" disabled control={<Radio />} label="(Disabled option)" /> */}
           </RadioGroup>
         </FormControl>
           </div>

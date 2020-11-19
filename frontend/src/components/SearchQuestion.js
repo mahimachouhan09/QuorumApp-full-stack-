@@ -22,7 +22,7 @@ export class SearchQuestion extends Component {
     return (
       <div>
         <form onSubmit = {this.onFormSubmit} >
-          <input type = 'text' value = {this.state.username} onChange = {this.onInputChange}/>
+          <input type = 'search' value = {this.state.username} onChange = {this.onInputChange}/>
           <Button variant="contained" color="primary" onClick={this.onFormSubmit}>
             search by username
           </Button>

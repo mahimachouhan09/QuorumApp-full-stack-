@@ -28,21 +28,21 @@ class Question extends Component {
 
     return (
       <div> 
-      <h4>Welcome to Quorum!.</h4> 
-      <SearchQuestion />
-      <p>But for now, why don't you answer or ask some questions!</p>
+        <h4>Welcome to Quorum!.</h4> 
+        <SearchQuestion />
+        <p>But for now, why don't you answer or ask some questions!</p>
 
-      <Typography >
-        <Link style={{ color: 'white' }} to = {`/askquestions`}>
-            <Button variant="contained" color="primary" >Ask Question </Button>
-        </Link>
+        <Typography >
+          <Link style={{ color: 'white' }} to = {`/askquestions`}>
+              <Button variant="contained" color="primary" >Ask Question </Button>
+          </Link>
 
-        <Link style={{ color: 'white' }} to = {`/viewprofiles`}>
-            <Button variant="contained" color="primary"> View Profiles </Button>
-        </Link>
-      </Typography>
-      <ul className= 'feed-block-ul'>
-      {questions.map((value ,index) => ( 
+          <Link style={{ color: 'white' }} to = {`/viewprofiles`}>
+              <Button variant="contained" color="primary"> View Profiles </Button>
+          </Link>
+        </Typography>
+        <ul className= 'feed-block-ul'>
+          {questions.map((value ,index) => ( 
             <li className ='feed-block-li' key = { index }>
               question : {value.question}<br/>&nbsp;
               description : {value.description}<br/> 
@@ -51,37 +51,35 @@ class Question extends Component {
               <Answer id={value.id}/>
               <div>
                 {value.answers.map((item,index)=>(
-                <li key = { index }>
-                  answer : {item.content}<br/>
-                  answered_date : {item.answered_date}<br/>
-                  {(pk === value.user)? 
-                    <p><DeleteAnswer id={item.id} /><EditAnswer data={item}/> </p>:
-                    <p></p>
-                  }
-                  comments_count : {item.comments_count}<br/><Comment answerId={item.id}/>
-
-                  {item.comments.map((comment,index)=>(
-                    <li key = { index }>
-                      comments : {comment.comment} 
-                    {
-                    (pk === comment.user)? 
-                    <p><DeleteComment id={comment.id} /><EditComment data={comment}/> </p>:
-                    <p></p>
+                  <li key = { index }>
+                    answer : {item.content}<br/>
+                    answered_date : {item.answered_date}<br/>
+                    {(pk === value.user)? 
+                      <p><DeleteAnswer id={item.id} /><EditAnswer data={item}/> </p>:
+                      <p></p>
                     }
-                    </li>
-                  ))
-                  }
-                </li>
-              ))}<hr/>
+                    comments_count : {item.comments_count}<br/><Comment answerId={item.id}/>
+
+                    {item.comments.map((comment,index)=>(
+                      <li key = { index }>
+                        comments : {comment.comment} 
+                      {(pk === comment.user)? 
+                        <p><DeleteComment id={comment.id} /><EditComment data={comment}/> </p>:
+                        <p></p>
+                      }
+                      </li>
+                    ))}
+                  </li>
+                ))}<hr/>
               </div>
-            
+                
               {(pk === value.user)? 
                 <p><DeleteQuestion id={value.id} /><EditQuestion data={value}/> </p>:
-                <p></p>}
+                <p></p>}<br/>
+                question id: {value.id}
             </li>
-      ))
-      }
-      </ul>
+          ))}
+        </ul>
       </div>
     )
   }
@@ -89,8 +87,8 @@ class Question extends Component {
 
 const mapStateToProps = ({ authlogin, questionsreducer  }) => {
   return { 
-      authlogin,
-      questionsreducer
+    authlogin,
+    questionsreducer
   }
 }
 

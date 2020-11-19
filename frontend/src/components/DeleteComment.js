@@ -16,14 +16,14 @@ class DeleteComment extends Component {
     return (
       <div>
         <form onSubmit={this.handleOnSubmit}>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<DeleteIcon />}
-          onClick = {this.handleOnSubmit}
-        >
-         delete comment
-        </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<DeleteIcon />}
+            onClick = {this.handleOnSubmit}
+          >
+          delete comment
+          </Button>
         </form>
       </div>
     )

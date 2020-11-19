@@ -12,39 +12,39 @@ from "./actionTypes"
 const baseURL = `http://127.0.0.1:8000`
 
 
-  export const register = (username, email, password1, password2) => 
-    (dispatch) =>{
-      axios.post(`${baseURL}/rest-auth/registration/`, {
-        username, email, password1, password2,}).then( (res) => {
-          dispatch({
-            type : REGISTER_SUCCESS,
-            payload : res.data
-          })
-          alert("registered successfully.")
-        })
-          .catch((error) => {
-            dispatch({ type: REGISTER_FAIL, payload: error.message });
-          });
-      }
+export const register = (username, email, password1, password2) => (dispatch) =>{
+  axios.post(`${baseURL}/rest-auth/registration/`, {
+    username, email, password1, password2,}).then( (res) => {
+      dispatch({
+        type : REGISTER_SUCCESS,
+        payload : res.data
+      })
+      alert("registered successfully.")
+    })
+  .catch((error) => {
+    dispatch({ type: REGISTER_FAIL, payload: error.message });
+  });
+}
 
-  export const login = (values ,callBack) => {
-    return (dispatch) => {
-      axios.post(`${baseURL}/rest-auth/login/`,values).then( (res) => {
-        dispatch({
-          type : LOGIN,
-          payload : res.data
-        })
-      } ,(err) =>{
-            dispatch({
-              type: LOGIN_ERROR,
-              payload: err.response.data
-            })
-            alert("Enter correct username and password")
-            callBack()
-          }
-      )
-    }
+
+export const login = (values ,callBack) => {
+  return (dispatch) => {
+    axios.post(`${baseURL}/rest-auth/login/`,values).then( (res) => {
+      dispatch({
+        type : LOGIN,
+        payload : res.data
+      })
+    } ,(err) =>{
+          dispatch({
+            type: LOGIN_ERROR,
+            payload: err.response.data
+          })
+          alert("Enter correct username and password")
+          callBack()
+        }
+    )
   }
+}
       
 
 export const forgetpassword = (email) => {
@@ -65,6 +65,7 @@ export const forgetpassword = (email) => {
     })
   }
 }
+
 
 export const changepassword = (input) => {
   return (dispatch,getState) => {
@@ -109,6 +110,7 @@ export const createProfile = (values) => {
   }
 }
 
+
 export const editprofile = ( values,id) => {
   return (dispatch , getState) => {
     const config = setConfig(getState)
@@ -141,9 +143,9 @@ export const followers = (id) => (dispatch,getState) => {
   axios.get(`${baseURL}/followers/${id}/`,config).then((response) => {
       dispatch({ type: GET_FOLLOWER_SUCCESS, payload: response.data.results });
     })
-    .catch((error) => {
-      dispatch({ type: GET_FOLLOWER_FAILURE, payload: error.message });
-    });
+  .catch((error) => {
+    dispatch({ type: GET_FOLLOWER_FAILURE, payload: error.message });
+  });
 };
 
 

@@ -91,7 +91,7 @@ class AskQuestion extends Component {
 
 const mapStateToProps = ({ authlogin }) => {
   return {
-      authlogin,
+    authlogin,
   }
 }
 

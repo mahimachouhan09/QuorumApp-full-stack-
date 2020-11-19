@@ -61,8 +61,8 @@ class Answer extends Component {
 
 const mapStateToProps = ({ authlogin, answerreducer  }) => {
   return { 
-      authlogin,
-      answerreducer
+    authlogin,
+    answerreducer
   }
 }
 
