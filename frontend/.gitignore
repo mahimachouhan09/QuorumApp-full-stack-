@@ -10,7 +10,7 @@
 
 # production
 /build
-# *.mp4
+
 # misc
 .DS_Store
 .env.local
