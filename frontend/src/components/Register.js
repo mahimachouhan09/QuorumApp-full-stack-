@@ -5,6 +5,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 import { register } from "../actions/index";
+import { withRouter } from "react-router-dom";
 
 
 const required = (value) => {
@@ -82,6 +83,7 @@ const Register = (props) => {
     form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
       props.register(username, email, password1, password2)
+      props.history.push('/login')
     }
   };
 
@@ -117,7 +119,7 @@ const Register = (props) => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="password1">Password1</label>
+                <label htmlFor="password1">Password</label>
                 <Input
                   type="password"
                   className="form-control"
@@ -129,7 +131,7 @@ const Register = (props) => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="password2">Password</label>
+                <label htmlFor="password2">confirm Password</label>
                 <Input
                   type="password"
                   className="form-control"
@@ -153,4 +155,4 @@ const Register = (props) => {
   );
 };
 
-export default connect(null ,{register})(Register);
+export default withRouter(connect(null ,{register})(Register));

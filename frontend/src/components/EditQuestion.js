@@ -4,6 +4,7 @@ import { editQuestion,getQuestions } from '../actions/index'
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 
+
 export class EditQuestion extends Component {
   constructor(props) {
     super(props);
@@ -19,13 +20,12 @@ export class EditQuestion extends Component {
 }
 
 handleOnChange = e => {
-  if (e.target.name === 'question') {
-    this.setState({question: e.target.value} );
+    if (e.target.name === 'question') {
+        this.setState({question: e.target.value} );
 
-  } else if (e.target.name === 'description') {
-    this.setState({ description: e.target.value  || '' });
-
-  }
+    } else if (e.target.name === 'description') {
+        this.setState({ description: e.target.value  || '' });
+    }
 }
 
 handleOnSubmit = async(event) => {

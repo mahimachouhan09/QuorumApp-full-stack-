@@ -5,7 +5,7 @@ import { REGISTER_SUCCESS, REGISTER_FAIL, LOGIN, LOGIN_ERROR,LOGOUT,
     QUESTION_LOADING,GET_QUESTION, GET_QUESTION_ERROR,
     GET_FOLLOWER_REQUEST,GET_FOLLOWER_SUCCESS,GET_FOLLOWER_FAILURE,
     CREATE_ANSWER_SUCCESS,CREATE_COMMENT, EDIT_COMMENT,
-    CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, DELETE_ANSWER,
+    CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION,DELETE_QUESTION_ERROR, DELETE_ANSWER,
     EDIT_ANSWER, UPDATE_PROFILE, DELETE_COMMENT, CREATE_PROFILE
   }
 from "./actionTypes"
@@ -45,7 +45,7 @@ export const login = (values ,callBack) => {
     )
   }
 }
-      
+
 
 export const forgetpassword = (email) => {
   return (dispatch) => {
@@ -105,8 +105,7 @@ export const createProfile = (values) => {
         payload: res.data    
       })
       alert("profile created successfully!!")
-    })
-    alert("Profile can not be created again")
+    },alert("Profile can not be created again"))
   }
 }
 
@@ -196,7 +195,15 @@ export const deleteQuestion = (id) => {
       .then(res => dispatch({
         type : DELETE_QUESTION,
         payload : res.data
-      }) )
+      })
+      ,(err) =>{
+        dispatch({
+          type: DELETE_QUESTION_ERROR,
+          payload: err.res.data
+        })
+        alert("question doesn't deleted ")
+      }
+      )
   }
 }
 

@@ -49,32 +49,33 @@ class Question extends Component {
               asked by : userid {value.user} &nbsp;         
               pub_date : {value.pub_date}<br/>   
               <Answer id={value.id}/>
-              <div>
+              <ul>
                 {value.answers.map((item,index)=>(
                   <li key = { index }>
                     answer : {item.content}<br/>
                     answered_date : {item.answered_date}<br/>
-                    {(pk === value.user)? 
-                      <p><DeleteAnswer id={item.id} /><EditAnswer data={item}/> </p>:
+                    {(pk === item.user)? 
+                      <span><DeleteAnswer id={item.id} /><EditAnswer data={item}/> </span>:
                       <p></p>
                     }
                     comments_count : {item.comments_count}<br/><Comment answerId={item.id}/>
-
+                    <ul>
                     {item.comments.map((comment,index)=>(
                       <li key = { index }>
                         comments : {comment.comment} 
                       {(pk === comment.user)? 
-                        <p><DeleteComment id={comment.id} /><EditComment data={comment}/> </p>:
+                        <span><DeleteComment id={comment.id} /><EditComment data={comment}/> </span>:
                         <p></p>
                       }
                       </li>
                     ))}
+                    </ul>
                   </li>
                 ))}<hr/>
-              </div>
+              </ul>
                 
               {(pk === value.user)? 
-                <p><DeleteQuestion id={value.id} /><EditQuestion data={value}/> </p>:
+                <span><DeleteQuestion id={value.id} /><EditQuestion data={value}/> </span>:
                 <p></p>}<br/>
                 question id: {value.id}
             </li>

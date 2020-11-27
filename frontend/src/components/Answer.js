@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom";
 import { createAnswer, getQuestions } from '../actions/index';
 import { Button } from '@material-ui/core';
 
@@ -41,6 +42,7 @@ class Answer extends Component {
     event.preventDefault()
     await this.props.createAnswer(this.state.newAnswer)
     await this.props.getQuestions()
+    this.props.history.push('/questions')
   }
 
   render() {
@@ -66,4 +68,4 @@ const mapStateToProps = ({ authlogin, answerreducer  }) => {
   }
 }
 
-export default connect(mapStateToProps, {createAnswer, getQuestions})(Answer);
+export default withRouter(connect(mapStateToProps, {createAnswer, getQuestions})(Answer));

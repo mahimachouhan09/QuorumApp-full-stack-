@@ -38,7 +38,7 @@ export class Profile extends Component {
 
               <Link to={`/followers/${value.id}`}>followers</Link>
               <Link to={`/following/${value.id}`}>following</Link>
-
+              {console.log(value.user_id,value.follow_status)}
               {(pk !== value.user_id)?
                 <Follow  id={value.user_id} follow_status={value.follow_status} />
               :<p></p>  

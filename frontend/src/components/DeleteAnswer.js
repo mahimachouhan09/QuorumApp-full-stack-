@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { deleteAnswer } from '../actions/index'
+import { deleteAnswer, getQuestions } from '../actions/index'
+import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
 class DeleteAnswer extends Component {
-  handleOnSubmit = (event) => {
+  handleOnSubmit = async(event) => {
     event.preventDefault()
-    this.props.deleteAnswer(this.props.id);
+    await this.props.deleteAnswer(this.props.id);
+    await this.props.getQuestions()
   }
 
   render() {
     return (
-      <div>
         <form onSubmit={this.handleOnSubmit}>
           <Button
             variant="contained"
@@ -24,9 +25,8 @@ class DeleteAnswer extends Component {
             delete Answer
           </Button>
         </form>
-      </div>
     )
   }
 }
 
-export default connect(null, { deleteAnswer })(DeleteAnswer)
+export default withRouter(connect(null, { deleteAnswer, getQuestions })(DeleteAnswer))

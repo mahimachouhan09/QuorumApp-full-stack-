@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import  {connect} from 'react-redux'
 import {changepassword} from '../actions/index'
-import { browserHistory } from 'react-router'
+import { withRouter } from "react-router-dom";
 import { Button, FormControl, Input } from '@material-ui/core';
 
 export class ChangePassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      input: {},
+      input: {
+        new_password1:'',
+        new_password2:'',
+      },
       errors: {}
     };
      
@@ -32,7 +35,7 @@ export class ChangePassword extends Component {
       changeEmailFormData.append('new_password1', this.state.input.new_password1);
       changeEmailFormData.append('new_password2', this.state.input.new_password2);
       this.props.changepassword(changeEmailFormData)
-      browserHistory.push('/login')
+      this.props.history.push('/login')
       let input = {};
       input["new_password1"] = "";
       input["new_password2"] = "";
@@ -107,4 +110,4 @@ export class ChangePassword extends Component {
   }
 }
 
-export default connect(null, {changepassword})(ChangePassword)
+export default withRouter(connect(null, {changepassword})(ChangePassword));
