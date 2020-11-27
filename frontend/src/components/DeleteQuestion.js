@@ -6,10 +6,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 class DeleteQuestion extends Component {
 
-  handleOnSubmit = async(event) => {
+  handleOnSubmit = (event) => {
     event.preventDefault()
-    await this.props.deleteQuestion(this.props.id);
-    await this.props.getQuestions()
+    this.props.deleteQuestion(this.props.id,()=>{this.props.getQuestions()});
   }
 
   render() {

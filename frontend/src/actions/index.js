@@ -23,6 +23,7 @@ export const register = (username, email, password1, password2) => (dispatch) =>
     })
   .catch((error) => {
     dispatch({ type: REGISTER_FAIL, payload: error.message });
+    alert("username or email already registered")
   });
 }
 
@@ -188,22 +189,19 @@ export const editQuestion = (id, values) => {
   }
 }
 
-export const deleteQuestion = (id) => {
+export const deleteQuestion = (id,callBack) => {
   return (dispatch,getState) => {
     const config = setConfig(getState)
       axios.delete(`${baseURL}/questions/${id}`,config,)
-      .then(res => dispatch({
+      .then((res) => {
+        callBack();
+        dispatch({
         type : DELETE_QUESTION,
         payload : res.data
       })
-      ,(err) =>{
-        dispatch({
-          type: DELETE_QUESTION_ERROR,
-          payload: err.res.data
-        })
-        alert("question doesn't deleted ")
-      }
-      )
+      alert("question deleted ")
+    },alert("question not deleted ")
+    )
   }
 }
 
@@ -235,14 +233,16 @@ export const createAnswer = (newAnswer) => {
   }
 }
 
-export const deleteAnswer = (id) => {
+export const deleteAnswer = (id,callBack) => {
   return (dispatch,getState) => {
     const config = setConfig(getState)
       axios.delete(`${baseURL}/answers/${id}`,config,)
-      .then(res => dispatch({
+      .then(res => {
+        callBack();
+        dispatch({
         type : DELETE_ANSWER,
         payload : res.data
-      }) )
+      })} )
   }
 }
 
@@ -287,14 +287,17 @@ export const editComment = (id, values) => {
 }
 
 
-export const deletecomment = (id) => {
+export const deletecomment = (id,callBack) => {
   return (dispatch ,getState) => {
-    const config = setConfig(getState)
+    const config = setConfig(getState)    // this config is to store token for authorization
       axios.delete(`${baseURL}/comment/${id}`,config,)
-      .then(res => dispatch({
+      .then(res =>{
+        callBack();
+        dispatch({
         type : DELETE_COMMENT,
         payload : res.data
-      }))
+      })}
+      )
   }
 }
 

@@ -83,7 +83,7 @@ const Register = (props) => {
     form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
       props.register(username, email, password1, password2)
-      props.history.push('/login')
+      // props.history.push('/login')
     }
   };
 
