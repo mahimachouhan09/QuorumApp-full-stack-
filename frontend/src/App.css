@@ -113,8 +113,12 @@ li{
   box-sizing: border-box;
   color: #000000;
 }
-.feed-block-ul .feed-block-li .answer-comment-ul .answer-comment-ul-li{
+.feed-block-ul .feed-block-li .answer-ul .answer-ul-li{
   box-sizing: border-box;
   display: block;
   background-color: rgb(154, 190, 255);
+}
+.deletequestion{
+  display:flex;
+  justify-content: center;
 }

@@ -42,7 +42,9 @@ class Question extends Component {
           </Link>
 
         <ul className= 'feed-block-ul'>
-          {questions.map((value ,index) => ( 
+          { questions.length>0 ? questions.map((value ,index) => {
+            const username = value.asked_by.substring(14,value.asked_by.length-2)
+          return ( 
             <li className ='feed-block-li' key = { index }>
               <span className="date">
                 <i className="fa fa-calendar" aria-hidden="true"></i>
@@ -51,13 +53,13 @@ class Question extends Component {
               <i className="fa fa-thumb-tack" aria-hidden="true"></i>    
               <span className="question-text">{value.question}</span> </span><br/> 
               <span className="question">description : {value.description}</span><br/> 
-              <span className="question">{value.asked_by} &nbsp;&nbsp;&nbsp;</span>
+              <span className="question">{username} &nbsp;&nbsp;&nbsp;</span>
               <br/>   
               <Answer id={value.id}/>
 
-              <ul className="answer-comment-ul">
+              <ul className="answer-ul">
                 {value.answers.map((item,index)=>(
-                  <li className="answer-comment-ul-li"  key = { index }>
+                  <li className="answer-ul-li"  key = { index }>
                     answer : {item.content}<br/>
                     <span>
                     <i className="fa fa-calendar" aria-hidden="true"></i>
@@ -94,10 +96,10 @@ class Question extends Component {
                 pk is the id of the user which is logged in*/}
 
               {(pk === value.user)? 
-                <span><DeleteQuestion id={value.id} /><EditQuestion data={value}/> </span>:
+                <div className="deletequestion"><DeleteQuestion id={value.id} /><EditQuestion data={value}/> </div>:
                 <p></p>}<br/>
             </li>
-          ))}
+          )}):"no question found"}
         </ul>
       </div>
     )

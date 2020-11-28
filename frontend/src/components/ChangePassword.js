@@ -42,9 +42,6 @@ export class ChangePassword extends Component {
         
       this.setState({input:input});
     }
-    else {
-      alert("both password must be same.")
-    }
   }
   
   validate(){
@@ -73,7 +70,6 @@ export class ChangePassword extends Component {
     this.setState({
       errors: errors
     });
-  
     return isValid;
   }
 
@@ -103,6 +99,9 @@ export class ChangePassword extends Component {
         />
         </FormControl><br/><br/>
         </div>
+        {(this.state.errors.new_password1)||'' }
+        {(this.state.errors.new_password)||'' }
+        <br />
         <Button variant="contained" color="primary" onClick={this.handleOnSubmit}> change password</Button>
         </form>
       </div>

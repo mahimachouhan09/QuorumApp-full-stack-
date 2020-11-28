@@ -4,6 +4,7 @@ import {Redirect ,Link} from "react-router-dom";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { login } from '../actions'
 import { Button } from '@material-ui/core'
+import LockIcon from '@material-ui/icons/Lock';
 
 class Login extends Component {
   state = {
@@ -38,7 +39,7 @@ class Login extends Component {
       <div className="col s12 m8 l4 offset-m2 offset-l4 z-depth-4 card-panel login-form">
       <form onSubmit={this.onSubmit.bind(this)}>
           <legend style={{ color:'#002984', fontsize: "xx-large" }}>Login</legend>
-          <p> <i class="fa fa-user" aria-hidden="true"></i>
+          <p> <i className="fa fa-user" aria-hidden="true"></i>
             <label>Username</label>
             <input
               value = {this.state.username}
@@ -48,7 +49,7 @@ class Login extends Component {
               placeholder = "Username"
             />
           </p>
-          <p><i className="material-icons prefix"></i>
+          <p><LockIcon />
             <label>Password</label>
             <input
               value={this.state.password}
