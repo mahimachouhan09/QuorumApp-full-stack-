@@ -6,10 +6,13 @@ import answerreducer from './answerreducer'
 import profilereducer from './profilereducer'
 import commentreducer from './commentreducer'
 import forgetpassword from './forgetpassword'
+import userinforeducer from './userinforeducer'
+
 
 export default combineReducers({
   registerreducer,
   authlogin,
+  userinforeducer,
   questionsreducer,
   answerreducer,
   profilereducer,

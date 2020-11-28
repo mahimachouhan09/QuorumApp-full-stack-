@@ -1,11 +1,12 @@
 import axios from "axios"
 import { REGISTER_SUCCESS, REGISTER_FAIL, LOGIN, LOGIN_ERROR,LOGOUT,
     FORGET_PASSWORD_SUCCESS,CHANGE_PASSWORD,
+    GET_USERINFO_REQUEST,GET_USERINFO_SUCCESS,GET_USERINFO_FAILURE,
     GET_PROFILES_REQUEST,GET_PROFILES_SUCCESS,GET_PROFILES_FAILURE,
     QUESTION_LOADING,GET_QUESTION, GET_QUESTION_ERROR,
     GET_FOLLOWER_REQUEST,GET_FOLLOWER_SUCCESS,GET_FOLLOWER_FAILURE,
     CREATE_ANSWER_SUCCESS,CREATE_COMMENT, EDIT_COMMENT,
-    CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION,DELETE_QUESTION_ERROR, DELETE_ANSWER,
+    CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, DELETE_ANSWER,
     EDIT_ANSWER, UPDATE_PROFILE, DELETE_COMMENT, CREATE_PROFILE
   }
 from "./actionTypes"
@@ -63,7 +64,7 @@ export const forgetpassword = (email) => {
         payload : response.data
       })
       alert("email has been sent to email address.")
-    })
+    } ,alert("Type corect email address."))
   }
 }
 
@@ -82,6 +83,18 @@ export const changepassword = (input) => {
   )}
 }
 
+export const getUserInfo = () => (dispatch,getState) => {
+  dispatch({ type: GET_USERINFO_REQUEST });
+  const config = setConfig(getState)
+  axios
+    .get(`${baseURL}/rest-auth/user/`,config)
+    .then((response) => {
+      dispatch({ type: GET_USERINFO_SUCCESS, payload: response.data });
+    })
+    .catch((error) => {
+      dispatch({ type: GET_USERINFO_FAILURE, payload: error.message });
+    });
+};
 
 export const getprofiles = () => (dispatch,getState) => {
   dispatch({ type: GET_PROFILES_REQUEST });
@@ -176,10 +189,11 @@ export const createQuestion = (newquestion) => {
   }
 }
 
-export const editQuestion = (id, values) => {
+export const editQuestion = (id, values,callBack) => {
   return (dispatch , getState) => {
     const config = setConfig(getState)
     axios.put(`${baseURL}/questions/${id}/`, values, config).then((res) => {
+      callBack();
       dispatch({
         type : UPDATE_QUESTION,
         payload : res.data
@@ -200,7 +214,7 @@ export const deleteQuestion = (id,callBack) => {
         payload : res.data
       })
       alert("question deleted ")
-    },alert("question not deleted ")
+    }
     )
   }
 }
@@ -247,10 +261,11 @@ export const deleteAnswer = (id,callBack) => {
 }
 
 
-export const editAnswer = (id, values) => {
+export const editAnswer = (id, values,callBack) => {
   return (dispatch , getState) => {
     const config = setConfig(getState)
     axios.put(`${baseURL}/answers/${id}/`, values, config).then((res) => {
+      callBack();
       dispatch({
         type : EDIT_ANSWER,
         payload : res.data
@@ -261,10 +276,11 @@ export const editAnswer = (id, values) => {
 }
 
 
-export const createComment = (newComment) => {
+export const createComment = (newComment,callBack) => {
   return (dispatch , getState) => {
     const config = setConfig(getState)
     axios.post(`${baseURL}/comment/`, newComment ,config).then((res) => {
+      callBack();
       dispatch({
         type: CREATE_COMMENT,
         payload: res.data    
@@ -274,10 +290,11 @@ export const createComment = (newComment) => {
 }
 
 
-export const editComment = (id, values) => {
+export const editComment = (id, values,callBack) => {
   return (dispatch , getState) => {
     const config = setConfig(getState)
     axios.put(`${baseURL}/comment/${id}/`, values, config).then((res) => {
+      callBack();
       dispatch({
         type : EDIT_COMMENT,
         payload : res.data

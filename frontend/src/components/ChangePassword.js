@@ -35,7 +35,7 @@ export class ChangePassword extends Component {
       changeEmailFormData.append('new_password1', this.state.input.new_password1);
       changeEmailFormData.append('new_password2', this.state.input.new_password2);
       this.props.changepassword(changeEmailFormData)
-      this.props.history.push('/login')
+      this.props.history.push('/login');
       let input = {};
       input["new_password1"] = "";
       input["new_password2"] = "";

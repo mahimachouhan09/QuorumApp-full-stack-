@@ -81,7 +81,7 @@ class AskQuestion extends Component {
             placeholder="Add description"
           />
         </FormControl><br/><br/>
-        <Button  variant="contained" color="secondary" onClick={this.handleOnSubmit}>
+        <Button  variant="contained" color="primary" onClick={this.handleOnSubmit}>
           Ask Question
         </Button>
       </form>

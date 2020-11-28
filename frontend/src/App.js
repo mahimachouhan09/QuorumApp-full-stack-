@@ -7,7 +7,7 @@ import AskQuestion from './components/AskQuestion'
 import Answer from './components/Answer'
 import {connect} from 'react-redux'
 import { logout } from './actions/index'
-import Navbar from './components/Navbar';
+import NavigationBar from './components/NavigationBar';
 import Profile from './components/Profile'
 import Follower from './components/Follower'
 import EditProfile from './components/EditProfile'
@@ -24,7 +24,7 @@ function App(props) {
       <header className="App-header">
       <Router>
       <div>
-        <Navbar />
+        <NavigationBar />
         <Switch>
           <Route path="/signup" >
             <Signup />
@@ -42,6 +42,7 @@ function App(props) {
             }}
           >
           </Route>
+
           <Route path="/askquestions">
             <AskQuestion />
           </Route>

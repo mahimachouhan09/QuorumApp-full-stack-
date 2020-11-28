@@ -35,7 +35,7 @@ export class ForgetPassword extends Component {
           onChange={this.handleOnChange}
         />
         </FormControl><br /><br />
-        <Button type="submit" variant="contained" color="secondary" onClick={this.handleOnSubmit}>
+        <Button type="submit" variant="contained" color="primary" onClick={this.handleOnSubmit}>
           email
         </Button>
         </form>

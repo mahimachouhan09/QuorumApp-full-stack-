@@ -11,8 +11,9 @@ import DeleteQuestion from './DeleteQuestion';
 import EditQuestion from './EditQuestion';
 import EditAnswer from './EditAnswer';
 import DeleteAnswer from './DeleteAnswer';
-import Typography from '@material-ui/core/Typography';
 import {Button} from '@material-ui/core'
+import 'font-awesome/css/font-awesome.css'
+
 
 class Question extends Component {
 
@@ -27,12 +28,11 @@ class Question extends Component {
     const { pk } = this.props.authlogin.user
 
     return (
-      <div> 
-        <h4>Welcome to Quorum!.</h4> 
+      <div>
+        <h4 style={{ color:'#002984', fontsize: "large" ,margin:"25px"}}>Welcome to Quorum!.</h4> 
         <SearchQuestion />
         <p>But for now, why don't you answer or ask some questions!</p>
 
-        <Typography >
           <Link style={{ color: 'white' }} to = {`/askquestions`}>
               <Button variant="contained" color="primary" >Ask Question </Button>
           </Link>
@@ -40,44 +40,62 @@ class Question extends Component {
           <Link style={{ color: 'white' }} to = {`/viewprofiles`}>
               <Button variant="contained" color="primary"> View Profiles </Button>
           </Link>
-        </Typography>
+
         <ul className= 'feed-block-ul'>
           {questions.map((value ,index) => ( 
             <li className ='feed-block-li' key = { index }>
-              question : {value.question}<br/>&nbsp;
-              description : {value.description}<br/> 
-              asked by : userid {value.user} &nbsp;         
-              pub_date : {value.pub_date}<br/>   
+              <span className="date">
+                <i className="fa fa-calendar" aria-hidden="true"></i>
+                {value.pub_date}</span>
+              <span className="question">
+              <i className="fa fa-thumb-tack" aria-hidden="true"></i>    
+              <span className="question-text">{value.question}</span> </span><br/> 
+              <span className="question">description : {value.description}</span><br/> 
+              <span className="question">{value.asked_by} &nbsp;&nbsp;&nbsp;</span>
+              <br/>   
               <Answer id={value.id}/>
-              <ul>
+
+              <ul className="answer-comment-ul">
                 {value.answers.map((item,index)=>(
-                  <li key = { index }>
+                  <li className="answer-comment-ul-li"  key = { index }>
                     answer : {item.content}<br/>
-                    answered_date : {item.answered_date}<br/>
+                    <span>
+                    <i className="fa fa-calendar" aria-hidden="true"></i>
+                    answered_date : {item.answered_date}</span>
+
+                    {/* item.user is the userid which gives answer to the question
+                    and pk is the id of the user which is logged in*/}
+
                     {(pk === item.user)? 
                       <span><DeleteAnswer id={item.id} /><EditAnswer data={item}/> </span>:
                       <p></p>
                     }
-                    comments_count : {item.comments_count}<br/><Comment answerId={item.id}/>
-                    <ul>
+                    comments: {item.comments_count}<br/><Comment answerId={item.id}/>
+                    <ul >
                     {item.comments.map((comment,index)=>(
                       <li key = { index }>
                         comments : {comment.comment} 
-                      {(pk === comment.user)? 
-                        <span><DeleteComment id={comment.id} /><EditComment data={comment}/> </span>:
-                        <p></p>
-                      }
-                      </li>
+
+                    {/* comment.user is the userid through which the comment has been done
+                    and pk is the id of the user which is logged in*/}
+
+                    {(pk === comment.user)? 
+                      <span><DeleteComment id={comment.id} /><EditComment data={comment}/> </span>:
+                      <p></p>
+                    }
+                    </li>
                     ))}
                     </ul>
                   </li>
                 ))}<hr/>
               </ul>
-                
+
+                {/* value.user is the userid through which the question was created and 
+                pk is the id of the user which is logged in*/}
+
               {(pk === value.user)? 
                 <span><DeleteQuestion id={value.id} /><EditQuestion data={value}/> </span>:
                 <p></p>}<br/>
-                question id: {value.id}
             </li>
           ))}
         </ul>

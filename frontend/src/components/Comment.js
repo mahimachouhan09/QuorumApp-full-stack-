@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createComment, getQuestions } from '../actions/index';
-import { withRouter } from "react-router-dom";
 import { Button } from '@material-ui/core';
 
 class Comment extends Component {
@@ -14,7 +13,8 @@ class Comment extends Component {
         created_on: "",
         user: "",
         answer: this.props.answerId
-      }
+      },
+      showForm: false
     }
   }
 
@@ -26,11 +26,9 @@ class Comment extends Component {
     } 
   }
 
-  handleOnSubmit = async(event) => {
+  handleOnSubmit = (event) => {
     event.preventDefault()
-    await this.props.createComment(this.state.newComment)
-    await this.props.getQuestions()
-    this.props.history.push('/questions')
+    this.props.createComment(this.state.newComment,()=>{this.props.getQuestions()})
   }
 
   render() {
@@ -59,4 +57,4 @@ const mapStateToProps = ({ authlogin, answerreducer ,commentreducer }) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {createComment, getQuestions})(Comment));
+export default connect(mapStateToProps, {createComment, getQuestions})(Comment);

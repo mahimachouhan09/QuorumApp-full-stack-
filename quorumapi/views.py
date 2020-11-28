@@ -68,7 +68,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     pagination_class = UserPagination
-    search_fields = ['user__username']
+    search_fields = ['user__username','question']
     permission_classes = [IsAuthenticated, IsInstanceOwner, ]
 
     def perform_create(self, serializer):

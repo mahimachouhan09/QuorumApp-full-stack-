@@ -5,7 +5,6 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 import { register } from "../actions/index";
-import { withRouter } from "react-router-dom";
 
 
 const required = (value) => {
@@ -83,7 +82,6 @@ const Register = (props) => {
     form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
       props.register(username, email, password1, password2)
-      // props.history.push('/login')
     }
   };
 
@@ -155,4 +153,4 @@ const Register = (props) => {
   );
 };
 
-export default withRouter(connect(null ,{register})(Register));
+export default connect(null ,{register})(Register);

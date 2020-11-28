@@ -26,10 +26,9 @@ class EditComment extends Component {
       } 
     }
   
-    handleSubmit = async(event) => {
+    handleSubmit = (event) => {
         event.preventDefault();
-        await this.props.editComment(this.props.data.id, this.state.commentData)
-        await this.props.getQuestions()
+        this.props.editComment(this.props.data.id, this.state.commentData,()=>{this.props.getQuestions()})
     }
     showForm = () => {
         return (<div>

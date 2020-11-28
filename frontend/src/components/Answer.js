@@ -42,13 +42,11 @@ class Answer extends Component {
     event.preventDefault()
     await this.props.createAnswer(this.state.newAnswer)
     await this.props.getQuestions()
-    this.props.history.push('/questions')
   }
 
   render() {
     return (
       <form onSubmit={this.handleOnSubmit}>
-        <label>answer</label>
         <input
           type="text"
           name="content"

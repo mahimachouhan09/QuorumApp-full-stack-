@@ -59,10 +59,10 @@ class Question(models.Model):
 
     def get_user(self):
         user_dict = vars(self.user)
-        return {"id": user_dict["id"], "username": user_dict["username"]}
+        return {"username": user_dict["username"]}
 
     def __str__(self):
-        return "%s " % self.id
+        return "%s " % self.question
 
 
 class Answer(models.Model):

@@ -28,13 +28,12 @@ handleOnChange = e => {
     }
 }
 
-handleOnSubmit = async(event) => {
+handleOnSubmit = (event) => {
     event.preventDefault();
     var EditFormData = new FormData();
     EditFormData.append('question', this.state.question);
     EditFormData.append('description', this.state.description);
-    await this.props.editQuestion(this.props.data.id, EditFormData)
-    await this.props.getQuestions()
+    this.props.editQuestion(this.props.data.id, EditFormData,()=>{this.props.getQuestions()})
 }
 
 showForm = () => {

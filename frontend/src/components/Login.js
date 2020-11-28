@@ -35,9 +35,10 @@ class Login extends Component {
         }
         
     return (
+      <div className="col s12 m8 l4 offset-m2 offset-l4 z-depth-4 card-panel login-form">
       <form onSubmit={this.onSubmit.bind(this)}>
-          <legend style={{ color:'purple', fontsize: "xx-large" }}>Login</legend>
-          <p>
+          <legend style={{ color:'#002984', fontsize: "xx-large" }}>Login</legend>
+          <p> <i class="fa fa-user" aria-hidden="true"></i>
             <label>Username</label>
             <input
               value = {this.state.username}
@@ -47,7 +48,7 @@ class Login extends Component {
               placeholder = "Username"
             />
           </p>
-          <p>
+          <p><i className="material-icons prefix"></i>
             <label>Password</label>
             <input
               value={this.state.password}
@@ -67,6 +68,7 @@ class Login extends Component {
             Don't have an account? <Link to="/signup">Register</Link>
           </p>
       </form>
+      </div>
     )
   }
 }

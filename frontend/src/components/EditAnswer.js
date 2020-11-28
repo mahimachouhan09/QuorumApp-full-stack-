@@ -20,13 +20,12 @@ handleOnChange = e => {
    this.setState({content: e.target.value} );
 }
 
-handleOnSubmit = async(event) => {
+handleOnSubmit = (event) => {
     event.preventDefault();
     var EditFormData = new FormData();
     EditFormData.append('question', this.props.data.question);
     EditFormData.append('content', this.state.content);
-    await this.props.editAnswer(this.props.data.id, EditFormData)
-    await this.props.getQuestions()
+    this.props.editAnswer(this.props.data.id, EditFormData,()=>{this.props.getQuestions()})
 }
 
 showForm = () => {

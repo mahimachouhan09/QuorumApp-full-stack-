@@ -24,7 +24,7 @@ export class SearchQuestion extends Component {
         <form onSubmit = {this.onFormSubmit} >
           <input type = 'search' value = {this.state.username} onChange = {this.onInputChange}/>
           <Button variant="contained" color="primary" onClick={this.onFormSubmit}>
-            search by username
+            search
           </Button>
         </form>
       </div>
