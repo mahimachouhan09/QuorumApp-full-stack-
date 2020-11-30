@@ -61,7 +61,7 @@ class AskQuestion extends Component {
     return (
       <form onSubmit={this.handleOnSubmit}>
         <FormControl>
-          <label>Type Question</label>
+          <label>Ask your Question</label>
           <Input
             type="text"
             name="question"
@@ -72,7 +72,7 @@ class AskQuestion extends Component {
         </FormControl><br />
 
         <FormControl>
-          <label>description</label>
+          <label>description</label><span class="optional">(Optional)</span>
           <Input
             type="text"
             name="description"

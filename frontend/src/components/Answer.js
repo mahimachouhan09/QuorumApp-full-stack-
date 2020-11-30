@@ -26,7 +26,8 @@ class Answer extends Component {
                     answer: ""
                 }
             ],
-        }
+        },
+        showForm: false
     }
   }
 
@@ -34,27 +35,39 @@ class Answer extends Component {
     if (e.target.name === 'content') {
       this.setState({ newAnswer :{
         ...this.state.newAnswer ,content: e.target.value} });
-  
     } 
   }
 
-  handleOnSubmit = async(event) => {
+  handleOnSubmit = (event) => {
     event.preventDefault()
-    await this.props.createAnswer(this.state.newAnswer)
-    await this.props.getQuestions()
+    this.props.createAnswer(this.state.newAnswer,()=>{this.props.getQuestions()})
+    this.setState({ showForm: false})
   }
 
-  render() {
+  showForm = () => {
     return (
-      <form onSubmit={this.handleOnSubmit}>
-        <input
-          type="text"
-          name="content"
-          value={this.state.newAnswer.content}
-          onChange={this.handleOnChange}
-        />
-        <Button variant="contained" color="secondary" onClick= {this.handleOnSubmit} >Answer</Button>
-      </form>
+      <form className="answer-text" onSubmit={this.handleOnSubmit}>
+      <input
+        type="text"
+        name="content"
+        value={this.state.newAnswer.content}
+        onChange={this.handleOnChange}
+      />
+      <Button variant="contained" color="primary" onClick= {this.handleOnSubmit}>
+        Answer</Button>
+    </form>
+    );
+  }
+  
+  render() {
+    return (     
+      <div>  
+        <Button type="button" variant="contained" color="primary" style={{display:"flex"}}
+          onClick={() => this.setState({ showForm: true })}>
+          Answer
+        </Button>  
+        {this.state.showForm ? this.showForm() : null}
+      </div>
     );
   }
 }

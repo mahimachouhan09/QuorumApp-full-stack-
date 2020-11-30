@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component ,Fragment} from 'react'
 import {connect} from 'react-redux'
 import {forgetpassword} from '../actions/index'
 import { Button, FormControl, Input } from '@material-ui/core';
@@ -13,17 +13,33 @@ export class ForgetPassword extends Component {
   }
 
   handleOnChange = event => this.setState({ email: event.target.value })
+  
+  validateForm = () => {
+    if (/^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/.test(this.state.email)){
+      return true
+    }
+    return false
+  }
 
   handleOnSubmit = event => {
     event.preventDefault()
+    const isValid = this.validateForm()
     var resetEmailFormData = new FormData();
-    resetEmailFormData.append('email', this.state.email);
-    this.props.forgetpassword(resetEmailFormData)
+    this.setState({
+      email:'',
+    })
+    if(isValid){
+      resetEmailFormData.append('email', this.state.email);
+      this.props.forgetpassword(resetEmailFormData)
+    }
+    else{
+      alert("Enter correct email")
+    }
   }
 
   render() {
-    return (
-      <div>
+    return ( 
+      <Fragment>
         <h3>Enter correct email address to reset password.</h3><br/>
         <form onSubmit={this.handleOnSubmit}>
         <FormControl>
@@ -39,7 +55,7 @@ export class ForgetPassword extends Component {
           email
         </Button>
         </form>
-      </div>
+      </Fragment>
     )
   }
 }

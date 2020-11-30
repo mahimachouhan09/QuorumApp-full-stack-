@@ -21,7 +21,8 @@ export class EditProfile extends Component {
         user_id: this.props.data.user_id,
         followers_count:this.props.data.followers_count,
         following_count: this.props.data.following_count,
-        follow_status: this.props.data.follow_status
+        follow_status: this.props.data.follow_status,
+        showForm:false
       }
 
       this.handleOnChange = this.handleOnChange.bind(this);
@@ -51,6 +52,7 @@ export class EditProfile extends Component {
     EditformData.append('contact_number', this.state.contact_number)
     EditformData.append('profile_pic', this.state.profile_pic, this.state.profile_pic.name);
     this.props.editprofile(EditformData, this.props.data.id)
+    this.setState({showForm:false})
   }
 
   showForm = () => {

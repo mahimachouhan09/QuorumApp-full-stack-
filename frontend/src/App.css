@@ -31,7 +31,7 @@ label {
   background-color: #f7f7f7;
   padding: 20px 25px 30px;
   margin: 0 auto 25px;
-  margin-top: 50px;
+  margin-top: 20px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
@@ -50,7 +50,20 @@ li{
   margin: 1%;
 }
 
-.button{
+.feedheading{
+  color: rgb(0, 41, 132);
+  margin: 25px;
+  font-size: 35px;
+  position: relative;
+}
+
+.question-div-p{
+  padding: 2px;
+  margin:10px;
+  text-align: center;
+}
+  
+/* .button{
   background-color: rgb(112, 76, 148);
   border-radius: 15px;
   color:white;
@@ -62,21 +75,27 @@ li{
 
 .button:hover{
   background-color: rgb(143, 114, 170);
-}
+} */
 
 .feed-block-ul .feed-block-li{
   padding: 35px;
   list-style-type: none;
   text-decoration: none;
   text-decoration-style: none;
-  border-color: dodgerblue;
+  border-color: rgb(63, 81, 181);
   border-width: thin;
   border-style: solid;
-  margin-left: 5%;
+  border-right: none;
+  border-left: none;
+  /* margin-left: 5%;
   margin-right: 5%;
-  margin-top: 3% ;
-  background-color: rgb(179, 207, 235);
-  overflow: hidden;
+  margin-top: 3% ; */
+  /* background-color: #007bff!important; */
+  /* background-color: #80BEFF, rgb(128,190,255) */
+  /* background-color: rgb(74, 161, 248); */
+  /* overflow: hidden; */
+  box-sizing: border-box;
+  display: block;
 }
 
 .date{
@@ -88,15 +107,30 @@ li{
   margin-left: 12px;
   margin-right: 10px;
 }
+
 .question{
   float: left;
   display: block;
 }
+
+.question-username{
+  display: flex;
+  padding: 8px 40px;
+  font-size: 14px;
+  height: 45px;
+  width: 100%;
+  text-align: left;
+  color: rgb(82, 74, 74);
+}
+
+.question-text:hover {
+  transform: scale(1.01);
+}
+
 .question-text {
   color: #2f3239;
-  font-size: 30px;
+  font-size: 32px;
   font-weight: bold;
-
   display: inline-block;
   margin-left: 12px;
   margin-right: 10px;
@@ -104,7 +138,6 @@ li{
   height: auto;
   line-height: normal;
   vertical-align: baseline;
-  font-family: FontAwesome;
   font-style: normal;
   text-decoration: inherit;
   -webkit-font-smoothing: antialiased;
@@ -113,12 +146,134 @@ li{
   box-sizing: border-box;
   color: #000000;
 }
-.feed-block-ul .feed-block-li .answer-ul .answer-ul-li{
+
+.answer-ul .answer-ul-li{
+  box-sizing: border-box; 
+  display: block;
+  border-width: thin;
+  border-style: solid;
+  border-color: rgb(197, 226, 255);
+  border-right: none;
+  border-left: none;
+  background-color: rgb(242, 247, 255);
+ } 
+
+.answer-ul .answer-ul-li{
+  /* padding: 35px;
+  border-color: rgb(83, 169, 255);
+  border-width: thin;
+  border-style: solid;
+  border-right: none;
+  border-left: none;
+  padding-left: 0%;
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 500px; */
+  /* box-sizing: border-box;
+  display: block; */
+}
+
+/* .answer-text{
+  float: left;
+  margin: 12px;
+  margin-right: 660px;
+  margin-left: 0;
+} */
+.comment-ul .comment-ul-li{
   box-sizing: border-box;
   display: block;
-  background-color: rgb(154, 190, 255);
+  border-color: rgb(83, 169, 255);
+  border-style: thin;
+  background-color: rgb(220, 231, 250);
+  align-content: center;
+  display: flex;
 }
+
 .deletequestion{
   display:flex;
-  justify-content: center;
+  justify-content: space-between;
+  margin: 5px;
+}
+
+.deleteanswer{
+  display:flex;
+  justify-content: left;
+}
+
+.no-results{
+  margin :50px;
+  font-size: larger;
+  font-style: inherit;
+}
+
+.question-description{
+  display: block;
+  float: left;
+  font-size: smaller;
+}
+
+.description-heading{
+  font-size: smaller;
+  text-align: left;
+  display :inline;
+}
+
+.count{
+  text-align: left;
+  font-size: smaller;
+  color: rgb(82, 74, 74);
+}
+
+.optional{
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.66;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.navbar-expand .navbar-nav .nav-link {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+
+.container {
+  display: table;
+}
+
+.row  {
+  display: table-row;
+}
+
+.left, .right {
+  display: table-cell;
+  }
+  
+.footer{
+  margin-top: 0;
+  background-color: rgb(229, 231, 235);  font-size: 30px;
+}
+
+.footer.footer-a508{
+  margin-top: 60; 
+  padding: 0;
+  border: 0;
+  font-family: "Muli", sans-serif;
+  vertical-align: baseline;
+  color: #2E3C57;
+  font-size: 100;
+  font-weight: 400;
+  line-height: 1.43;
+}
+
+.a508{
+  font-size: 12px;
+  margin-top: 32px ;
+  text-align: center;
+  font-family: Muli, sans-serif;
+  font-weight: 400;
+  line-height: 15px;
 }

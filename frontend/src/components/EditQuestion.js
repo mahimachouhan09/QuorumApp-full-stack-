@@ -34,6 +34,7 @@ handleOnSubmit = (event) => {
     EditFormData.append('question', this.state.question);
     EditFormData.append('description', this.state.description);
     this.props.editQuestion(this.props.data.id, EditFormData,()=>{this.props.getQuestions()})
+    this.setState({showForm: false})
 }
 
 showForm = () => {

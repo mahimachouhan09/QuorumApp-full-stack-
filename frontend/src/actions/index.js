@@ -1,7 +1,7 @@
 import axios from "axios"
 import { REGISTER_SUCCESS, REGISTER_FAIL, LOGIN, LOGIN_ERROR,LOGOUT,
     FORGET_PASSWORD_SUCCESS,CHANGE_PASSWORD,
-    GET_USERINFO_REQUEST,GET_USERINFO_SUCCESS,GET_USERINFO_FAILURE,
+    GET_USERINFO_REQUEST,GET_USERINFO_SUCCESS,GET_USERINFO_FAILURE,EDIT_USER_INFO,
     GET_PROFILES_REQUEST,GET_PROFILES_SUCCESS,GET_PROFILES_FAILURE,
     QUESTION_LOADING,GET_QUESTION, GET_QUESTION_ERROR,
     GET_FOLLOWER_REQUEST,GET_FOLLOWER_SUCCESS,GET_FOLLOWER_FAILURE,
@@ -64,7 +64,7 @@ export const forgetpassword = (email) => {
         payload : response.data
       })
       alert("email has been sent to email address.")
-    } ,alert("Type corect email address."))
+    } )
   }
 }
 
@@ -95,6 +95,21 @@ export const getUserInfo = () => (dispatch,getState) => {
       dispatch({ type: GET_USERINFO_FAILURE, payload: error.message });
     });
 };
+
+
+export const editUserInfo = (values,callBack) => {
+  return (dispatch, getState) => {
+    const config = setConfig(getState)
+      axios.put(`${baseURL}/rest-auth/user/`, values, config).then((res) =>  {
+        callBack();
+        dispatch({
+          type: EDIT_USER_INFO,
+          payload: res.data
+        })
+    })
+  }
+  }
+
 
 export const getprofiles = () => (dispatch,getState) => {
   dispatch({ type: GET_PROFILES_REQUEST });
@@ -234,10 +249,11 @@ export const searchQuestions = (username) => (dispatch,getState) => {
 };
 
 
-export const createAnswer = (newAnswer) => {
+export const createAnswer = (newAnswer,callBack) => {
   return (dispatch , getState) => {
     const config = setConfig(getState)
     axios.post(`${baseURL}/answers/`, newAnswer ,config).then((res) => {
+      callBack();
       dispatch({
         type: CREATE_ANSWER_SUCCESS,
         payload: res.data    
@@ -274,6 +290,20 @@ export const editAnswer = (id, values,callBack) => {
     })
   }
 }
+
+
+export const searchAnswers = (username) => (dispatch,getState) => {
+  dispatch({ type: QUESTION_LOADING });
+  const config = setConfig(getState)
+  axios
+    .get(`${baseURL}/answers/?search=${username}`,config)
+    .then((response) => {
+      dispatch({ type: GET_QUESTION, payload: response.data.results });
+    })
+    .catch((error) => {
+      dispatch({ type: GET_QUESTION_ERROR, payload: error.message });
+    });
+};
 
 
 export const createComment = (newComment,callBack) => {

@@ -3,6 +3,7 @@ import { Button, Radio ,FormControl,FormLabel,RadioGroup,FormControlLabel} from 
 import { connect } from 'react-redux';
 import { createProfile,getUserInfo,getprofiles } from '../actions/index'
 import EditProfile from './EditProfile'
+import EditUserInfo from './EditUserInfo'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 import Avatar from '@material-ui/core/Avatar';
@@ -60,7 +61,7 @@ export class UserInfo extends Component {
     if(isAuthenticated){
     this.props.getUserInfo()
     this.props.getprofiles()
-  }
+    }
   }
 
   showForm = () => {
@@ -117,48 +118,55 @@ export class UserInfo extends Component {
 
   render() {
     const { profiles } = this.props.profilereducer
-    // profiles arrray containing all info of profile
+    const { userinfo } = this.props.userinforeducer
     const { pk, username, email,first_name,last_name} = this.props.authlogin.user //login detail
+    const value= { pk, username, email,first_name,last_name}
 
     return (
       <div>
         <div>
-          <h2 style={{ color:'#002984', fontsize: "xx-small" ,margin:"25px"}}>Basic Info</h2>
-          <div className="col-md-12">
-          <i className="fa fa-user-circle-o" aria-hidden="true"></i>
-          <span> Username : {username}</span><br/>
-          <i className="fa fa-envelope" aria-hidden="true"></i>
-          <span> email : {email}</span> <br/>
-          <i className="fa fa-user" aria-hidden="true"></i>
-          <span> First name : {first_name}</span><br/>
-          <i className="fa fa-user" aria-hidden="true"></i>
-          <span> Last name : {last_name}</span><br/>
+          <h2 style={{ color:'#002984', fontsize: "xx-small" ,margin:"25px", relative:"relative"}}>
+            Basic Info</h2>
+
+          <div className="container">
+            <div className="row">
+              <i className="fa fa-user-circle-o" aria-hidden="true"></i>
+              <span> Username : {userinfo.username}</span><br/>
+            </div>
+            <div>
+              <i className="fa fa-envelope" aria-hidden="true"></i>
+              <span> email : {userinfo.email}</span> <br/>
+            </div>
+            <div>
+              <i className="fa fa-user" aria-hidden="true"></i>
+              <span> First name : {userinfo.first_name}</span><br/>
+            </div>
+            <div>
+              <i className="fa fa-user" aria-hidden="true"></i>
+              <span> Last name : {userinfo.last_name}</span><br/>
+            </div> 
           </div>
+          <EditUserInfo data = {value}/> 
 
         {/* (pk === user_id) condition for profile detail of login user only */}
+
           <ul>
           { profiles.map((value ,index)=> ( 
             <li key = { index }>
-             {console.log(pk)}
-             {console.log(value.id)}
-             {console.log(pk !== value.id , pk !== value.user_id , value.user_id === "")}
-             {console.log(pk !== value.id && pk !== value.user_id )}
-              {value.id === null}
-
               {(pk === value.user_id)?
-                <span> 
-                  <h2 style={{ color:'#002984', fontsize: "xx-small" ,margin:"25px"}}>Additional details</h2>
-                 <form className="col-md-12">
-                 <Avatar src={value.profile_pic} />
+                <div> 
+                 <h2 style={{ color:'#002984', fontsize: "xx-small" ,margin:"25px"}}>Additional details</h2>
+                <div className="col-md-12">
+                <Avatar src={value.profile_pic} />
                 <i className="fa fa-birthday-cake" aria-hidden="true"></i>
-                <span>  dob: {value.dob}</span><br/>
-                  gender:{value.gender}<br/>
-                  contact_number:{value.contact_number}<br/>
-                  followers: {value.followers_count},
-                  following: {value.following_count},<br/>
-                  </form>
+                <span> dob: {value.dob}</span><br/>
+                <span> gender:{value.gender}</span><br/>
+                <span> contact number:{value.contact_number}</span><br/>
+                <span> followers: {value.followers_count}</span>,
+                <span> following: {value.following_count}</span>,<br/>
+                  </div>
                   <EditProfile  data={value}></EditProfile>
-                </span>
+                </div>
                 
               :<p></p>}    
                {/* {(pk !== value.user_id)?
@@ -177,10 +185,11 @@ export class UserInfo extends Component {
   }
 }
 
-const mapStateToProps = ({ authlogin ,profilereducer}) => {
+const mapStateToProps = ({ authlogin ,profilereducer,userinforeducer}) => {
   return { 
       authlogin,
-      profilereducer
+      profilereducer,
+      userinforeducer
   }
 }
 

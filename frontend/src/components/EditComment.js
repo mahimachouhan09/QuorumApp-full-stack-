@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {connect} from 'react-redux'
 import {editComment,getQuestions} from '../actions/index'
 import Button from '@material-ui/core/Button';
@@ -14,7 +14,8 @@ class EditComment extends Component {
                 created_on: this.props.data.created_on,
                 user:this.props.data.user ,
                 answer: this.props.data.answer
-            }
+            },
+            showForm: false
         }
         this.handleOnChange = this.handleOnChange.bind(this);
     }
@@ -29,6 +30,9 @@ class EditComment extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.props.editComment(this.props.data.id, this.state.commentData,()=>{this.props.getQuestions()})
+        this.setState({
+            showForm: false
+        })
     }
     showForm = () => {
         return (<div>
@@ -55,14 +59,17 @@ class EditComment extends Component {
 
     render() { 
         return (
-            <div>
-                <Button type="button" 
-                variant="contained"
-                color="primary"
-                startIcon={<EditIcon />}
-                onClick={() => this.setState({ showForm: true })}>Edit Comment</Button>
-                {this.state.showForm ? this.showForm() : null}
-            </div>
+            <Fragment>
+                <Button 
+                    type="button" 
+                    variant="contained"
+                    color="primary"
+                    startIcon={<EditIcon />}
+                    onClick={() => this.setState({ showForm: true })}>
+                    Edit Comment
+                </Button>
+                    {this.state.showForm ? this.showForm() : null}
+            </Fragment>
         )
     }
 }

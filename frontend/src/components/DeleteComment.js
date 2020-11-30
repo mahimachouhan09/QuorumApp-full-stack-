@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import {deletecomment ,getQuestions} from '../actions/index'
 import Button from '@material-ui/core/Button';
@@ -13,18 +13,19 @@ class DeleteComment extends Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleOnSubmit}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<DeleteIcon />}
-            onClick = {this.handleOnSubmit}
-          >
-          delete comment
-          </Button>
-        </form>
-      </div>
+      <Fragment>
+          <form onSubmit={this.handleOnSubmit}>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<DeleteIcon />}
+              onClick = {this.handleOnSubmit}
+              style={{marginRight:"10px" ,cursor: "pointer"}} 
+            >
+            delete comment
+            </Button>
+          </form>
+      </Fragment>
     )
   }
 }

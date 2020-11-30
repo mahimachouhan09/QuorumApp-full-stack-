@@ -72,6 +72,10 @@ class Answer(models.Model):
     content = models.TextField()
     answered_date = models.DateField(auto_now_add=True)
 
+    def get_user(self):
+        user_dict = vars(self.user)
+        return {"username": user_dict["username"]}
+    
     def __str__(self):
         return "%s" % self.content
 

@@ -16,13 +16,15 @@ class CommentSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
+    username = serializers.CharField(
+        source='get_user', read_only=True)
 
     class Meta:
         model = Answer
         fields = (
             'id',
             'question', 'user', 'content', 'answered_date',
-            'comments_count',
+            'comments_count', 'username',
             'comments',
             )
         read_only_fields = ('id', 'user', 'answered_date',)
@@ -32,6 +34,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    answers_count = serializers.SerializerMethodField(read_only=True)
     answers = AnswerSerializer(many=True, read_only=True)
     asked_by = serializers.CharField(
         source='get_user', read_only=True)
@@ -42,12 +45,15 @@ class QuestionSerializer(serializers.ModelSerializer):
             'id',
             'user', 'asked_by',
             'question', 'pub_date',
-            'description',
+            'description', 'answers_count',
             'answers',
             )
         read_only_fields = (
             'id', 'user', 'asked_by', 'pub_date',
             )
+
+    def get_answers_count(self, obj):
+        return obj.answers.count()
 
 
 class ProfileSerializer(serializers.ModelSerializer):

@@ -80,8 +80,8 @@ class AnswerViewSet(viewsets.ModelViewSet):
     serializer_class = AnswerSerializer
     pagination_class = UserPagination
     filter_backends = [SearchFilter, OrderingFilter]
-    search_fields = ['question__question', ]
-    ordering_fields = ['question__question', ]
+    search_fields = ['user__username', 'question__question', ]
+    ordering_fields = ['user__username', 'question__question', ]
     permission_classes = [IsAuthenticatedOrReadOnly, IsInstanceOwner, ]
 
     def perform_create(self, serializer):

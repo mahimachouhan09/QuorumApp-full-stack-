@@ -87,7 +87,7 @@ const Register = (props) => {
 
   return (
     <div className="col-md-12">
-      <h3>Register new User</h3>
+      <h3 style={{ color:'#002984', fontsize: "large" ,margin:"20px 0"}}>Register new User</h3>
       <div className="card card-container">
         <Form onSubmit={handleRegister} ref={form}>
           {!successful && (
@@ -141,7 +141,11 @@ const Register = (props) => {
               </div>
 
               <div className="form-group">
-                <button className="btn btn-primary btn-block">Sign Up</button>
+                <button 
+                  style={{backgroundColor:"#3f51b5",  borderColor:"#3f51b5"}}
+                  className="btn btn-primary btn-block">
+                    Sign Up
+                </button>
               </div>
             </div>
           )}

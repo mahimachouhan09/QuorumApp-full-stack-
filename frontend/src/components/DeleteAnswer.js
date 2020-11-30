@@ -19,6 +19,7 @@ class DeleteAnswer extends Component {
             color="primary"
             startIcon={<DeleteIcon />}
             onClick = {this.handleOnSubmit}
+            style={{marginRight:"10px" ,cursor: "pointer"}} 
           >
             delete Answer
           </Button>

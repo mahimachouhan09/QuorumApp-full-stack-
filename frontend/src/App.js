@@ -16,6 +16,7 @@ import ChangePassword from './components/ChangePassword'
 import Signup from './components/Register'
 import UserInfo from './components/UserInfo'
 import "bootstrap/dist/css/bootstrap.min.css";
+import Footer from './components/Footer';
 
 function App(props) { 
   const { isAuthenticated } = props
@@ -31,6 +32,7 @@ function App(props) {
           </Route>
 
           <Route path="/login"><Login /></Route>
+          <Route exact path="/"><Login /></Route>
 
           <Route path="/questions"  
             render={() => {
@@ -110,6 +112,7 @@ function App(props) {
       </div>
     </Router>
       </header>
+      <Footer/>
     </div>
   );
 }

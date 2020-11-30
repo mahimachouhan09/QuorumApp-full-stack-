@@ -4,19 +4,20 @@ import { logout } from '../actions/index'
 import HomeIcon from '@material-ui/icons/Home';
 import {Nav,Navbar,Form} from 'react-bootstrap'
 import { Button} from '@material-ui/core';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 class NavigationBar extends Component {
     render() {
         const { isAuthenticated } = this.props.authlogin
         if (isAuthenticated) {
             const { username } = this.props.authlogin.user
+
             return (
-                <Navbar bg="primary" variant="dark" fixed="top">
+                <Navbar style={{backgroundColor : "#3f51b5"}} variant="dark" fixed="top">
                 <Navbar.Brand href="#"><HomeIcon/>&nbsp;Quorum</Navbar.Brand>
                 <Nav className="mr-auto">
-                    <Nav.Link href="/user-info"
-                        className="btn btn-sm btn-outline-info" >
-                        {username}<i className="fa fa-user ml-1"></i>
+                    <Nav.Link href="/user-info">
+                        {username} <i className="fa fa-user ml-1"></i>
                     </Nav.Link>
                     <Nav.Link href="/changepassword" variant="standard" to="/changepassword">
                         Change password
@@ -26,9 +27,12 @@ class NavigationBar extends Component {
                     </Nav.Link>
                     </Nav>
                     <Form inline>
-                        <Button onClick={this.props.logout} to="/" variant="contained"
-                            style={{ backgroundColor: "#2196f3", margin: "auto 0" }}
-                            className="btn btn-sm btn-outline-danger ml-2" >
+                        <Button
+                            to="/" 
+                            onClick={this.props.logout} 
+                            variant="contained"
+                            startIcon={<ExitToAppIcon/>}
+                            style={{ backgroundColor: "#587acc", margin: "auto 0" }}>
                             Logout
                         </Button>
                     </Form>
@@ -37,7 +41,7 @@ class NavigationBar extends Component {
         }
         else {
             return (
-                <Navbar bg="primary" variant="dark" fixed="top">
+                <Navbar style={{backgroundColor : "#3f51b5"}} variant="dark" fixed="top">
                 <Navbar.Brand href="#">Quorum</Navbar.Brand>
                 <Nav className="mr-auto">
                     <Nav.Link href="/login">Login</Nav.Link>

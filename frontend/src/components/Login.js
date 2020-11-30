@@ -66,7 +66,7 @@ class Login extends Component {
           </p>
           <CircularProgress style={progress ? { display: "inline-block" } : { display: "none" }} />
           <p>
-            Don't have an account? <Link to="/signup">Register</Link>
+            Don't have an account? <Link to="/signup" style={{color:"rgb(63, 81, 181)"}}>Register</Link>
           </p>
       </form>
       </div>
