@@ -54,6 +54,9 @@ export class UserInfo extends Component {
     EditformData.append('contact_number', this.state.contact_number)
     EditformData.append('profile_pic', this.state.profile_pic, this.state.profile_pic.name);
     this.props.createProfile(EditformData)
+    this.setState({
+      showForm:false
+    })
   }
   
   componentDidMount() {
@@ -135,7 +138,7 @@ export class UserInfo extends Component {
             </div>
             <div>
               <i className="fa fa-envelope" aria-hidden="true"></i>
-              <span> email : {userinfo.email}</span> <br/>
+              <span> Email : {userinfo.email}</span> <br/>
             </div>
             <div>
               <i className="fa fa-user" aria-hidden="true"></i>
@@ -147,6 +150,10 @@ export class UserInfo extends Component {
             </div> 
           </div>
           <EditUserInfo data = {value}/> 
+          <Button type="button" variant="contained" color="primary"
+            onClick={() => this.setState({ showForm: true })}>
+            Create Profile
+          </Button>
 
         {/* (pk === user_id) condition for profile detail of login user only */}
 
@@ -159,17 +166,17 @@ export class UserInfo extends Component {
                 <div className="col-md-12">
                 <Avatar src={value.profile_pic} />
                 <i className="fa fa-birthday-cake" aria-hidden="true"></i>
-                <span> dob: {value.dob}</span><br/>
-                <span> gender:{value.gender}</span><br/>
-                <span> contact number:{value.contact_number}</span><br/>
-                <span> followers: {value.followers_count}</span>,
-                <span> following: {value.following_count}</span>,<br/>
+                <span> Dob: {value.dob}</span><br/>
+                <span> Gender:{value.gender}</span><br/>
+                <span> Number:{value.contact_number}</span><br/>
+                <span> Followers: {value.followers_count}</span>,
+                <span> Following: {value.following_count}</span>,<br/>
                   </div>
                   <EditProfile  data={value}></EditProfile>
                 </div>
                 
               :<p></p>}    
-               {/* {(pk !== value.user_id)?
+              {/* {(pk !== value.user_id)?
                <p> <Button type="button" variant="contained" color="primary"
                   onClick={() => this.setState({ showForm: true })}>
                   Create Profile
@@ -179,6 +186,7 @@ export class UserInfo extends Component {
           ))}
           </ul>    
         </div>
+          
         {this.state.showForm ? this.showForm() : null}
       </div>
     )

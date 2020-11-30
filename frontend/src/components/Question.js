@@ -44,9 +44,8 @@ class Question extends Component {
 
         <ul className= 'feed-block-ul'>
           { questions.length>0 ? questions.map((value ,index) => {
-            console.log(value.asked_by)
-            const username = value.asked_by.substring(14,value.asked_by.length-2)
-        
+            const username = value && value.asked_by && value.asked_by.substring(14,value.asked_by.length-2)
+
           return ( 
             <li className ='feed-block-li' key = { index }>
               <span className="date">
@@ -61,13 +60,14 @@ class Question extends Component {
                 <h6 className ="description-heading">describe more: </h6>{value.description}</div><br/><br/>
               <div><Answer id={value.id}/></div>
 
-              {(value.answers.length === 0?<p></p>:
+              { value && (value.answers && value.answers.length === 0?<p></p>:
                 <h5 className="count">{value.answers_count} Answers <SearchAnswer/></h5>)}
               
               <ul className="answer-ul">
-                {value.answers.map((item,index)=>{
+                {value.answers && value.answers.map((item,index)=>{
                 const user = item.username.substring(14,item.username.length-2)
-            
+                const question_dict = item.question_dict.substring(17,item.question_dict)
+ 
               return ( 
                   <li className="answer-ul-li" key = { index }>
                     <span style={{float:"left",textAlign:"left"}}>
@@ -78,7 +78,8 @@ class Question extends Component {
                     <i className="fa fa-calendar" aria-hidden="true"></i>
                       answered_date : {item.answered_date}</span><br />
                       <div className ="question-username">
-                      <h6>{user}</h6></div> 
+                      <h6>{user}</h6></div>
+                      
                     {/* item.user is the userid which gives answer to the question
                     and pk is the id of the user which is logged in*/}
 

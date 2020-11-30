@@ -15,7 +15,6 @@ export class EditUserInfo extends Component {
       last_name: this.props.data.last_name,
       showForm: false
       }
-      
   }
 
   handleOnChange = e => {
@@ -27,14 +26,40 @@ export class EditUserInfo extends Component {
     } 
   }
 
+  validateForm = () => {
+    let error = "";
+    if (!/^[a-zA-Z]/.test(this.state.first_name)) {
+      error = "First Name must contain only alphabet";
+    }
+
+    if (!/^[a-zA-Z]/.test(this.state.last_name)) {
+      error= "Last Name must contain only alphabet";
+    }
+
+    if (error) {
+      this.setState({ error });
+    alert('Alphabets only')
+    return false;
+    }
+
+    else{
+      return true;
+    }
+}
+
   handleSubmit = (event) => {
     event.preventDefault();
+    const isValid = this.validateForm()
     let form_data = new FormData();
     form_data.append('first_name',this.state.first_name);
     form_data.append('last_name' ,this.state.last_name);
     form_data.append('pk', this.state.pk);
     form_data.append('username', this.state.username);
+    
+    if(isValid){
     this.props.editUserInfo(form_data,()=>{this.props.getUserInfo()})
+    }
+
     this.setState({
       showForm: false
     })
@@ -66,7 +91,8 @@ export class EditUserInfo extends Component {
         <Button type='submit' onClick={this.handleSubmit} variant="contained" color="secondary">
           Update Profile
         </Button>
- 
+        {/* {(this.state.errors.first_name)||'' }
+        {(this.state.errors.last_name)||'' } */}
       </form>
     </div>
     );

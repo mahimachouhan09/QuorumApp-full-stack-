@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import { getprofiles } from '../actions/index'
 import Follow from './Follow'
+import SearchProfile from './SearchProfile'
 import {Link} from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar';
 
@@ -19,19 +20,23 @@ export class Profile extends Component {
 
     return (
       <div>
+        <SearchProfile/>
+        <h4 style={{ color:'#002984', fontsize: "xx-large" }}>Users</h4>
         <ul>
           { profiles.map((value ,index)=> ( 
             <li key = { index }>  
             {(pk !== value.user_id)? <span> 
-              <Avatar src={value.profile_pic} />
-              first name : {value.first_name}<br/>              
-              last name : {value.last_name}<br/>   
-              username  : {value.username}<br/>
-              dob: {value.dob}<br/>
-              gender:{value.gender}<br/>
-              contact number:{value.contact_number}<br/>
-              <Link to={`/followers/${value.id}`}>followers{value.followers_count}</Link>&nbsp;
-              <Link to={`/following/${value.id}`}>following {value.following_count}</Link>
+              <Avatar style ={{display :"flex"}} src={value.profile_pic} />
+              First name : {value.first_name}<br/>              
+              Last name : {value.last_name}<br/>   
+              Username  : {value.username}<br/>
+              Dob: {value.dob}<br/>
+              Gender:{value.gender}<br/>
+              Contact number:{value.contact_number}<br/>
+              <Link to={`/followers/${value.id}`} params={{follower_id: "id" }}>
+                followers{value.followers_count}</Link>&nbsp;
+              <Link to={`/following/${value.id}`} params={{follower_id: "id" }}>
+                following {value.following_count}</Link>
               <Follow  id={value.user_id} follow_status={value.follow_status} />
               </span>:<p></p>}
             </li>

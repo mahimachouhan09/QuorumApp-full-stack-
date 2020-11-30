@@ -79,9 +79,6 @@ class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
     pagination_class = UserPagination
-    filter_backends = [SearchFilter, OrderingFilter]
-    search_fields = ['user__username', 'question__question', ]
-    ordering_fields = ['user__username', 'question__question', ]
     permission_classes = [IsAuthenticatedOrReadOnly, IsInstanceOwner, ]
 
     def perform_create(self, serializer):

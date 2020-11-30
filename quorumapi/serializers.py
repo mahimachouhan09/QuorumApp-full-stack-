@@ -18,11 +18,13 @@ class AnswerSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     username = serializers.CharField(
         source='get_user', read_only=True)
+    question_dict = serializers.CharField(
+        source='get_question', read_only=True)
 
     class Meta:
         model = Answer
         fields = (
-            'id',
+            'id', 'question_dict',
             'question', 'user', 'content', 'answered_date',
             'comments_count', 'username',
             'comments',

@@ -124,6 +124,19 @@ export const getprofiles = () => (dispatch,getState) => {
     });
 };
 
+export const searchProfile = (profiles) => (dispatch,getState) => {
+  dispatch({ type: GET_PROFILES_REQUEST });
+  const config = setConfig(getState)
+  axios
+    .get(`${baseURL}/profile/?search=${profiles}`,config)
+    .then((response) => {
+      dispatch({ type: GET_PROFILES_SUCCESS, payload: response.data.results });
+    })
+    .catch((error) => {
+      dispatch({ type: GET_PROFILES_FAILURE, payload: error.message });
+    });
+};
+
 
 export const createProfile = (values) => {
   return (dispatch , getState) => {
