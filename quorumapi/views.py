@@ -88,7 +88,6 @@ class AnswerViewSet(viewsets.ModelViewSet):
 class Followers(generics.ListCreateAPIView):
     queryset = Follow.objects.all()
     serializer_class = FollowerSerializer
-    pagination_class = UserPagination
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):

@@ -23,8 +23,14 @@ class SearchProfile extends Component {
     return (
       <div style={{marginTop:"40px", position:"relative"}}>
         <form onSubmit = {this.onFormSubmit} >
-          <input type = 'search' value = {this.state.profile} onChange = {this.onInputChange}/>
-          <Button variant="contained" color="primary" onClick={this.onFormSubmit}>
+        {/* <div >
+          <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+        </div> */}
+          <input
+            className="active-cyan-3 active-cyan-4 mb-4" 
+            type = 'search' value = {this.state.profile}
+            onChange = {this.onInputChange}/>
+          <Button style={{marginLeft:"10px"}} variant="contained" color="primary" onClick={this.onFormSubmit}>
             search
           </Button>
         </form>

@@ -7,7 +7,8 @@ import profilereducer from './profilereducer'
 import commentreducer from './commentreducer'
 import forgetpassword from './forgetpassword'
 import userinforeducer from './userinforeducer'
-
+import followerreducer from './followerreducer'
+import followingreducer from './followingreducer'
 
 export default combineReducers({
   registerreducer,
@@ -17,5 +18,7 @@ export default combineReducers({
   answerreducer,
   profilereducer,
   commentreducer,
-  forgetpassword
+  forgetpassword,
+  followerreducer,
+  followingreducer
 });

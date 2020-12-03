@@ -240,6 +240,17 @@ li{
   margin-left: 10px;
 }
 
+/* .read-more-less--more
+.read-more-less--less {
+  color: #999;
+  font-size: small;
+  font-weight: 500;
+} */
+span.readMoreText{  
+  color: #999;
+  font-size: small;
+  font-weight: 500;
+}
 
 .container {
   display: table;

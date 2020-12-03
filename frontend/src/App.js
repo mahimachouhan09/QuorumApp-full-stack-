@@ -9,7 +9,9 @@ import {connect} from 'react-redux'
 import { logout } from './actions/index'
 import NavigationBar from './components/NavigationBar';
 import Profile from './components/Profile'
+import Follow from './components/Follow'
 import Follower from './components/Follower'
+import Following from './components/Following'
 import EditProfile from './components/EditProfile'
 import ForgetPassword from './components/ForgetPassword'
 import ChangePassword from './components/ChangePassword'
@@ -108,6 +110,29 @@ function App(props) {
               }
             }}>
           </Route>
+
+          <Route exact path="/following/:id" 
+            render={() => {
+              if (isAuthenticated) {
+                return <Following {...props} 
+                />;
+              } else {
+                return <Redirect to="/login" />;
+              }
+            }}>
+          </Route>
+
+          <Route exact path="/follow/:id" 
+            render={() => {
+              if (isAuthenticated) {
+                return <Follow {...props} 
+                />;
+              } else {
+                return <Redirect to="/login" />;
+              }
+            }}>
+          </Route>
+
         </Switch>
       </div>
     </Router>

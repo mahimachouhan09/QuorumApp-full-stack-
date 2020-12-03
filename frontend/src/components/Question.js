@@ -5,7 +5,6 @@ import { getQuestions } from '../actions/index'
 import { connect } from 'react-redux';
 import Comment from './Comment';
 import SearchQuestion from './SearchQuestion';
-import SearchAnswer from './SearchAnswer';
 import EditComment from './EditComment';
 import DeleteComment from './DeleteComment';
 import DeleteQuestion from './DeleteQuestion';
@@ -15,6 +14,7 @@ import DeleteAnswer from './DeleteAnswer';
 import {Button} from '@material-ui/core'
 import 'font-awesome/css/font-awesome.css'
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import ReadMoreAndLess from 'react-read-more-less';
 
 class Question extends Component {
 
@@ -61,17 +61,25 @@ class Question extends Component {
               <div><Answer id={value.id}/></div>
 
               { value && (value.answers && value.answers.length === 0?<p></p>:
-                <h5 className="count">{value.answers_count} Answers <SearchAnswer/></h5>)}
+                <h5 className="count">{value.answers_count} Answers</h5>)}
               
               <ul className="answer-ul">
                 {value.answers && value.answers.map((item,index)=>{
                 const user = item.username.substring(14,item.username.length-2)
-                const question_dict = item.question_dict.substring(17,item.question_dict)
- 
+                 
               return ( 
                   <li className="answer-ul-li" key = { index }>
                     <span style={{float:"left",textAlign:"left"}}>
-                      <QuestionAnswerIcon /> {item.content}<br/>
+                      <QuestionAnswerIcon /> 
+                      <ReadMoreAndLess
+                        charLimit={50}
+                        readMoreText="Read more ▼"
+                        readLessText="Read less ▲"
+                      >
+                        {item.content}
+                      </ReadMoreAndLess>
+                          
+                    <br/>
                     </span>
 
                     <span className="date">

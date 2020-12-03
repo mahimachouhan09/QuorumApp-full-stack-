@@ -5,9 +5,10 @@ import { REGISTER_SUCCESS, REGISTER_FAIL, LOGIN, LOGIN_ERROR,LOGOUT,
     GET_PROFILES_REQUEST,GET_PROFILES_SUCCESS,GET_PROFILES_FAILURE,
     QUESTION_LOADING,GET_QUESTION, GET_QUESTION_ERROR,
     GET_FOLLOWER_REQUEST,GET_FOLLOWER_SUCCESS,GET_FOLLOWER_FAILURE,
+    GET_FOLLOWING_REQUEST,GET_FOLLOWING_SUCCESS,GET_FOLLOWING_FAILURE,
     CREATE_ANSWER_SUCCESS,CREATE_COMMENT, EDIT_COMMENT,
     CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, DELETE_ANSWER,
-    EDIT_ANSWER, UPDATE_PROFILE, DELETE_COMMENT, CREATE_PROFILE
+    EDIT_ANSWER, UPDATE_PROFILE, DELETE_COMMENT, CREATE_PROFILE,FOLLOW_SUCCESS,FOLLOW_FAILURE,
   }
 from "./actionTypes"
 const baseURL = `http://127.0.0.1:8000`
@@ -124,6 +125,7 @@ export const getprofiles = () => (dispatch,getState) => {
     });
 };
 
+
 export const searchProfile = (profiles) => (dispatch,getState) => {
   dispatch({ type: GET_PROFILES_REQUEST });
   const config = setConfig(getState)
@@ -172,9 +174,10 @@ export const follow = (id) => (dispatch,getState) => {
   axios
     .get(newUrl,config)
     .then((response) => {
-      dispatch({ type: GET_QUESTION, payload: response.data.results });
+      dispatch({ type: FOLLOW_SUCCESS, payload: response.data.results });
     })
-    .catch((error) => {console.log(error)});
+    .catch((error) => {
+      dispatch({type: FOLLOW_FAILURE, payload: error.message })});
 };
 
 
@@ -182,13 +185,24 @@ export const followers = (id) => (dispatch,getState) => {
   const config = setConfig(getState)
   dispatch({ type: GET_FOLLOWER_REQUEST });
   axios.get(`${baseURL}/followers/${id}/`,config).then((response) => {
-      dispatch({ type: GET_FOLLOWER_SUCCESS, payload: response.data.results });
+      dispatch({ type: GET_FOLLOWER_SUCCESS, payload: response.data});
     })
   .catch((error) => {
     dispatch({ type: GET_FOLLOWER_FAILURE, payload: error.message });
   });
 };
 
+export const following = (id) => (dispatch,getState) => {
+  const config = setConfig(getState)
+  dispatch({ type: GET_FOLLOWING_REQUEST });
+  axios.get(`${baseURL}/following/${id}/`,config).then((response) => {
+    console.log('following response',response)
+      dispatch({ type: GET_FOLLOWING_SUCCESS, payload: response.data});
+    })
+  .catch((error) => {
+    dispatch({ type: GET_FOLLOWING_FAILURE, payload: error.message });
+  });
+};
 
 export const getQuestions = () => (dispatch,getState) => {
   dispatch({ type: QUESTION_LOADING });
@@ -303,20 +317,6 @@ export const editAnswer = (id, values,callBack) => {
     })
   }
 }
-
-
-export const searchAnswers = (username) => (dispatch,getState) => {
-  dispatch({ type: QUESTION_LOADING });
-  const config = setConfig(getState)
-  axios
-    .get(`${baseURL}/answers/?search=${username}`,config)
-    .then((response) => {
-      dispatch({ type: GET_QUESTION, payload: response.data.results });
-    })
-    .catch((error) => {
-      dispatch({ type: GET_QUESTION_ERROR, payload: error.message });
-    });
-};
 
 
 export const createComment = (newComment,callBack) => {
