@@ -2,34 +2,80 @@ from datetime import date
 
 from rest_framework import serializers
 
-from .models import Answer, Comment, Follow, Profile, Question
+from .models import (
+    Answer, Comment, Follow, Profile, Question, QuestionVote,
+    AnswerVote, CommentVote)
+
+
+class QuestionVoteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = QuestionVote
+        fields = '__all__'
+        read_only_fields = ('id','user')
+
+
+class CommentVoteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CommentVote
+        fields = '__all__'
+        read_only_fields = ('id','user')
+
+
+class AnswerVoteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AnswerVote
+        fields = '__all__'
+        read_only_fields = ('id','user')
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    commented_date_time = serializers.CharField(source='get_date', read_only=True)
+    commentlike = CommentVoteSerializer(many=True, read_only=True)
+    like_count = serializers.SerializerMethodField(read_only=True)
+    dislike_count = serializers.SerializerMethodField(read_only=True)
 
+    def get_like_count(self, obj):
+        return obj.commentlike.filter(like=True).count()
+
+    def get_dislike_count(self, obj):
+        return obj.commentlike.filter(like=False).count()
     class Meta:
         model = Comment
-        fields = '__all__'
-        read_only_fields = ('id', 'user', )
+        fields = ('id', 'user', 'comment', 'answer', 'commented_date_time',
+        'like_count', 'dislike_count', 'commentlike',)
+        read_only_fields = ('id', 'user', 'commented_date_time',)
 
 
 class AnswerSerializer(serializers.ModelSerializer):
+    answered_date_time = serializers.CharField(source='get_date', read_only=True)
     comments_count = serializers.SerializerMethodField(read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
     username = serializers.CharField(
         source='get_user', read_only=True)
     question_dict = serializers.CharField(
         source='get_question', read_only=True)
+    answervote = AnswerVoteSerializer(many=True, read_only=True)
+    answer_upvote_count = serializers.SerializerMethodField(read_only=True)
+    answer_downvote_count = serializers.SerializerMethodField(read_only=True)
+
+    def get_answer_upvote_count(self, obj):
+        return obj.answervote.filter(vote=True).count()
+
+    def get_answer_downvote_count(self, obj):
+        return obj.answervote.filter(vote=False).count()
 
     class Meta:
         model = Answer
         fields = (
-            'id', 'question_dict',
-            'question', 'user', 'content', 'answered_date',
-            'comments_count', 'username',
-            'comments',
+            'id', 'question_dict', 'answered_date_time',
+            'question', 'user', 'content',
+            'answer_upvote_count', 'answer_downvote_count', 'answervote',
+            'comments_count', 'username', 'photo', 'comments',
             )
-        read_only_fields = ('id', 'user', 'answered_date',)
+        read_only_fields = ('id', 'user', 'answered_date_time',)
 
     def get_comments_count(self, obj):
         return obj.comments.count()
@@ -40,18 +86,27 @@ class QuestionSerializer(serializers.ModelSerializer):
     answers = AnswerSerializer(many=True, read_only=True)
     asked_by = serializers.CharField(
         source='get_user', read_only=True)
+    pub_date_time = serializers.CharField(source='get_date', read_only=True)
+    vote = QuestionVoteSerializer(many=True, read_only=True)
+    upvote_count = serializers.SerializerMethodField(read_only=True)
+    downvote_count = serializers.SerializerMethodField(read_only=True)
+
+    def get_upvote_count(self, obj):
+        return obj.vote.filter(vote=True).count()
+
+    def get_downvote_count(self, obj):
+        return obj.vote.filter(vote=False).count()
 
     class Meta:
         model = Question
         fields = (
-            'id',
-            'user', 'asked_by',
-            'question', 'pub_date',
-            'description', 'answers_count',
-            'answers',
+            'id', 'pub_date_time', 'user', 'asked_by',
+            'question', 'description', 'answers_count',
+            'answers', 'upvote_count', 'downvote_count', 'vote',
+            'favourite',
             )
         read_only_fields = (
-            'id', 'user', 'asked_by', 'pub_date',
+            'id', 'user', 'asked_by', 'pub_date_time', 'questionVote',
             )
 
     def get_answers_count(self, obj):

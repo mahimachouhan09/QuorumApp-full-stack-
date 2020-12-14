@@ -9,6 +9,7 @@ import { REGISTER_SUCCESS, REGISTER_FAIL, LOGIN, LOGIN_ERROR,LOGOUT,
     CREATE_ANSWER_SUCCESS,CREATE_COMMENT, EDIT_COMMENT,
     CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, DELETE_ANSWER,
     EDIT_ANSWER, UPDATE_PROFILE, DELETE_COMMENT, CREATE_PROFILE,FOLLOW_SUCCESS,FOLLOW_FAILURE,
+    VOTE_QUESTION, UPDATE_QUESTION_VOTE, DELETE_QUESTION_VOTE
   }
 from "./actionTypes"
 const baseURL = `http://127.0.0.1:8000`
@@ -273,6 +274,36 @@ export const searchQuestions = (username) => (dispatch,getState) => {
     .catch((error) => {
       dispatch({ type: GET_QUESTION_ERROR, payload: error.message });
     });
+};
+
+
+export const voteQuestion = (vote) => (dispatch,getState) => {
+  const config = setConfig(getState)
+  axios
+    .post(`${baseURL}/questionvote/`,vote, config)
+    .then((response) => {
+      dispatch({ type: VOTE_QUESTION, payload: response.data });
+    })
+};
+
+
+export const updateQuestionVote = (id, vote) => (dispatch,getState) => {
+  const config = setConfig(getState)
+  axios
+    .put(`${baseURL}/questionvote/${id}/`,vote, config)
+    .then((response) => {
+      dispatch({ type: UPDATE_QUESTION_VOTE, payload: response.data });
+    })
+};
+
+
+export const deleteQuestioneVote = (id) => (dispatch,getState) => {
+  const config = setConfig(getState)
+  axios
+    .delete(`${baseURL}/questionvote/${id}/`, config)
+    .then((response) => {
+      dispatch({ type: DELETE_QUESTION_VOTE, payload: response.data });
+    })
 };
 
 

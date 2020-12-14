@@ -8,39 +8,44 @@ class Answer extends Component {
   constructor(props) {
       super(props);
       this.state = {
-        newAnswer:{
           id: "",
-            question: this.props.id,
-            user: "",
-            content: "",
-            answered_date: "",
-            likes_count: "",
-            dislikes_count: "",
-            comments_count: "",
-            comments: [
-                {
-                    id: "",
-                    comment: "",
-                    created_on: "",
-                    user: "",
-                    answer: ""
-                }
-            ],
-        },
+          question: this.props.id,
+          user: "",
+          content: "",
+          answered_date: "",
+          comments_count: "",
+          photo : null,
+          comments: [
+            {
+              id: "",
+              comment: "",
+              created_on: "",
+              user: "",
+              answer: ""
+            }
+         ],
         showForm: false
     }
+    this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   handleOnChange = e => {
     if (e.target.name === 'content') {
-      this.setState({ newAnswer :{
-        ...this.state.newAnswer ,content: e.target.value} });
+      this.setState({ content: e.target.value });
     } 
+    if (e.target.name === 'photo') {
+      this.setState({ photo: e.target.files[0]}
+      );
+    }
   }
 
   handleOnSubmit = (event) => {
     event.preventDefault()
-    this.props.createAnswer(this.state.newAnswer,()=>{this.props.getQuestions()})
+    var AnswerformData = new FormData();
+    AnswerformData.append('question',this.state.question)
+    AnswerformData.append('content',this.state.content)
+    AnswerformData.append('photo',this.state.photo, this.state.photo.name);
+    this.props.createAnswer(AnswerformData,()=>{this.props.getQuestions()})
     this.setState({ showForm: false})
   }
 
@@ -50,9 +55,20 @@ class Answer extends Component {
       <input
         type="text"
         name="content"
-        value={this.state.newAnswer.content}
+        value={this.state.content}
         onChange={this.handleOnChange}
       />
+
+       <div>
+          <label>photo</label>
+          <input
+            type="file"
+            name="photo"
+            accept="image/png, image/jpeg"
+            onChange={this.handleOnChange}
+          />
+        </div>
+
       <Button variant="contained" color="primary" onClick= {this.handleOnSubmit}>
         Answer</Button>
     </form>

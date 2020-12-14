@@ -3,9 +3,6 @@ import { follow } from '../actions/index'
 import { connect } from 'react-redux'
 
 export class Follow extends Component {
-  // componentDidMount(){
-  //   this.props.follow(this.props.id)
-  // }
 
   render() {
     return (

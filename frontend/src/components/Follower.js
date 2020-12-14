@@ -32,8 +32,7 @@ render() {
        <h4 style={{ color:'#002984', fontsize: "xx-large" }}>Followers</h4>
         <ul className= 'feed-block-ul'>
           {followers && followers.map((value ,index) => (
-            <li  className ='feed-block-li' key = { index }> 
-              {/* {value.user.username} */}
+            <li className ='feed-block-li' key = { index }> 
               {value.follower.username}
             </li>
           ))}

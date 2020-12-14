@@ -91,8 +91,6 @@ export class EditUserInfo extends Component {
         <Button type='submit' onClick={this.handleSubmit} variant="contained" color="secondary">
           Update Profile
         </Button>
-        {/* {(this.state.errors.first_name)||'' }
-        {(this.state.errors.last_name)||'' } */}
       </form>
     </div>
     );

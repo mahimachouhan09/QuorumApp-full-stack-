@@ -175,7 +175,12 @@ export class UserInfo extends Component {
               <div> Last name : {userinfo.last_name}</div>
             </div> 
           </div>
-          <EditUserInfo data = {value}/> 
+          <Link className="btn btn-primary" href="/changepassword" to="/changepassword">
+            Change password
+          </Link>
+
+          <EditUserInfo data = {value}/>
+
           <Button type="button" variant="contained" color="primary"
             onClick={() => this.setState({ showForm: true })}>
             Create Profile

@@ -11,6 +11,7 @@ import DeleteQuestion from './DeleteQuestion';
 import EditQuestion from './EditQuestion';
 import EditAnswer from './EditAnswer';
 import DeleteAnswer from './DeleteAnswer';
+import QuestionVote from './QuestionVote';
 import {Button} from '@material-ui/core'
 import 'font-awesome/css/font-awesome.css'
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
@@ -50,8 +51,10 @@ class Question extends Component {
             <li className ='feed-block-li' key = { index }>
               <span className="date">
                 <i className="fa fa-calendar" aria-hidden="true"></i>
-                {value.pub_date}</span>
+                {value.pub_date_time}</span>
               <span className="question">
+              <QuestionVote data={value} pk={pk}/>
+
               <i className="fa fa-thumb-tack" aria-hidden="true"></i>    
               <span className="question-text">{value.question}</span> </span><br/>
               <div className ="question-username">
@@ -81,13 +84,12 @@ class Question extends Component {
                           
                     <br/>
                     </span>
-
                     <span className="date">
                     <i className="fa fa-calendar" aria-hidden="true"></i>
-                      answered_date : {item.answered_date}</span><br />
+                      {item.answered_date_time}</span><br />
                       <div className ="question-username">
                       <h6>{user}</h6></div>
-                      
+                      <div><img style ={{width:"500px",margin:"20px"}}src={item.photo } alt=""/></div>
                     {/* item.user is the userid which gives answer to the question
                     and pk is the id of the user which is logged in*/}
 
@@ -105,7 +107,7 @@ class Question extends Component {
                        <span>{comment.comment} </span>
                        <span className="date">
                         <i className="fa fa-calendar" aria-hidden="true"></i>
-                        {comment.created_on}</span>
+                        {comment.commented_date_time}</span>
                        
                     {/* comment.user is the userid through which the comment has been done
                     and pk is the id of the user which is logged in*/}
