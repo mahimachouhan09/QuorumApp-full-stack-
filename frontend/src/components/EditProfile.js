@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { editprofile } from '../actions/index'
+import { editprofile ,getprofiles} from '../actions/index'
 import { Button, Radio ,FormControl,FormLabel,RadioGroup,FormControlLabel} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import 'react-phone-number-input/style.css'
@@ -24,7 +24,6 @@ export class EditProfile extends Component {
         follow_status: this.props.data.follow_status,
         showForm:false
       }
-
       this.handleOnChange = this.handleOnChange.bind(this);
   }
 
@@ -51,7 +50,7 @@ export class EditProfile extends Component {
     EditformData.append('gender', this.state.gender);
     EditformData.append('contact_number', this.state.contact_number)
     EditformData.append('profile_pic', this.state.profile_pic, this.state.profile_pic.name);
-    this.props.editprofile(EditformData, this.props.data.id)
+    this.props.editprofile(EditformData, this.props.data.id,()=>{this.props.getprofiles()})
     this.setState({showForm:false})
   }
 
@@ -121,4 +120,4 @@ export class EditProfile extends Component {
   }
 }
 
-export default connect(null,{editprofile})(EditProfile);
+export default connect(null,{editprofile,getprofiles})(EditProfile);

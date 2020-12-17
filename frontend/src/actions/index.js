@@ -9,7 +9,9 @@ import { REGISTER_SUCCESS, REGISTER_FAIL, LOGIN, LOGIN_ERROR,LOGOUT,
     CREATE_ANSWER_SUCCESS,CREATE_COMMENT, EDIT_COMMENT,
     CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, DELETE_ANSWER,
     EDIT_ANSWER, UPDATE_PROFILE, DELETE_COMMENT, CREATE_PROFILE,FOLLOW_SUCCESS,FOLLOW_FAILURE,
-    VOTE_QUESTION, UPDATE_QUESTION_VOTE, DELETE_QUESTION_VOTE
+    VOTE_QUESTION, UPDATE_QUESTION_VOTE, DELETE_QUESTION_VOTE, COMMENT_LIKE, UPDATE_COMMENT_LIKE,
+    DELETE_COMMENT_LIKE, VOTE_ANSWER, UPDATE_ANSWER_VOTE, DELETE_ANSWER_VOTE,
+    GET_FAV_QUESTION_LOADING, GET_FAV_QUESTION, GET_FAV_QUESTION_ERROR,
   }
 from "./actionTypes"
 const baseURL = `http://127.0.0.1:8000`
@@ -155,11 +157,12 @@ export const createProfile = (values) => {
 }
 
 
-export const editprofile = ( values,id) => {
+export const editprofile = ( values,id,callBack) => {
   return (dispatch , getState) => {
     const config = setConfig(getState)
     config.headers['content-type'] = "multipart/form-data";
     axios.put(`${baseURL}/profile/${id}/`, values, config).then((res) => {
+      callBack();
       dispatch({
         type : UPDATE_PROFILE,
         payload : res.data
@@ -215,6 +218,20 @@ export const getQuestions = () => (dispatch,getState) => {
     })
     .catch((error) => {
       dispatch({ type: GET_QUESTION_ERROR, payload: error.message });
+    });
+};
+
+
+export const listFavoriteQuestion = () => (dispatch,getState) => {
+  dispatch({ type: GET_FAV_QUESTION_LOADING });
+  const config = setConfig(getState)
+  axios
+    .get(`${baseURL}/favorite-questions/`,config)
+    .then((response) => {
+      dispatch({ type: GET_FAV_QUESTION, payload: response.data });
+    })
+    .catch((error) => {
+      dispatch({ type: GET_FAV_QUESTION_ERROR, payload: error.message });
     });
 };
 
@@ -277,31 +294,34 @@ export const searchQuestions = (username) => (dispatch,getState) => {
 };
 
 
-export const voteQuestion = (vote) => (dispatch,getState) => {
+export const voteQuestion = (vote,callBack) => (dispatch,getState) => {
   const config = setConfig(getState)
   axios
     .post(`${baseURL}/questionvote/`,vote, config)
     .then((response) => {
+      callBack();
       dispatch({ type: VOTE_QUESTION, payload: response.data });
     })
 };
 
 
-export const updateQuestionVote = (id, vote) => (dispatch,getState) => {
+export const updateQuestionVote = (id, vote,callBack) => (dispatch,getState) => {
   const config = setConfig(getState)
   axios
     .put(`${baseURL}/questionvote/${id}/`,vote, config)
     .then((response) => {
+      callBack();
       dispatch({ type: UPDATE_QUESTION_VOTE, payload: response.data });
     })
 };
 
 
-export const deleteQuestioneVote = (id) => (dispatch,getState) => {
+export const deleteQuestionVote = (id,callBack) => (dispatch,getState) => {
   const config = setConfig(getState)
   axios
     .delete(`${baseURL}/questionvote/${id}/`, config)
     .then((response) => {
+      callBack();
       dispatch({ type: DELETE_QUESTION_VOTE, payload: response.data });
     })
 };
@@ -350,6 +370,41 @@ export const editAnswer = (id, values,callBack) => {
 }
 
 
+
+export const voteAnswer = (vote,callBack) => (dispatch,getState) => {
+  const config = setConfig(getState)
+  axios
+    .post(`${baseURL}/answervote/`,vote, config)
+    .then((response) => {
+      callBack();
+      dispatch({ type: VOTE_ANSWER, payload: response.data });
+    })
+};
+
+
+export const updateAnswerVote = (id, vote,callBack) => (dispatch,getState) => {
+  const config = setConfig(getState)
+  axios
+    .put(`${baseURL}/answervote/${id}/`,vote, config)
+    .then((response) => {
+      callBack();
+      dispatch({ type: UPDATE_ANSWER_VOTE, payload: response.data });
+    })
+};
+
+
+export const deleteAnswerVote = (id,callBack) => (dispatch,getState) => {
+  const config = setConfig(getState)
+  axios
+    .delete(`${baseURL}/answervote/${id}/`, config)
+    .then((response) => {
+      callBack();
+      dispatch({ type: DELETE_ANSWER_VOTE, payload: response.data });
+    })
+};
+
+
+
 export const createComment = (newComment,callBack) => {
   return (dispatch , getState) => {
     const config = setConfig(getState)
@@ -391,6 +446,39 @@ export const deletecomment = (id,callBack) => {
       )
   }
 }
+
+
+export const likeComment = (like,callBack) => (dispatch,getState) => {
+  const config = setConfig(getState)
+  axios
+    .post(`${baseURL}/commentvote/`,like, config)
+    .then((response) => {
+      callBack();
+      dispatch({ type: COMMENT_LIKE, payload: response.data });
+    })
+};
+
+
+export const updateCommentLike = (id, like,callBack) => (dispatch,getState) => {
+  const config = setConfig(getState)
+  axios
+    .put(`${baseURL}/commentvote/${id}/`,like, config)
+    .then((response) => {
+      callBack();
+      dispatch({ type: UPDATE_COMMENT_LIKE, payload: response.data });
+    })
+};
+
+
+export const deleteCommentLike = (id,callBack) => (dispatch,getState) => {
+  const config = setConfig(getState)
+  axios
+    .delete(`${baseURL}/commentvote/${id}/`, config)
+    .then((response) => {
+      callBack();
+      dispatch({ type: DELETE_COMMENT_LIKE, payload: response.data });
+    })
+};
 
 
 export const logout = () => (dispatch) => {

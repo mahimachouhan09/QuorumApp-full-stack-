@@ -17,8 +17,10 @@ import ForgetPassword from './components/ForgetPassword'
 import ChangePassword from './components/ChangePassword'
 import Signup from './components/Register'
 import UserInfo from './components/UserInfo'
+import CreateProfile from './components/CreateProfile'
 import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from './components/Footer';
+import ListFavoriteQuestion from './components/ListFavoriteQuestion';
 
 function App(props) { 
   const { isAuthenticated } = props
@@ -100,11 +102,20 @@ function App(props) {
           }}>
           </Route>
 
+          <Route path="/createprofile" 
+          render={() => {
+            if (isAuthenticated) {
+              return <CreateProfile />;
+            } else {
+              return <Redirect to="/user-info" />;
+            }
+          }}>
+          </Route>
+
           <Route exact path="/followers/:id" 
             render={() => {
               if (isAuthenticated) {
-                return <Follower {...props} 
-                />;
+                return <Follower {...props} />;
               } else {
                 return <Redirect to="/login" />;
               }
@@ -114,8 +125,7 @@ function App(props) {
           <Route exact path="/following/:id" 
             render={() => {
               if (isAuthenticated) {
-                return <Following {...props} 
-                />;
+                return <Following {...props} />;
               } else {
                 return <Redirect to="/login" />;
               }
@@ -125,8 +135,17 @@ function App(props) {
           <Route exact path="/follow/:id" 
             render={() => {
               if (isAuthenticated) {
-                return <Follow {...props} 
-                />;
+                return <Follow {...props} />;
+              } else {
+                return <Redirect to="/login" />;
+              }
+            }}>
+          </Route>
+
+          <Route path="/favourite-questions" 
+            render={() => {
+              if (isAuthenticated) {
+                return <ListFavoriteQuestion {...props} />;
               } else {
                 return <Redirect to="/login" />;
               }

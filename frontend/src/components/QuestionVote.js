@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {voteQuestion,updateQuestionVote,deleteQuestioneVote} from '../actions/index'
+import {voteQuestion,updateQuestionVote,deleteQuestionVote,getQuestions} from '../actions/index'
 
 export class QuestionVote extends Component {
 
@@ -10,7 +10,7 @@ export class QuestionVote extends Component {
       user: this.props.pk,
       vote: vote
     }
-    this.props.voteQuestion(values)
+    this.props.voteQuestion(values,()=>{this.props.getQuestions()})
   }
 
   handleUpdateVote = (vote, id) => {
@@ -19,11 +19,11 @@ export class QuestionVote extends Component {
       user: this.props.pk,
       vote: vote
     }
-    this.props.updateQuestionVote(id, values)
+    this.props.updateQuestionVote(id, values,()=>{this.props.getQuestions()})
   }
 
   handleDeleteVote = (id) => {
-    this.props.deleteQuestioneVote(id)
+    this.props.deleteQuestionVote(id,()=>{this.props.getQuestions()})
   }
 
 
@@ -36,7 +36,7 @@ export class QuestionVote extends Component {
           <button onClick={() => this.handleVote(true)}>
             <i className="fa fa-arrow-up" aria-hidden="true"></i>
           </button>
-          {this.props.data.upvote_count}
+          {this.props.data.upvote_count}<br/>
 
           <button onClick={() => this.handleVote(false)}>
             <i className="fa fa-arrow-down" aria-hidden="true"></i>
@@ -50,7 +50,7 @@ export class QuestionVote extends Component {
             <button style={{color:"red"}} onClick={() => this.handleDeleteVote(vote.id)}>
             <i className="fa fa-arrow-up" aria-hidden="true"></i>
           </button>
-          {this.props.data.upvote_count}
+          {this.props.data.upvote_count}<br/>
 
           <button onClick={() => this.handleUpdateVote(false, vote.id)}>
             <i  className="fa fa-arrow-down" aria-hidden="true"></i>
@@ -78,4 +78,5 @@ export class QuestionVote extends Component {
   }
 }
 
-export default connect(null , {voteQuestion,updateQuestionVote, deleteQuestioneVote})(QuestionVote)
+export default connect(null,{
+  voteQuestion,updateQuestionVote,deleteQuestionVote,getQuestions})(QuestionVote)
