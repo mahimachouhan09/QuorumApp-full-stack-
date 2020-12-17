@@ -3,11 +3,15 @@
 
 # Features 
 - User authentication and authorization
-- User can create and update profile
+- User can create/update and view profile
 - User can ask Question
 - User can Answer questions
 - User can comment on answer
-- Search questions asked by specific user
+- Search questions
+- User can Upvote, DownVote questions and answers
+- User can like/dislike comments on answer
+- User has image support on posting answer
+- User can mark/unmark favourite questions
 
 # Technology-Used
 - python,
@@ -21,7 +25,7 @@
   
 ## URLs to target for backend:
   - Basic route
-    - http://127.0.0.1:8000/
+    - http://127.0.0.1:8000/ 
   - to register a user
     - localhost:8000/rest-auth/registration/
   - to login a user
@@ -40,6 +44,14 @@
     - localhost:8000/following/id/
   - to view followers
     - localhost:8000/followers/id/
+  - to mark/unmark favourite question
+    - localhost:8000/favorite-questions/
+  - to upvote/downvote question
+    - localhost:8000/questionvote/
+  - to upvote/downvote answer
+    - localhost:8000/answervote/
+  - to like/dislike comment
+    - localhost:8000/commentvote/
 
 ## Useful commands for backend :
   - `python manage.py createsuperuser`
