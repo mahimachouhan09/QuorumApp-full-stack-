@@ -77,29 +77,26 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
-    
-    def post(self, request):
-        import pdb;pdb.set_trace()
-        question = get_object_or_404(Question, slug=request.data.get('slug'))
-        if request.user not in question.favourite.all():
-            question.favourite.add(request.user)
-            return Response(
-                {'detail': 'User added to post'},
-                status=status.HTTP_200_OK)
-        return Response(
-            {'detail': self.bad_request_message},
-            status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request):
-        question = get_object_or_404(Question, slug=request.data.get('slug'))
-        if request.user in question.favourite.all():
-            question.favourite.remove(request.user)
-            return Response(
-                {'detail': 'User removed from post'},
-                status=status.HTTP_204_NO_CONTENT)
-        return Response(
-            {'detail': self.bad_request_message},
-            status=status.HTTP_400_BAD_REQUEST)
+
+class FavQuestionListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    api_view = ['GET', ]
+    serializer_class = QuestionSerializer
+    search_fields = ['user__username','question']
+    
+    def get_queryset(self):
+        return Question.objects.filter(is_favorite=True)
+
+# class UpdateFavQuestionListView(generics.UpdateAPIView):
+#     permission_classes = [IsAuthenticated, ]
+#     api_view = ['PATCH', ]
+#     serializer_class = QuestionSerializer
+#     search_fields = ['user__username','question']
+
+    # if Question.objects.filter(user=self.request.user, is_favorite=True).count()>5:
+    #     return Response({"error":"User cannot have more than 5 favourite questions."})
+
 
 class QuestionVoteViewSet(viewsets.ModelViewSet):
     queryset = QuestionVote.objects.all()

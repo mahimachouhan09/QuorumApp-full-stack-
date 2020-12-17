@@ -31,7 +31,7 @@ export class QuestionVote extends Component {
     const answervote = this.props.data.answervote.find((answervote) => this.props.pk === answervote.user)
     
     return (
-      <div>
+      <div style={{display:"flex",paddingTop:"13px"}}>
         {!answervote && <div>
           <button onClick={() => this.handleVote(true)}>
             <i className="fa fa-arrow-up" aria-hidden="true"></i>

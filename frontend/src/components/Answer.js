@@ -77,13 +77,13 @@ class Answer extends Component {
   
   render() {
     return (     
-      <div>  
+      <React.Fragment>
         <Button type="button" variant="contained" color="primary" style={{display:"flex"}}
           onClick={() => this.setState({ showForm: true })}>
           Answer
         </Button>  
         {this.state.showForm ? this.showForm() : null}
-      </div>
+      </React.Fragment>
     );
   }
 }

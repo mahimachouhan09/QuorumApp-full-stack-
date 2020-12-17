@@ -103,7 +103,7 @@ class QuestionSerializer(serializers.ModelSerializer):
             'id', 'pub_date_time', 'user', 'asked_by',
             'question', 'description', 'answers_count',
             'answers', 'upvote_count', 'downvote_count', 'vote',
-            'favourite',
+            'is_favorite',
             )
         read_only_fields = (
             'id', 'user', 'asked_by', 'pub_date_time', 'questionVote',

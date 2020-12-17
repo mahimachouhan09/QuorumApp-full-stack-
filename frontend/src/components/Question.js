@@ -57,57 +57,61 @@ class Question extends Component {
                 {value.pub_date_time}</span> 
               <div className="question">
                 <QuestionVote data={value} pk={pk}/>
-                {/* <i className="fa fa-thumb-tack" aria-hidden="true"></i>     */}
-                <div className="question-text">{value.question}<br/>
-                <h6 className ="question-username">{username}</h6><br/></div>
-                {/* <div className ="question-description" >
-                <h6 className ="description-heading">describe more: </h6>{value.description}</div><br/><br/>
-                 */}
-              </div><br/>
+               
+                <div className="question-text">{value.question}
+                <h6 className ="question-username">{username}</h6></div>
+              
+              </div>
               <MarkfavQues data={value}/>
-              {/* <div className ="question-username">
-                <h6>{username}</h6></div>  */}
-              <div className ="question-description" >
-                <h6 className ="description-heading">describe more: </h6>{value.description}</div><br/><br/>
-              <div><Answer id={value.id}/></div>
+              
+              <div className="ques-container">
+                <div className ="question-description" >
+                  <h6 className ="description-heading">describe more: </h6>{value.description}</div><br/>
+                <Answer id={value.id}/>
 
-              { value && (value.answers && value.answers.length === 0?<p></p>:
-                <h5 className="count">{value.answers_count} Answers</h5>)}
+                { value && (value.answers && value.answers.length === 0?<p></p>:
+                  <h5 className="count">{value.answers_count} Answers</h5>)}
+              </div>
+
+             
               
               <ul className="answer-ul">
                 {value.answers && value.answers.map((item,index)=>{
                 const user = item.username.substring(14,item.username.length-2)
                  
               return ( 
-                  <li className="answer-ul-li" key = { index }>
-                    <span style={{float:"left",textAlign:"left"}}>
+                  <li className="answer-ul-li" key={ index }>
+                    <span style={{ display:"flex", justifyContent:"left" }}>
                       <QuestionAnswerIcon /> 
                       <ReadMoreAndLess
-                        charLimit={50}
+                        charLimit={60}
                         readMoreText="Read more ▼"
                         readLessText="Read less ▲"
-                      >
-                        {item.content}
+                        >
+                          {item.content}
                       </ReadMoreAndLess>         
-                      <br/>
                     </span>
-                    <span className="date">
-                      <i className="fa fa-calendar" aria-hidden="true"></i>
-                      {item.answered_date_time}
-                      </span><br />
+                    <div>
+                      <span className="date">
+                        <i className="fa fa-calendar" aria-hidden="true"></i>
+                        {item.answered_date_time}
+                      </span>
                       <div className ="question-username">
-                      <h6>{user}</h6></div>
-
-                      {item.photo &&  <div>
-                        <img style ={{width:"500px",margin:"20px"}}src={item.photo } alt=""/>
-                      </div>}
+                        <h6>{user}</h6>
+                      </div>
+                    </div>
+                   
+                    {item.photo &&  <div>
+                      <img style ={{width:"500px",margin:"20px"}}src={item.photo } alt=""/>
+                    </div>}
                      
                     {/* item.user is the userid which gives answer to the question
                     and pk is the id of the user which is logged in*/}
 
                     {(pk === item.user)? 
-                      <div className="deleteanswer"><DeleteAnswer id={item.id} /><EditAnswer data={item}/> </div>:
-                      <p></p>}
+                      <div className="deleteanswer"><DeleteAnswer id={item.id} />
+                      <EditAnswer data={item}/></div>:
+                    null}
                       
                     <AnswerLike data={item} pk={pk}/>
 
@@ -144,7 +148,7 @@ class Question extends Component {
 
               {(pk === value.user)? 
                 <div className="deletequestion"><DeleteQuestion id={value.id} /><EditQuestion data={value}/> </div>:
-                <p></p>}<br/>
+                null}<br/>
             </li>
           )}):<div className="no-results">No results found <br/> Go to QuestionList</div>}
         </ul>

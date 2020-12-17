@@ -52,8 +52,9 @@ class Question(models.Model):
     question = models.CharField(max_length=200)
     pub_date = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=100, null=True, blank=True)
-    favourite = models.ManyToManyField(
-        User, related_name='favourite_question', blank=True,max_length=5)
+    # favourite = models.ManyToManyField(
+    #     User, related_name='favourite_question', blank=True,max_length=5)
+    is_favorite = models.BooleanField(default=False)
 
     def get_post_belongs_to_authenticated_user(self):
         return self.user == get_current_authenticated_user()

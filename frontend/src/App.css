@@ -91,7 +91,6 @@ li{
 }
 
 .question{
-  float: left;
   display:flex;
 }
 
@@ -185,10 +184,14 @@ li{
   font-style: inherit;
 }
 
+.ques-container{
+  padding-left: 55px;
+}
+
 .question-description{
-  display: block;
   float: left;
   font-size: smaller;
+  padding-bottom: 5px;
 }
 
 .description-heading{
@@ -201,6 +204,7 @@ li{
   text-align: left;
   font-size: smaller;
   color: rgb(82, 74, 74);
+  padding: 10px;
 }
 
 .optional{

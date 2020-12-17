@@ -31,7 +31,7 @@ export class QuestionVote extends Component {
     const vote = this.props.data.vote.find((vote) => this.props.pk === vote.user)
     
     return (
-      <div>
+      <React.Fragment>
         {!vote && <div>
           <button onClick={() => this.handleVote(true)}>
             <i className="fa fa-arrow-up" aria-hidden="true"></i>
@@ -72,8 +72,7 @@ export class QuestionVote extends Component {
 
         </div>
         }
-
-      </div>
+      </React.Fragment>
     )
   }
 }

@@ -5,7 +5,7 @@ from rest_framework import routers
 
 from . import views
 from .views import (AnswerViewSet, AnswerVoteViewSet, CommentViewSet,
-                    CommentVoteViewSet, QuestionViewSet,
+                    CommentVoteViewSet, QuestionViewSet, FavQuestionListView,
                     QuestionVoteViewSet, UserList)
 
 router = routers.DefaultRouter()
@@ -22,11 +22,7 @@ urlpatterns = [
     url(r'^rest-auth/', include('rest_auth.urls')),
     path('comments/<int:pk>/vote/', views.CommentViewSet, name='comment-vote'),
     path('comments/<int:pk>/vote/{"action":"down"}', views.CommentViewSet, name='comment-vote'),
-    # POST /api/comments/{id}/vote/
-# POST /api/comments/{id}/vote/ {"action":"down"}
-# DELETE /api/comments/{id}/vote/
-
-    # path('questionvote/', views.QuestionVoteViewSet, name='questionvote'),
+    path('favorite-questions/', views.FavQuestionListView.as_view(), name='favorite_questions'),
     path('follow/<int:pk>/', views.follow, name='follow'),
     path('following/<int:pk>/', views.Following.as_view(), name='following'),
     path('followers/<int:pk>/', views.Followers.as_view(), name='followers'),
