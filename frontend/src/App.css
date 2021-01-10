@@ -49,9 +49,11 @@ li{
   padding: 1%;
   margin: 1%;
 }
+
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
   background-color: #3f51b5!important;
 }
+
 .feedheading{
   color: rgb(0, 41, 132);
   margin: 25px;
@@ -116,6 +118,7 @@ li{
   background-color: rgb(235, 217, 222);
   border: 0;
 }
+
 .fav-question-list{
   width: fit-content;
   width: 100%;
@@ -198,6 +201,11 @@ li{
   font-size: smaller;
   text-align: left;
   display :inline;
+}
+.question-upvote{
+  color: #3f51b5;
+  background-color: rgb(235, 217, 222);
+  margin-right: 3px;
 }
 
 .count{

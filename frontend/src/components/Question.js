@@ -38,43 +38,42 @@ class Question extends Component {
         <SearchQuestion />
         <p className ='question-div-p'>But for now, why don't you answer or ask some questions!</p>
 
-          <Link style={{ color: 'white' }} to = {`/askquestions`}>
-              <Button style={{marginRight:"20px"}} variant="contained" color="primary" >Ask Question </Button>
-          </Link>
+        <Link style={{ color: 'white' }} to = {`/askquestions`}>
+          <Button style={{marginRight:"20px"}} variant="contained" color="primary" >Ask Question </Button>
+        </Link>
 
-          <Link style={{ color: 'white' }} to = {`/viewprofiles`}>
-              <Button variant="contained" color="primary"> View Profiles </Button>
-          </Link>
+        <Link style={{ color: 'white' }} to = {`/viewprofiles`}>
+          <Button variant="contained" color="primary"> View Profiles </Button>
+        </Link>
 
         <ul className= 'feed-block-ul'>
           { questions.length>0 ? questions.map((value ,index) => {
             const username = value && value.asked_by && value.asked_by.substring(14,value.asked_by.length-2)
-
-          return ( 
-            <li className ='feed-block-li' key = { index }>
+          
+            return ( 
+            <li className ='feed-block-li' key={ index }>
               <span className="date">
                 <i className="fa fa-calendar" aria-hidden="true"></i>
-                {value.pub_date_time}</span> 
+                {value.pub_date_time}
+              </span> 
               <div className="question">
                 <QuestionVote data={value} pk={pk}/>
-               
                 <div className="question-text">{value.question}
-                <h6 className ="question-username">{username}</h6></div>
-              
+                  <h6 className ="question-username">{username}</h6>
+                </div>
               </div>
               <MarkfavQues data={value}/>
               
               <div className="ques-container">
                 <div className ="question-description" >
-                  <h6 className ="description-heading">describe more: </h6>{value.description}</div><br/>
+                  <h6 className ="description-heading">describe more: </h6>{value.description}
+                </div><br/>
                 <Answer id={value.id}/>
 
                 { value && (value.answers && value.answers.length === 0?<p></p>:
                   <h5 className="count">{value.answers_count} Answers</h5>)}
               </div>
-
-             
-              
+            
               <ul className="answer-ul">
                 {value.answers && value.answers.map((item,index)=>{
                 const user = item.username.substring(14,item.username.length-2)
@@ -87,8 +86,7 @@ class Question extends Component {
                         charLimit={60}
                         readMoreText="Read more ▼"
                         readLessText="Read less ▲"
-                        >
-                          {item.content}
+                        >{item.content}
                       </ReadMoreAndLess>         
                     </span>
                     <div>
@@ -110,8 +108,7 @@ class Question extends Component {
 
                     {(pk === item.user)? 
                       <div className="deleteanswer"><DeleteAnswer id={item.id} />
-                      <EditAnswer data={item}/></div>:
-                    null}
+                      <EditAnswer data={item}/></div>: null}
                       
                     <AnswerLike data={item} pk={pk}/>
 
@@ -122,21 +119,22 @@ class Question extends Component {
                     <ul className = "comment-ul">
                     {item.comments.map((comment,index)=>(
                       <div className = "comment-ul-li" key = { index }>
-                       <span>{comment.comment} </span>
-                       <span className="date">
-                        <i className="fa fa-calendar" aria-hidden="true"></i>
-                        {comment.commented_date_time}</span>
+                        <span>{comment.comment} </span>
+                        <span className="date">
+                          <i className="fa fa-calendar" aria-hidden="true"></i>
+                          {comment.commented_date_time}
+                        </span>
 
                         <CommentLike data={comment} pk={pk}/>
                         
-                    {/* comment.user is the userid through which the comment has been done
-                    and pk is the id of the user which is logged in*/}
+                        {/* comment.user is the userid through which the comment has been done
+                        and pk is the id of the user which is logged in*/}
 
-                    {(pk === comment.user)? 
-                      <div className="deletequestion"><DeleteComment id={comment.id} /><EditComment data={comment}/> </div>:
-                      <p></p>
-                    }
-                    </div>
+                        {(pk === comment.user)? 
+                          <div className="deletequestion"><DeleteComment id={comment.id} /><EditComment data={comment}/> </div>:
+                          <p></p>
+                        }
+                      </div>
                     ))}
                     </ul>
                   </li>

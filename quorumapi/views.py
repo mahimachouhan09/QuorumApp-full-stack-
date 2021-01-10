@@ -31,7 +31,7 @@ class UserList(viewsets.ModelViewSet):
         return serializer.save(user=self.request.user)
 
 
-# @login_required
+@login_required
 def follow(request, pk): 
     user = get_object_or_404(User, pk=pk)
     if request.user.is_authenticated: 
@@ -87,15 +87,6 @@ class FavQuestionListView(generics.ListAPIView):
     
     def get_queryset(self):
         return Question.objects.filter(is_favorite=True)
-
-# class UpdateFavQuestionListView(generics.UpdateAPIView):
-#     permission_classes = [IsAuthenticated, ]
-#     api_view = ['PATCH', ]
-#     serializer_class = QuestionSerializer
-#     search_fields = ['user__username','question']
-
-    # if Question.objects.filter(user=self.request.user, is_favorite=True).count()>5:
-    #     return Response({"error":"User cannot have more than 5 favourite questions."})
 
 
 class QuestionVoteViewSet(viewsets.ModelViewSet):

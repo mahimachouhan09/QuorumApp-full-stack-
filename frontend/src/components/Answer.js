@@ -32,7 +32,7 @@ class Answer extends Component {
   handleOnChange = e => {
     if (e.target.name === 'content') {
       this.setState({ content: e.target.value });
-    } 
+    }
     if (e.target.name === 'photo') {
       this.setState({ photo: e.target.files[0]}
       );
@@ -74,7 +74,7 @@ class Answer extends Component {
     </form>
     );
   }
-  
+
   render() {
     return (     
       <React.Fragment>

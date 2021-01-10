@@ -33,12 +33,12 @@ export class QuestionVote extends Component {
     return (
       <React.Fragment>
         {!vote && <div>
-          <button onClick={() => this.handleVote(true)}>
+          <button className="question-upvote" onClick={() => this.handleVote(true)}>
             <i className="fa fa-arrow-up" aria-hidden="true"></i>
           </button>
           {this.props.data.upvote_count}<br/>
 
-          <button onClick={() => this.handleVote(false)}>
+          <button className="question-upvote" style={{color:"red"}} onClick={() => this.handleVote(false)}>
             <i className="fa fa-arrow-down" aria-hidden="true"></i>
           </button>
           {this.props.data.downvote_count}
@@ -47,24 +47,24 @@ export class QuestionVote extends Component {
 
         {vote && <div>
           {vote.vote && <div>
-            <button style={{color:"red"}} onClick={() => this.handleDeleteVote(vote.id)}>
+            <button className="question-upvote" onClick={() => this.handleDeleteVote(vote.id)}>
             <i className="fa fa-arrow-up" aria-hidden="true"></i>
           </button>
           {this.props.data.upvote_count}<br/>
 
-          <button onClick={() => this.handleUpdateVote(false, vote.id)}>
+          <button className="question-upvote" style={{color:"red"}} onClick={() => this.handleUpdateVote(false, vote.id)}>
             <i  className="fa fa-arrow-down" aria-hidden="true"></i>
           </button>
           {this.props.data.downvote_count}
           </div>}
 
           {!vote.vote && <div>
-            <button onClick={() => this.handleUpdateVote(true, vote.id)}>
+            <button className="question-upvote" onClick={() => this.handleUpdateVote(true, vote.id)}>
             <i className="fa fa-arrow-up" aria-hidden="true"></i>
           </button>
           {this.props.data.upvote_count}
 
-          <button style={{color:"red"}} onClick={() => this.handleDeleteVote(vote.id)}>
+          <button className="question-upvote" style={{color:"red"}} onClick={() => this.handleDeleteVote(vote.id)}>
             <i color="red" className="fa fa-arrow-down" aria-hidden="true"></i>
           </button>
           {this.props.data.downvote_count}

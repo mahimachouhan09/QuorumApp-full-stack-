@@ -33,12 +33,12 @@ export class QuestionVote extends Component {
     return (
       <div style={{display:"flex",paddingTop:"13px"}}>
         {!answervote && <div>
-          <button onClick={() => this.handleVote(true)}>
+          <button className="question-upvote" onClick={() => this.handleVote(true)}>
             <i className="fa fa-arrow-up" aria-hidden="true"></i>
           </button>
           {this.props.data.answer_upvote_count}
 
-          <button onClick={() => this.handleVote(false)}>
+          <button className="question-upvote" style={{color:"red"}} onClick={() => this.handleVote(false)}>
             <i className="fa fa-arrow-down" aria-hidden="true"></i>
           </button>
           {this.props.data.answer_downvote_count}
@@ -47,24 +47,24 @@ export class QuestionVote extends Component {
 
         {answervote && <div>
           {answervote.vote && <div>
-            <button style={{color:"red"}} onClick={() => this.handleDeleteVote(answervote.id)}>
+            <button className="question-upvote" onClick={() => this.handleDeleteVote(answervote.id)}>
             <i className="fa fa-arrow-up" aria-hidden="true"></i>
           </button>
           {this.props.data.answer_upvote_count}
 
-          <button onClick={() => this.handleUpdateVote(false,answervote.id)}>
+          <button className="question-upvote" style={{color:"red"}} onClick={() => this.handleUpdateVote(false,answervote.id)}>
             <i  className="fa fa-arrow-down" aria-hidden="true"></i>
           </button>
           {this.props.data.answer_downvote_count}
           </div>}
 
           {!answervote.vote && <div>
-            <button onClick={() => this.handleUpdateVote(true, answervote.id)}>
+            <button className="question-upvote" onClick={() => this.handleUpdateVote(true, answervote.id)}>
             <i className="fa fa-arrow-up" aria-hidden="true"></i>
           </button>
           {this.props.data.answer_upvote_count}
 
-          <button style={{color:"red"}} onClick={() => this.handleDeleteVote(answervote.id)}>
+          <button className="question-upvote" style={{color:"red"}} onClick={() => this.handleDeleteVote(answervote.id)}>
             <i color="red" className="fa fa-arrow-down" aria-hidden="true"></i>
           </button>
           {this.props.data.answer_downvote_count}

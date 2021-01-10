@@ -19,9 +19,6 @@ class NavigationBar extends Component {
                     <Nav.Link href="/user-info">
                         {username} <i className="fa fa-user ml-1"></i>
                     </Nav.Link>
-                    {/* <Nav.Link href="/changepassword" variant="standard" to="/changepassword">
-                        Change password
-                    </Nav.Link> */}
                     <Nav.Link href="/questions">
                         questions list
                     </Nav.Link>
