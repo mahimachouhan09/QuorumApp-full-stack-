@@ -80,7 +80,7 @@ export class CreateProfile extends Component {
   render() {
     return (
       <div>
-        <h4>CreateProfile</h4>
+        <h4 style={{ color:'#002984', fontsize: "large" ,margin:"0 0"}}>Create Profile</h4>
         <form onSubmit={this.handleOnSubmit}>
           <div>
             <label>dob</label>
