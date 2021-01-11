@@ -1,8 +1,9 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.db import models
 from django_currentuser.middleware import get_current_authenticated_user
-from django.contrib.humanize.templatetags import humanize
-from datetime import datetime
+
 
 class Profile(models.Model):
     GENDER_CHOICES = (
@@ -66,11 +67,12 @@ class Question(models.Model):
         diff = self.pub_date.date() - time.date()
 
         if self.pub_date.day == time.day:
-            if 60-(self.pub_date.minute - time.minute)<60:
-                return str(60-(self.pub_date.minute - time.minute)) + " minutes ago"
+            if 60-(self.pub_date.minute - time.minute) < 60:
+                return str(60-(
+                    self.pub_date.minute - time.minute)) + " minutes ago"
             else:
                 return str(time.hour - self.pub_date.hour) + " hours ago"
-        else: 
+        else:
             if diff == 1:
                 return "yesterday"
             if self.pub_date.month == time.month:
@@ -89,31 +91,32 @@ class Answer(models.Model):
         Question, on_delete=models.CASCADE, related_name='answers')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
-    photo =  models.ImageField(
+    photo = models.ImageField(
         upload_to='AnswerImages', null=True, blank=True)
     answered_date = models.DateTimeField(auto_now_add=True)
 
     def get_question(self):
         ques_dict = vars(self.question)
-        return {"question" : ques_dict["question"],
-            "pub_date" : ques_dict["pub_date"],
-            "description" : ques_dict["description"],
-            }
+        return {
+            "question": ques_dict["question"],
+            "pub_date": ques_dict["pub_date"],
+            "description": ques_dict["description"], }
 
     def get_user(self):
         user_dict = vars(self.user)
         return {"username": user_dict["username"]}
-    
+
     def get_date(self):
         time = datetime.now()
         diff = self.answered_date.date() - time.date()
 
         if self.answered_date.day == time.day:
-            if 60-(self.answered_date.minute - time.minute)<60:
-                return str(60-(self.answered_date.minute - time.minute)) + " minutes ago"
+            if 60-(self.answered_date.minute - time.minute) < 60:
+                return str(60-(
+                    self.answered_date.minute - time.minute)) + " minutes ago"
             else:
                 return str(time.hour - self.answered_date.hour) + " hours ago"
-        else: 
+        else:
             if diff == 1:
                 return "yesterday"
             if self.answered_date.month == time.month:
@@ -173,11 +176,12 @@ class Comment(models.Model):
         diff = self.created_on.date() - time.date()
 
         if self.created_on.day == time.day:
-            if 60-(self.created_on.minute - time.minute)<60:
-                return str(60-(self.created_on.minute - time.minute)) + " minutes ago"
+            if 60-(self.created_on.minute - time.minute) < 60:
+                return str(60-(
+                    self.created_on.minute - time.minute)) + " minutes ago"
             else:
                 return str(time.hour - self.created_on.hour) + " hours ago"
-        else: 
+        else:
             if diff == 1:
                 return "yesterday"
             if self.created_on.month == time.month:
@@ -190,6 +194,7 @@ class Comment(models.Model):
     def __str__(self):
         return self.comment
 
+
 class QuestionVote(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='vote')
@@ -200,6 +205,7 @@ class QuestionVote(models.Model):
     def __str__(self):
         return str(self.question)
 
+
 class AnswerVote(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='answervote')
@@ -209,6 +215,7 @@ class AnswerVote(models.Model):
 
     def __str__(self):
         return str(self.answer)
+
 
 class CommentVote(models.Model):
     user = models.ForeignKey(

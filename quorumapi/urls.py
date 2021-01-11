@@ -5,7 +5,7 @@ from rest_framework import routers
 
 from . import views
 from .views import (AnswerViewSet, AnswerVoteViewSet, CommentViewSet,
-                    CommentVoteViewSet, QuestionViewSet, FavQuestionListView,
+                    CommentVoteViewSet, QuestionViewSet,
                     QuestionVoteViewSet, UserList)
 
 router = routers.DefaultRouter()

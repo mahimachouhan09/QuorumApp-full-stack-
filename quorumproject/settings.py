@@ -44,10 +44,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
-    'generic_relations',
     'corsheaders',
-    'django.contrib.humanize',
-    'vote',
 ]
 
 MIDDLEWARE = [

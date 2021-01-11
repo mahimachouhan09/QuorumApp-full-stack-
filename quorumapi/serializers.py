@@ -2,9 +2,8 @@ from datetime import date
 
 from rest_framework import serializers
 
-from .models import (
-    Answer, Comment, Follow, Profile, Question, QuestionVote,
-    AnswerVote, CommentVote)
+from .models import (Answer, AnswerVote, Comment, CommentVote, Follow, Profile,
+                     Question, QuestionVote)
 
 
 class QuestionVoteSerializer(serializers.ModelSerializer):
@@ -12,7 +11,7 @@ class QuestionVoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuestionVote
         fields = '__all__'
-        read_only_fields = ('id','user')
+        read_only_fields = ('id', 'user')
 
 
 class CommentVoteSerializer(serializers.ModelSerializer):
@@ -20,7 +19,7 @@ class CommentVoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommentVote
         fields = '__all__'
-        read_only_fields = ('id','user')
+        read_only_fields = ('id', 'user')
 
 
 class AnswerVoteSerializer(serializers.ModelSerializer):
@@ -28,11 +27,12 @@ class AnswerVoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnswerVote
         fields = '__all__'
-        read_only_fields = ('id','user')
+        read_only_fields = ('id', 'user')
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    commented_date_time = serializers.CharField(source='get_date', read_only=True)
+    commented_date_time = serializers.CharField(
+        source='get_date', read_only=True)
     commentlike = CommentVoteSerializer(many=True, read_only=True)
     like_count = serializers.SerializerMethodField(read_only=True)
     dislike_count = serializers.SerializerMethodField(read_only=True)
@@ -42,15 +42,18 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def get_dislike_count(self, obj):
         return obj.commentlike.filter(like=False).count()
+
     class Meta:
         model = Comment
-        fields = ('id', 'user', 'comment', 'answer', 'commented_date_time',
-        'like_count', 'dislike_count', 'commentlike',)
+        fields = (
+            'id', 'user', 'comment', 'answer', 'commented_date_time',
+            'like_count', 'dislike_count', 'commentlike',)
         read_only_fields = ('id', 'user', 'commented_date_time',)
 
 
 class AnswerSerializer(serializers.ModelSerializer):
-    answered_date_time = serializers.CharField(source='get_date', read_only=True)
+    answered_date_time = serializers.CharField(
+        source='get_date', read_only=True)
     comments_count = serializers.SerializerMethodField(read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
     username = serializers.CharField(

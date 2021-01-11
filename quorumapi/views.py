@@ -1,22 +1,22 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.http import HttpResponseRedirect
 from rest_framework import generics, permissions, viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from vote.views import VoteMixin
-from .models import (Answer, Comment, Follow, Profile, Question, QuestionVote,
-                    AnswerVote, CommentVote)
+
+from .models import (Answer, AnswerVote, Comment, CommentVote, Follow, Profile,
+                     Question, QuestionVote)
 from .paginators import UserPagination
 from .permissions import IsInstanceOwner
-from .serializers import (AnswerSerializer, CommentSerializer,
+from .serializers import (AnswerSerializer, AnswerVoteSerializer,
+                          CommentSerializer, CommentVoteSerializer,
                           FollowerSerializer, ProfileSerializer,
-                          QuestionSerializer, QuestionVoteSerializer,
-                          AnswerVoteSerializer, CommentVoteSerializer)
+                          QuestionSerializer, QuestionVoteSerializer)
 
 
 class UserList(viewsets.ModelViewSet):
@@ -32,9 +32,9 @@ class UserList(viewsets.ModelViewSet):
 
 
 @login_required
-def follow(request, pk): 
+def follow(request, pk):
     user = get_object_or_404(User, pk=pk)
-    if request.user.is_authenticated: 
+    if request.user.is_authenticated:
         if user != request.user:
             already_followed = Follow.objects.filter(
                 user=user, follower=request.user).first()
@@ -72,7 +72,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     pagination_class = UserPagination
-    search_fields = ['user__username','question']
+    search_fields = ['user__username', 'question']
     permission_classes = [IsAuthenticated, IsInstanceOwner, ]
 
     def perform_create(self, serializer):
@@ -83,8 +83,8 @@ class FavQuestionListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated, ]
     api_view = ['GET', ]
     serializer_class = QuestionSerializer
-    search_fields = ['user__username','question']
-    
+    search_fields = ['user__username', 'question']
+
     def get_queryset(self):
         return Question.objects.filter(is_favorite=True)
 
@@ -139,7 +139,7 @@ class Followers(generics.ListCreateAPIView):
         return Follow.objects.filter(user=user).exclude(follower=user)
 
 
-class CommentViewSet(viewsets.ModelViewSet,VoteMixin):
+class CommentViewSet(viewsets.ModelViewSet, VoteMixin):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     pagination_class = UserPagination
